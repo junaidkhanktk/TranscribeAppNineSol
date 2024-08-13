@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.PlayerFragment">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:fontFamily="@font/open_sans_bold"
+        android:text="TITLE"
+        android:textColor="@color/light_blue"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/historyIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/calander_icon_player" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/dateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Sat, Jun 29, 2024, 3:31 pm"
+            android:textColor="@color/light_blue"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/historyIcon"
+            app:layout_constraintStart_toEndOf="@+id/historyIcon"
+            app:layout_constraintTop_toTopOf="@+id/historyIcon" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/clock"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@+id/dateTime"
+            app:srcCompat="@drawable/duration_player" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/durationTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="13:34"
+            android:textColor="@color/light_blue"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/clock"
+            app:layout_constraintStart_toEndOf="@+id/clock"
+            app:layout_constraintTop_toTopOf="@+id/clock" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/idTxt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textColor="@color/light_blue"
+        android:textSize="@dimen/_14ssp"
+        android:lineSpacingExtra="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_70sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="13dp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/skipBackwardBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_90sdp"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar"
+        app:srcCompat="@drawable/play_previous" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/PlayPauseBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/skipBackwardBtn"
+        app:layout_constraintStart_toEndOf="@+id/skipBackwardBtn"
+        app:layout_constraintTop_toTopOf="@+id/skipBackwardBtn"
+        app:srcCompat="@drawable/ic_play" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/skipForwardBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/PlayPauseBtn"
+        app:layout_constraintStart_toEndOf="@+id/PlayPauseBtn"
+        app:layout_constraintTop_toTopOf="@+id/PlayPauseBtn"
+        app:srcCompat="@drawable/play_next" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

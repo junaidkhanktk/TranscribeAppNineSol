@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/idHomeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/idAiFragment"
+        android:icon="@drawable/ic_ai_chat"
+        android:title="Ai Chat" />
+    <item
+        android:id="@+id/idCalenderFragment"
+        android:icon="@drawable/ic_calender"
+        android:title="Calender" />
+</menu>

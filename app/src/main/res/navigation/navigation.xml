@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/idSplashFragment">
+
+    <fragment
+        android:id="@+id/idHomeFragment"
+        android:name="com.example.transcribeapp.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/idSplashFragment"
+        android:name="com.example.transcribeapp.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" />
+
+
+    <fragment
+        android:id="@+id/idAiFragment"
+        android:name="com.example.transcribeapp.fragment.AIChatFragment"
+        android:label="fragment_ai"
+        tools:layout="@layout/fragment_a_i_chat" />
+    <fragment
+        android:id="@+id/idCalenderFragment"
+        android:name="com.example.transcribeapp.fragment.CalenderFragment"
+        android:label="fragment_calender"
+        tools:layout="@layout/fragment_calender" />
+    <fragment
+        android:id="@+id/aiChatFragmentInner"
+        android:name="com.example.transcribeapp.fragment.AiChatFragmentInner"
+        android:label="fragment_ai_chat_inner"
+        tools:layout="@layout/fragment_ai_chat_inner" />
+    <fragment
+        android:id="@+id/idConversationFragment"
+        android:name="com.example.transcribeapp.fragment.ConversationFragment"
+        android:label="fragment_conversation"
+        tools:layout="@layout/fragment_conversation" />
+    <fragment
+        android:id="@+id/idRecordingFragment"
+        android:name="com.example.transcribeapp.fragment.RecordingFragment"
+        android:label="fragment_recording"
+        tools:layout="@layout/fragment_recording" />
+    <fragment
+        android:id="@+id/idSummaryFragment"
+        android:name="com.example.transcribeapp.fragment.SummaryFragment"
+        android:label="fragment_summary"
+        tools:layout="@layout/fragment_summary" />
+
+
+</navigation>

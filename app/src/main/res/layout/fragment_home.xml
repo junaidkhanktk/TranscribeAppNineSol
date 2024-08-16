@@ -4,20 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <include
+            android:id="@+id/search_box_container"
+            layout="@layout/search_view"
+            />
+    </LinearLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clAdsFree"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/bg_ad_gradient"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHeight_percent="0.15">
+        app:layout_constraintTop_toBottomOf="@+id/search">
 
         <ImageView
             android:id="@+id/img1"
@@ -34,22 +47,22 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_ad_icon"
             android:layout_marginTop="@dimen/_15sdp"
+            android:src="@drawable/ic_ad_icon"
             app:layout_constraintStart_toEndOf="@id/img1"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
-            android:text="100% Ads-free Experience"
-            android:textSize="@dimen/_9sdp"
             android:fontFamily="@font/open_sans_semibold"
+            android:text="100% Ads-free Experience"
             android:textColor="@color/white"
+            android:textSize="@dimen/_9sdp"
             app:layout_constraintStart_toEndOf="@id/img2"
-            app:layout_constraintTop_toTopOf="@id/img2"/>
+            app:layout_constraintTop_toTopOf="@id/img2" />
 
 
         <ImageView
@@ -57,8 +70,8 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_infinity_icon"
             android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_infinity_icon"
             app:layout_constraintStart_toStartOf="@id/img2"
             app:layout_constraintTop_toBottomOf="@id/img2" />
 
@@ -69,12 +82,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:ellipsize="end"
-            android:textSize="@dimen/_9sdp"
-
             android:fontFamily="@font/open_sans_semibold"
+
             android:maxLines="1"
             android:text="Get Unlimited Access"
             android:textColor="@color/white"
+            android:textSize="@dimen/_9sdp"
             app:layout_constraintEnd_toStartOf="@+id/img4"
             app:layout_constraintHorizontal_bias="0.07"
             app:layout_constraintStart_toEndOf="@id/img3"
@@ -85,10 +98,10 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:src="@drawable/ic_ad_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="@dimen/_5sdp"
             app:layout_constraintTop_toTopOf="@+id/txt2" />
 
 

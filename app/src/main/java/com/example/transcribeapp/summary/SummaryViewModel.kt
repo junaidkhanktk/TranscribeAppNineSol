@@ -15,7 +15,7 @@ class SummaryViewModel(private val repo: SummaryRepo) : ViewModel() {
 
 
     fun sendRequest(userTxt: String) = viewModelScope.launch(Dispatchers.IO) {
-        repo.sendRequest(userTxt, onresPonse = {
+        repo.sendRequest(userTxt, onResponse = {
             _summaryResponse.value=it
         }, onError = {})
 

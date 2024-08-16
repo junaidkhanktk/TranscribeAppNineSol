@@ -7,10 +7,11 @@ import retrofit2.Call
 import retrofit2.Response
 
 class SummaryRepo {
-
+    private var message: String? = null
+    private var result: String? = null
     fun sendRequest(
         userTxt: String,
-        onresPonse: (String) -> Unit,
+        onResponse: (String) -> Unit,
         onError: (String) -> Unit,
 
         ) {
@@ -26,30 +27,31 @@ class SummaryRepo {
                     call: Call<SummaryResponse>,
                     response: Response<SummaryResponse>,
                 ) {
-
                     if (response.isSuccessful) {
                         val status = response.body()?.success
-                        val message = response.body()?.message
-                        val result = response.body()?.data?.summary
+                        message = response.body()?.message
+                        result = response.body()?.data?.summary
                         result?.let {
-                            onresPonse.invoke(it)
+                            onResponse.invoke(it)
                         }
-
 
                         "status: ${status} message:${message} result: ${result}  ".log(
                             Log.DEBUG,
                             "Summary"
                         )
 
-
                     } else {
-                        "request Failed ${response.errorBody().toString()}".log(Log.DEBUG, "Summary")
+                        onError.invoke("error")
+                        "request Failed ${response.errorBody().toString()}".log(
+                            Log.DEBUG,
+                            "Summary"
+                        )
                     }
 
                 }
 
                 override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
-                    t.message?.let { onError.invoke(it) }
+                    onError.invoke("error")
                     "${t.message}".log(Log.DEBUG, "Summary")
                 }
 

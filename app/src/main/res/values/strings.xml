@@ -16,6 +16,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_title_here">Add Title Here</string>
     <string name="dot">.</string>
+    <string name="time">00:00</string>
 
 
 </resources>

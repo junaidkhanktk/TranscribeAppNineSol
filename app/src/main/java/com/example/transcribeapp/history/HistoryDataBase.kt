@@ -24,7 +24,6 @@ abstract class HistoryDataBase : RoomDatabase() {
             HistoryDataBase::class.java,
             "history_database"
         ).fallbackToDestructiveMigration()
-            .setJournalMode(JournalMode.TRUNCATE) // Or other modes like AUTO-VACUUM
         .build()
 
 

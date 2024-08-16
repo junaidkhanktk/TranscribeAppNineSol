@@ -9,13 +9,14 @@
     android:padding="16dp">
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/open_sans_bold"
-        android:text="@string/add_title_here"
+        android:hint="@string/add_title_here"
         android:textColor="#617181"
+        android:background="@android:color/transparent"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,6 +26,8 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:scrollbars="none"
+        android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/title">
 
@@ -32,8 +35,9 @@
             android:id="@+id/result_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_30sdp"
-            android:padding="16dp"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/opensans_regular"
             android:scrollbars="vertical" />
 
     </ScrollView>
@@ -53,16 +57,17 @@
             android:id="@+id/redDot"
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_40sdp"
             android:src="@drawable/ic_red_dot"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/soundLevel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/soundLevel" />
 
         <com.example.transcribeapp.helpers.RoundedRectProgressBar
             android:id="@+id/soundLevel"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/_6sdp"
             android:layout_marginStart="@dimen/_10sdp"
             app:layout_constraintBaseline_toBottomOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,7 +79,7 @@
             android:id="@+id/timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_60sdp"
+            android:layout_marginEnd="@dimen/_50sdp"
             android:text="00:00"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/soundLevel"

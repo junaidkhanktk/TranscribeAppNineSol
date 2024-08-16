@@ -1,6 +1,7 @@
 package com.example.transcribeapp.apis
 
 import android.util.Log
+import com.example.transcribeapp.client.ApiHelper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
@@ -16,7 +17,7 @@ class ApiRepository() {
         Log.d("Request JSON:", "processChat:$userMsgJson ")
 
 
-        ChatRetrofit.apiService.chatRequest(requestBody).enqueue(object : retrofit2.Callback<ChatResponse> {
+        ApiHelper.chatService.chatRequest(requestBody).enqueue(object : retrofit2.Callback<ChatResponse> {
                 override fun onResponse(
                     call: Call<ChatResponse>,
                     response: Response<ChatResponse>,

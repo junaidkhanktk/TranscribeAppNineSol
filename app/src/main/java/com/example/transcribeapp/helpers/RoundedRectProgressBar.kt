@@ -14,9 +14,9 @@ class RoundedRectProgressBar @JvmOverloads constructor(
     private var paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var progress = 0
     private val rects = 10 // Number of rounded rectangles
-    private val rectWidth: Float = 25f
-    private val rectHeight: Float = 60f
-    private val spacing: Float = 10f
+    private val rectWidth: Float = 23f
+    private val rectHeight: Float = 40f
+    private val spacing: Float = 7f
 
     init {
         paint.color = context.getColor(R.color.progress_Dark)

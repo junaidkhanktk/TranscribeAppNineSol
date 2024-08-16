@@ -1,6 +1,6 @@
 package com.example.transcribeapp.history.mvvm
 
-import androidx.lifecycle.LiveData
+import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.history.History
 import com.example.transcribeapp.history.HistoryDao
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,8 @@ class HistoryRepo(
 
 
     fun insertHistory(history: History) {
-        historyDao.insertHistory(history)
+            historyDao.insertHistory(history)
+            "history Called in Repo".log()
     }
 
     fun deleteHistory(history: History) {

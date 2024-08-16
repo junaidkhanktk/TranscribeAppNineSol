@@ -46,7 +46,7 @@ fun Fragment.historyRcv(
                 title.text = item.title
                 date.text = item.currentDate
                 time.text = getFormattedTime(item.currentTime)
-                origionalTxt.text = item.text
+                origionalTxt.text = ". ${item.text}"
                 daysWeekAgo.text = getTimeAgoWithDate(item.currentTime)
                 startUpdatingTimeAgo(item.currentTime) { timeAgo ->
                     timeAgoTxt.text = timeAgo

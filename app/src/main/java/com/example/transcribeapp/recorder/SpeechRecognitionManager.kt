@@ -22,22 +22,33 @@ class SpeechRecognitionManager(
     private val recognitionListener: RecognitionListener
 ) : CoroutineScope {
 
+
     private var model: Model? = null
     private var speechService: SpeechService? = null
     private val logTag = "SpeechRecognitionManager"
+    private var isModelInitialized = false
+
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
     fun initModel(onModelInitialized: () -> Unit) {
+        if (isModelInitialized) {
+            onModelInitialized()
+            return
+        }
+
         launch(Dispatchers.IO){
         StorageService.unpack(context, "model-en-us", "model",
             { model -> // Success callback
                 this@SpeechRecognitionManager.model = model
-                launch(Dispatchers.Main) {
-                    onModelInitialized()
-                }
+                onModelInitialized()
+                isModelInitialized=true
+             /*   launch(Dispatchers.Main) {
+
+                }*/
+                "unpack the model: ".log(Log.DEBUG,logTag)
             },
             { e -> // Error callback
                 "Failed to unpack the model: ${e.message}".log(Log.DEBUG,logTag)
@@ -48,9 +59,10 @@ class SpeechRecognitionManager(
         }
     }
 
-    fun startRecognition() {
+    fun startRecognition(onRecognizerStop: () -> Unit) {
         if (speechService != null) {
             stopRecognition()
+            onRecognizerStop.invoke()
         } else {
             model?.let {
                 launch(Dispatchers.IO) {

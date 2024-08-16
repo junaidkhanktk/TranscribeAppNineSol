@@ -22,7 +22,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 findNavController().navigate(R.id.idRecordingFragment, bundle)
             }
 
-           historyRcv(requireContext(), this){
+            "HasCode MAin : ${historyViewModel.hashCode()}".log(Log.DEBUG, "ConverstionScreen")
+
+            historyRcv(requireContext(), this){
                val bundle = Bundle()
                bundle.putString("destination", "sourceB")
                findNavController().navigate(R.id.idRecordingFragment, bundle)

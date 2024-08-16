@@ -41,8 +41,6 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         lifecycleScope.launch {
             historyViewModel.selectedItemHistory.collect { historyItem ->
 

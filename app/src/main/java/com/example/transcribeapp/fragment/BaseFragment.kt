@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewbinding.ViewBinding
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
+import com.example.transcribeapp.summary.SummaryViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
@@ -20,6 +21,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     private val inflate: Inflate<VB>
 ) : Fragment() {
     protected val historyViewModel by viewModel<HistoryViewModel>()
+    protected val summaryViewModel by viewModel<SummaryViewModel>()
 
     private var _binding: VB? = null
     val binding get() = _binding

@@ -2,27 +2,17 @@ package com.example.transcribeapp.history.mvvm
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.history.History
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import com.example.transcribeapp.history.HistoryDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.launch
 
 
-class HistoryViewModel(private val historyRepo: HistoryRepo) :
+class HistoryViewModel(private val historyDao: HistoryDao) :
     ViewModel() {
-
-
-
-    val readHistory: Flow<List<History>> = historyRepo.readHistory
-
+    val readHistory: Flow<List<History>> = historyDao.readHistory()
     private val _selectedItemHistory = MutableStateFlow<History?>(null)
     val selectedItemHistory = _selectedItemHistory.asStateFlow()
 
@@ -30,9 +20,10 @@ class HistoryViewModel(private val historyRepo: HistoryRepo) :
         _selectedItemHistory.value = history
     }
 
-    fun insertHistory(history: History) = viewModelScope.launch(Dispatchers.IO) {
+    fun insertHistory(history: History)  {
         try {
-            historyRepo.insertHistory(history)
+            historyDao.insertHistory(history)
+            "history Called in ViewModel".log()
         } catch (e: OutOfMemoryError) {
             "DatabaseError-> Out of memory during database operation: cause ${e.cause} message${e.message}".log(
                 Log.ERROR,
@@ -42,13 +33,13 @@ class HistoryViewModel(private val historyRepo: HistoryRepo) :
 
     }
 
-    fun deleteHistory(history: History) = viewModelScope.launch(Dispatchers.IO) {
-        historyRepo.deleteHistory(history)
+    fun deleteHistory(history: History)  {
+        historyDao.deleteHistory(history)
     }
 
     override fun onCleared() {
         super.onCleared()
-        viewModelScope.cancel()
+
     }
 
 

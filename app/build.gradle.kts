@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-kapt")
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
 
 }
 
@@ -19,9 +19,9 @@ android {
         versionCode = 1
         versionName = "1.0"
         ndkVersion = "25.2.9519653"
-        ndk {
+        /*ndk {
             abiFilters.addAll(listOf("armeabi-v7a", "armeabi", "arm64-v8a", "x86_64", "x86"))
-        }
+        }*/
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         sourceSets {
             getByName("main") {
@@ -64,8 +64,15 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        buildConfig=true
+        buildConfig = true
     }
+
+    externalNativeBuild {
+        cmake {
+            path ("src/main/cpp/CMakeLists.txt")
+        }
+    }
+
 }
 
 dependencies {
@@ -79,36 +86,36 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation ("com.karumi:dexter:6.2.3")
+    implementation("com.karumi:dexter:6.2.3")
     implementation("com.intuit.sdp:sdp-android:1.0.6")
     implementation("com.intuit.ssp:ssp-android:1.1.0")
 
-    val retrofit_version = "2.9.0"
-    implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
-    implementation( "com.squareup.retrofit2:converter-gson:$retrofit_version")
-    implementation( "com.squareup.retrofit2:converter-scalars:$retrofit_version")
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation( "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1")
     // FOR DEPENDENCY INJECTION
-    implementation ("io.insert-koin:koin-android:3.5.3")
+    implementation("io.insert-koin:koin-android:3.5.3")
 
-    val room_version = "2.5.1"
-    implementation ("androidx.room:room-runtime:$room_version")
+    val roomVersion = "2.5.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation ("com.alphacephei:vosk-android:0.3.32+")
-    implementation ("net.java.dev.jna:jna:5.13.0@aar")
+    implementation("com.alphacephei:vosk-android:0.3.32+")
+    implementation("net.java.dev.jna:jna:5.13.0@aar")
 
 
     // Full exoplayer library
     implementation("com.google.android.exoplayer:exoplayer:2.17.1")
 
     val nav_version = "2.7.0" // Use the latest version
-    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 
 }
 

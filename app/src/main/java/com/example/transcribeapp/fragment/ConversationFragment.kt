@@ -63,8 +63,8 @@ class ConversationFragment :
             btnStop.setOnClickListener {
 
 
-               // userTxt = binding?.resultText?.text?.trim().toString()
-                userTxt = "fgdkvcml;,zl; m,kbvl"
+                userTxt = binding?.resultText?.text?.trim().toString()
+              /*  userTxt = "fgdkvcml;,zl; m,kbvl"
                 lifecycleScope.launch(Dispatchers.IO) {
 
                     summaryViewModel.sendRequest(userTxt!!)
@@ -72,7 +72,7 @@ class ConversationFragment :
                 }
 
                 requireContext().showToast("clicked")
-                return@setOnClickListener
+                return@setOnClickListener*/
                 audioRecorderManger.stopRecording()
 
 

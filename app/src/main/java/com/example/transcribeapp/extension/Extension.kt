@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import org.json.JSONException
 import org.json.JSONObject
@@ -47,6 +48,7 @@ fun String.indicesOf(word: String): List<Int> {
     }
     return indices
 }
+
 fun afterTime(timeInMillis: Long, listener: () -> Unit) {
     Handler(Looper.getMainLooper()).postDelayed({
         listener.invoke()
@@ -85,5 +87,15 @@ fun String.parseJson(): String {
         // Return an empty string or some default value in case of an error
         ""
     }
+
 }
 
+fun TextView.setFormattedTextWithDots(text: String, maxLines: Int = 3) {
+    // Split the text into lines and limit it to the specified maxLines
+    val lines = text.split("\n").take(maxLines)
+    // Add a dot at the beginning of each line
+    val formattedText = lines.joinToString("\n") { ". $it" }
+    // Set the text to the TextView and apply the maxLines property
+    this.text = formattedText
+    this.maxLines = maxLines
+}

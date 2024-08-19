@@ -10,7 +10,7 @@ import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.recyclerView.historyRcv
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate){
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,15 +24,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             "HasCode MAin : ${historyViewModel.hashCode()}".log(Log.DEBUG, "ConverstionScreen")
 
-            historyRcv(requireContext(), this){
-               val bundle = Bundle()
-               bundle.putString("destination", "sourceB")
-               findNavController().navigate(R.id.idRecordingFragment, bundle)
-           }
+            historyRcv(requireContext(), this) {
+                val bundle = Bundle()
+                bundle.putString("destination", "sourceB")
+                findNavController().navigate(R.id.idRecordingFragment, bundle)
+            }
+
         }
 
     }
-
 
 
 }

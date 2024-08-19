@@ -74,9 +74,6 @@ class ConversationFragment :
                 requireContext().showToast("clicked")
                 return@setOnClickListener*/
                 audioRecorderManger.stopRecording()
-
-
-
                 titelTxt = title.text?.trim().toString()
                 binding?.apply {
                     if (titelTxt.isNullOrBlank()) {

@@ -48,6 +48,11 @@
         android:name="com.example.transcribeapp.fragment.SummaryFragment"
         android:label="fragment_summary"
         tools:layout="@layout/fragment_summary" />
+    <fragment
+        android:id="@+id/idImportFragment"
+        android:name="com.example.transcribeapp.fragment.ImportFragment"
+        android:label="fragment_import"
+        tools:layout="@layout/fragment_import" />
 
 
 </navigation>

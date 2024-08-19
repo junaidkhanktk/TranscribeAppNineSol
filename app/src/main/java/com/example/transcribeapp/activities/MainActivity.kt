@@ -50,6 +50,10 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
                     navController.navigate(R.id.idCalenderFragment)
                     true
                 }
+                R.id.idImportFragment -> {
+                    navController.navigate(R.id.idImportFragment)
+                    true
+                }
                 else -> false
             }
         }

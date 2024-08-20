@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,8 +16,8 @@
             android:id="@+id/appCompatImageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu_icon"
             android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/menu_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,12 +26,12 @@
             android:id="@+id/appCompatTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Home"
             android:layout_marginStart="@dimen/_30ssp"
-            android:textAlignment="center"
             android:fontFamily="@font/open_sans_bold"
-            android:textSize="@dimen/_16ssp"
+            android:text="Home"
+            android:textAlignment="center"
             android:textColor="@color/light_blue"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView3"
             app:layout_constraintEnd_toStartOf="@+id/notification"
             app:layout_constraintStart_toEndOf="@+id/appCompatImageView3"
@@ -52,9 +52,9 @@
             android:id="@+id/premium"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_40sdp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="@+id/notification"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/notification"
             app:srcCompat="@drawable/premium_icon" />
 
@@ -75,60 +75,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@drawable/bottom_nav_item_background"
-        app:itemIconTint="@drawable/selector_bottom_nav_color"
+        android:background="@color/white"
+        style="@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface"        app:itemIconTint="@drawable/selector_bottom_nav_color"
         app:itemTextColor="@drawable/selector_bottom_nav_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"
-
         />
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/mainLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="vertical">-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/history"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="view History" />-->
-    <!--        &lt;!&ndash; Other UI elements can be added here if needed &ndash;&gt;-->
-    <!--        <Button-->
-    <!--            android:id="@+id/startStopButton"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="Start Recording" />-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/saveRecording"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="save Recording" />-->
-
-    <!--        <androidx.appcompat.widget.AppCompatTextView-->
-    <!--            android:id="@+id/myTextView"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"/>-->
-
-
-    <!--        <androidx.appcompat.widget.AppCompatTextView-->
-    <!--            android:id="@+id/timerView"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="00:00:00"-->
-    <!--            android:textColor="@color/black"-->
-    <!--            android:textSize="@dimen/_18sdp"-->
-    <!--            app:layout_constraintBottom_toTopOf="@+id/recorderWaveformView"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toBottomOf="@+id/lotti" />-->
-
-
-    <!--    </LinearLayout>-->
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

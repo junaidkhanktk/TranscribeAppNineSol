@@ -37,7 +37,7 @@
             android:fontFamily="@font/open_sans_semibold"
             android:text="Hello"
             android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +48,7 @@
             android:fontFamily="@font/opensans_medium"
             android:text="30/45/2024"
             android:textColor="@color/light_blue"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -74,7 +74,7 @@
             android:fontFamily="@font/opensans_medium"
             android:text="9:30 Am"
             android:textColor="@color/light_blue"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="@+id/date"
             app:layout_constraintStart_toEndOf="@+id/dot"
             app:layout_constraintTop_toTopOf="@+id/date" />
@@ -101,7 +101,7 @@
             android:fontFamily="@font/opensans_medium"
             android:text="50 min"
             android:textColor="@color/light_blue"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="@+id/date"
             app:layout_constraintStart_toEndOf="@+id/dot1"
             app:layout_constraintTop_toTopOf="@+id/date" />
@@ -115,7 +115,7 @@
             android:maxLines="3"
             android:text=".mettin about whether\n.hhhhhhh\n.hgfffggggghhggg"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/date"

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.transcribeapp.R
+import com.example.transcribeapp.adapter.ViewPagerAdapter
 import com.example.transcribeapp.databinding.FragmentRecordingBinding
 import com.example.transcribeapp.databinding.TabItemBinding
 import com.example.transcribeapp.extension.log
@@ -32,8 +33,7 @@ class RecordingFragment :
 
         fragments = when (destination) {
             "sourceA" -> listOf(SummaryFragment(), ConversationFragment(), AiChatFragmentInner())
-            "sourceB" -> listOf(SummaryFragment(), PlayerFragment(), AiChatFragmentInner())
-            else -> listOf(SummaryFragment(), ConversationFragment(), AiChatFragmentInner())
+             else -> listOf(SummaryFragment(), ConversationFragment(), AiChatFragmentInner())
         }
 
 
@@ -104,13 +104,5 @@ class RecordingFragment :
         tabBinding.backgroundTab.setBackgroundResource(R.drawable.bg_main_gradient)
     }
 
-    private inner class ViewPagerAdapter(
-        fa: Fragment,
-        private val fragments: List<Fragment>,
-    ) : FragmentStateAdapter(fa) {
 
-        override fun getItemCount(): Int = fragments.size
-
-        override fun createFragment(position: Int): Fragment = fragments[position]
-    }
 }

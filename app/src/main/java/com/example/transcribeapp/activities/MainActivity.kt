@@ -1,8 +1,15 @@
 package com.example.transcribeapp.activities
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.view.Window
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -11,7 +18,7 @@ import com.example.transcribeapp.R
 import com.example.transcribeapp.databinding.ActivityMainBinding
 import com.example.transcribeapp.extension.beGone
 import com.example.transcribeapp.extension.beVisible
-
+import com.example.transcribeapp.extension.setLightStatusBar
 
 
 class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListener {
@@ -58,6 +65,24 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
             }
         }
 
+        window.setLightStatusBar()
+
+
+       /* val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.WHITE
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.setSystemBarsAppearance(
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }*/
+
+
     }
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
@@ -68,7 +93,7 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
     override fun onDestinationChanged(
         controller: NavController,
         destination: NavDestination,
-        arguments: Bundle?
+        arguments: Bundle?,
     ) {
 
         binding.apply {

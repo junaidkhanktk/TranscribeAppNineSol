@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.example.transcribeapp.R
+import com.example.transcribeapp.bottomSheet.recordingBottomSheet
 import com.example.transcribeapp.databinding.FragmentHomeBinding
 import com.example.transcribeapp.extension.log
+import com.example.transcribeapp.extension.manageBottomNavOnKeyboardState
 import com.example.transcribeapp.recyclerView.historyRcv
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -17,9 +20,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
             imgRecording.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("destination", "sourceA")
-                findNavController().navigate(R.id.idRecordingFragment, bundle)
+                requireActivity().recordingBottomSheet(this@HomeFragment)
+                /*     val bundle = Bundle()
+                     bundle.putString("destination", "sourceA")
+                     findNavController().navigate(R.id.idRecordingFragment, bundle)*/
             }
 
             "HasCode MAin : ${historyViewModel.hashCode()}".log(Log.DEBUG, "ConverstionScreen")
@@ -34,5 +38,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        binding?.apply {
+            root.manageBottomNavOnKeyboardState(requireContext(), bottomNav)
+        }
+    }
 
 }

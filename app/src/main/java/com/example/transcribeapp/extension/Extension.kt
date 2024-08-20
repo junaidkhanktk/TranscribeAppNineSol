@@ -3,11 +3,18 @@ package com.example.transcribeapp.extension
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.Window
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import org.json.JSONException
@@ -125,3 +132,58 @@ fun Context.uriToFile(uri: Uri): File? {
     return null
 }
 
+
+
+fun Window.setLightStatusBar(statusBarColor: Int = Color.WHITE) {
+    addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    this.statusBarColor = statusBarColor
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        insetsController?.setSystemBarsAppearance(
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+}
+
+
+fun Context.dpToPx(valueInDp: Float): Float {
+    val metrics = this.resources.displayMetrics
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics)
+}
+
+fun View.isKeyboardOpen(context: Context, isKeyBoardOpen: (Boolean) -> Unit) {
+    val listener = ViewTreeObserver.OnGlobalLayoutListener {
+        val heightDiff = this@isKeyboardOpen.rootView.height - this@isKeyboardOpen.height
+        if (heightDiff > context.dpToPx(200F)) {
+            isKeyBoardOpen.invoke(true)
+        } else {
+            isKeyBoardOpen.invoke(false)
+        }
+    }
+
+    this.viewTreeObserver.addOnGlobalLayoutListener(listener)
+
+    // Remove the listener when the view is detached
+    this.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+
+        override fun onViewAttachedToWindow(p0: View) {}
+
+        override fun onViewDetachedFromWindow(p0: View) {
+            this@isKeyboardOpen.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+            this@isKeyboardOpen.removeOnAttachStateChangeListener(this)        }
+    })
+}
+
+fun View.manageBottomNavOnKeyboardState(context: Context, bottomNav: View) {
+    this.isKeyboardOpen(context) { isOpen ->
+        if (isOpen) {
+            bottomNav.beGone()
+        } else {
+            bottomNav.beVisible()
+        }
+    }
+}

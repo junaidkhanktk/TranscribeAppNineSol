@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
+
         <include
             android:id="@+id/search_box_container"
-            layout="@layout/search_view"
-            />
+            layout="@layout/search_view" />
     </LinearLayout>
 
 
@@ -23,8 +21,8 @@
         android:id="@+id/clAdsFree"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/bg_ad_gradient"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.15"
@@ -42,8 +40,6 @@
 
         <ImageView
             android:id="@+id/img2"
-
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
@@ -111,44 +107,45 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:background="@drawable/bg_main_gradient"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/bg_main_gradient"
         android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/clAdsFree">
+
         <ImageView
             android:id="@+id/img5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_ai_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/txtheading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="AI Meeting Guide"
             android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_15sdp"
             android:fontFamily="@font/open_sans_bold"
+            android:text="AI Meeting Guide"
+            android:textSize="@dimen/_15sdp"
             app:layout_constraintStart_toEndOf="@id/img5"
-            app:layout_constraintTop_toTopOf="@id/img5"/>
-<TextView
-    android:id="@+id/txtdesc"
+            app:layout_constraintTop_toTopOf="@id/img5" />
 
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:textSize="@dimen/_9sdp"
-
-    android:text="Summaries, action items, and your personal AI guide to chat with to get insight into complex conversations."
-app:layout_constraintStart_toStartOf="@id/txtheading"
-    android:maxLines="3"
-    android:ellipsize="end"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/txtheading"/>
+        <TextView
+            android:id="@+id/txtdesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="Summaries, action items, and your personal AI guide to chat with to get insight into complex conversations."
+            android:textSize="@dimen/_9sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txtheading"
+            app:layout_constraintTop_toBottomOf="@id/txtheading" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -159,8 +156,7 @@ app:layout_constraintStart_toStartOf="@id/txtheading"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clAiMeetingGuide"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/clAiMeetingGuide" />
 
 
     <ImageView

@@ -19,6 +19,7 @@ import com.example.transcribeapp.permission.PermissionUtils
 import com.example.transcribeapp.permission.micPermission
 import com.example.transcribeapp.recorder.AudioRecorderManager
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,6 +34,8 @@ class ConversationFragment :
     //private val speechRecognitionManager: SpeechRecognitionManager by inject { parametersOf(this) }
     private lateinit var speechRecognitionManager: SpeechRecognitionManager
     private val audioRecorderManger: AudioRecorderManager by inject { parametersOf(binding) }
+    private var bottomSheetDialog: BottomSheetDialog? = null
+
 
     private val logTagConversation = "ConversationScreen"
     private var fullText = ""
@@ -42,6 +45,7 @@ class ConversationFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUiState(STATE_READY)
+
 
         speechRecognitionManager = SpeechRecognitionManager(requireContext(), this)
 
@@ -60,24 +64,25 @@ class ConversationFragment :
                 )
             }
 
+
+
+
             btnStop.setOnClickListener {
 
 
-               // userTxt = binding?.resultText?.text?.trim().toString()
-                userTxt = "The photo picker provides a browsable interface that presents the user with their media library, sorted by date from newest to oldest. As shown in the privacy best practices codelab, the photo picker provides a safe, built-in way for users to grant your app access to only selected images and videos, instead of their entire media library.\n" +
-                        "\n" +
-                        "Users who have eligible cloud media providers on their device are also able to select from photos and videos stored remotely. Learn more about cloud media providers.\n" +
-                        "\n" +
-                        "The tool updates automatically, offering expanded functionality to your app's users over time without requiring any code changes."
-                userTxt = "fgdkvcml;,zl; m,kbvl"
+                userTxt = binding?.resultText?.text?.trim().toString()
+                /*  userTxt = "The photo picker provides a browsable interface that presents the user with their media library, sorted by date from newest to oldest. As shown in the privacy best practices codelab, the photo picker provides a safe, built-in way for users to grant your app access to only selected images and videos, instead of their entire media library.\n" +
+                          "\n" +
+                          "Users who have eligible cloud media providers on their device are also able to select from photos and videos stored remotely. Learn more about cloud media providers.\n" +
+                          "\n" +
+                          "The tool updates automatically, offering expanded functionality to your app's users over time without requiring any code changes."
+                  userTxt = "fgdkvcml;,zl; m,kbvl"*/
                 lifecycleScope.launch(Dispatchers.IO) {
-
                     summaryViewModel.sendRequest(userTxt!!)
-
                 }
 
-                requireContext().showToast("clicked")
-                return@setOnClickListener
+                /*         requireContext().showToast("clicked")
+                         return@setOnClickListener*/
                 audioRecorderManger.stopRecording()
                 titelTxt = title.text?.trim().toString()
                 binding?.apply {
@@ -86,13 +91,8 @@ class ConversationFragment :
                         return@setOnClickListener
                     }
 
-
                     timer.text = getString(R.string.time)
                 }
-
-
-
-
 
                 lifecycleScope.launch(Dispatchers.IO) {
                     val history = History(
@@ -109,6 +109,7 @@ class ConversationFragment :
 
                     withContext(Dispatchers.Main) {
                         // findNavController().navigateUp()
+                        bottomSheetDialog?.dismiss()
                         historyViewModel.setSelectedItemHistory(history)
                         val bundle = Bundle()
                         bundle.putString("destination", "sourceB")
@@ -145,9 +146,9 @@ class ConversationFragment :
     }
 
     private fun initSpeechRecognition() {
-       /* speechRecognitionManager.initModel {
-            setUiState(STATE_READY)
-        }*/
+        /* speechRecognitionManager.initModel {
+             setUiState(STATE_READY)
+         }*/
     }
 
 
@@ -252,6 +253,12 @@ class ConversationFragment :
         private const val STATE_READY = 1
         private const val STATE_DONE = 2
         private const val STATE_MIC = 4
+
+        fun cancelDialog(dialog: BottomSheetDialog): ConversationFragment {
+            val fragment = ConversationFragment()
+            fragment.bottomSheetDialog = dialog
+            return fragment
+        }
     }
 }
 

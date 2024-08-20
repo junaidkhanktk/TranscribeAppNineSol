@@ -8,6 +8,7 @@
     <style name="Theme.TranscribeApp" parent="Base.Theme.TranscribeApp" />
     <style name="CustomTabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabIndicatorHeight">0dp</item>
+
     </style>
 
     <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
@@ -18,7 +19,9 @@
         <item name="android:background">@drawable/rounded_dialog_background</item>
     </style>
 
-
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+      <!--  <item name="android:color">#CEDDEC</item>-->
+    </style>
 
 
 </resources>

@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintTop_toBottomOf="@+id/title">
@@ -35,9 +36,10 @@
             android:id="@+id/result_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_14ssp"
             android:textColor="@color/black"
-            android:fontFamily="@font/opensans_regular"
+            android:textSize="@dimen/_14ssp"
+            android:lineSpacingExtra="@dimen/_6sdp"
+            android:fontFamily="@font/open_sans_semibold"
             android:scrollbars="vertical" />
 
     </ScrollView>

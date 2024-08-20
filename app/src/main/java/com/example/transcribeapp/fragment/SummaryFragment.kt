@@ -23,7 +23,17 @@ class SummaryFragment : BaseFragment<FragmentSummaryBinding>(FragmentSummaryBind
             summaryViewModel.summaryResponse.collect{
              binding?.summaryTxt?.text=it
             }
+
+
+
         }
+
+        lifecycleScope.launch {
+            importVieModel.transcribeResponse.collect{
+                binding?.summaryTxt?.text=it
+            }
+        }
+
 
 
     }

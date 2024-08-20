@@ -41,7 +41,7 @@ class ConversationFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUiState(STATE_START)
+        setUiState(STATE_READY)
 
         speechRecognitionManager = SpeechRecognitionManager(requireContext(), this)
 
@@ -63,8 +63,13 @@ class ConversationFragment :
             btnStop.setOnClickListener {
 
 
-                userTxt = binding?.resultText?.text?.trim().toString()
-              /*  userTxt = "fgdkvcml;,zl; m,kbvl"
+               // userTxt = binding?.resultText?.text?.trim().toString()
+                userTxt = "The photo picker provides a browsable interface that presents the user with their media library, sorted by date from newest to oldest. As shown in the privacy best practices codelab, the photo picker provides a safe, built-in way for users to grant your app access to only selected images and videos, instead of their entire media library.\n" +
+                        "\n" +
+                        "Users who have eligible cloud media providers on their device are also able to select from photos and videos stored remotely. Learn more about cloud media providers.\n" +
+                        "\n" +
+                        "The tool updates automatically, offering expanded functionality to your app's users over time without requiring any code changes."
+                userTxt = "fgdkvcml;,zl; m,kbvl"
                 lifecycleScope.launch(Dispatchers.IO) {
 
                     summaryViewModel.sendRequest(userTxt!!)
@@ -72,7 +77,7 @@ class ConversationFragment :
                 }
 
                 requireContext().showToast("clicked")
-                return@setOnClickListener*/
+                return@setOnClickListener
                 audioRecorderManger.stopRecording()
                 titelTxt = title.text?.trim().toString()
                 binding?.apply {
@@ -140,9 +145,9 @@ class ConversationFragment :
     }
 
     private fun initSpeechRecognition() {
-        speechRecognitionManager.initModel {
+       /* speechRecognitionManager.initModel {
             setUiState(STATE_READY)
-        }
+        }*/
     }
 
 

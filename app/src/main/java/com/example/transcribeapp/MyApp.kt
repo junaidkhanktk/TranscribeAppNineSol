@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.fragment.ConversationFragment
 import com.example.transcribeapp.koin.allModules
+import com.example.transcribeapp.recorder.SpeechModelProvider
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -24,5 +28,10 @@ class MyApp : Application() {
             modules(listOf(allModules))
         }
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            SpeechModelProvider.initializeModel(applicationContext)
+        }
+
     }
 }

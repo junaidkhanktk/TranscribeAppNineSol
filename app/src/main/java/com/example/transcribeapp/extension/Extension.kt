@@ -3,6 +3,7 @@ package com.example.transcribeapp.extension
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -12,11 +13,9 @@ import android.widget.Toast
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.concurrent.TimeUnit
-import java.util.Calendar
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 fun String.log(logLevel: Int = Log.DEBUG, tag: String = "TESTING") {
@@ -99,3 +98,30 @@ fun TextView.setFormattedTextWithDots(text: String, maxLines: Int = 3) {
     this.text = formattedText
     this.maxLines = maxLines
 }
+
+fun Context.uriToFile(uri: Uri): File? {
+    val inputStream = contentResolver.openInputStream(uri)
+    val outputFile = createTempFile("temp", null, cacheDir)
+
+    try {
+        if (inputStream != null) {
+            val outputStream = FileOutputStream(outputFile)
+            val buffer = ByteArray(4 * 1024) // Adjust the buffer size as needed
+            var read: Int
+
+            while (inputStream.read(buffer).also { read = it } != -1) {
+                outputStream.write(buffer, 0, read)
+            }
+
+            outputStream.flush()
+            outputStream.close()
+            inputStream.close()
+            return outputFile
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
+    return null
+}
+

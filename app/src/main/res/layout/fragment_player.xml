@@ -78,6 +78,7 @@
         android:layout_height="0dp"
         android:textColor="@color/light_blue"
         android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/open_sans_semibold"
         android:lineSpacingExtra="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"

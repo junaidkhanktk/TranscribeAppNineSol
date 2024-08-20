@@ -18,6 +18,8 @@
     <string name="dot">.</string>
     <string name="time">00:00</string>
     <string name="search_recording_hint">Search recordings</string>
+    <string name="upgrade">Upgrade to pro for 10 import per day ( up to the allocated minutes)</string>
+    <string name="continue_import">Continue to import</string>
 
 
 </resources>

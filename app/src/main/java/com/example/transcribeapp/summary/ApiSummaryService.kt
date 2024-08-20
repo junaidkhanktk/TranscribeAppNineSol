@@ -3,7 +3,6 @@ package com.example.transcribeapp.summary
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 
 interface ApiSummaryService {

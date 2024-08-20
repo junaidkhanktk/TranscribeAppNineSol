@@ -117,6 +117,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
+    implementation (libs.singledateandtimepicker)
+
 }
 
 

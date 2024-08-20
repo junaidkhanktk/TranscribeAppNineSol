@@ -3,14 +3,17 @@ package com.example.transcribeapp.bottomSheet
 import android.app.Activity
 import android.app.Dialog
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.CalendarView.OnDateChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.transcribeapp.R
 import com.example.transcribeapp.adapter.ViewPagerAdapter
+import com.example.transcribeapp.databinding.DialogDateTimePickerBottomSheetBinding
 import com.example.transcribeapp.databinding.RecordingBottomSheetBinding
 import com.example.transcribeapp.databinding.TabItemBinding
 import com.example.transcribeapp.fragment.AiChatFragmentInner
@@ -48,7 +51,8 @@ fun FragmentActivity.recordingBottomSheet(showFragment: Fragment) {
 
     fullHeightDialog(dialog)
 
-    val fragments = listOf(SummaryFragment(), ConversationFragment.cancelDialog(dialog), AiChatFragmentInner())
+    val fragments =
+        listOf(SummaryFragment(), ConversationFragment.cancelDialog(dialog), AiChatFragmentInner())
 
     binding.apply {
 
@@ -58,14 +62,14 @@ fun FragmentActivity.recordingBottomSheet(showFragment: Fragment) {
 
         viewPager.adapter = ViewPagerAdapter(showFragment, fragments)
         viewPager.setCurrentItem(1, false)
-        TabLayoutMediator(tabLayout,viewPager){  tab, position ->
-            tab.customView=createTabView(position)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.customView = createTabView(position)
         }.attach()
-        highlightSelectedTab(1,tabLayout)
+        highlightSelectedTab(1, tabLayout)
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                highlightSelectedTab(tab.position,tabLayout)
+                highlightSelectedTab(tab.position, tabLayout)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -84,9 +88,6 @@ fun FragmentActivity.recordingBottomSheet(showFragment: Fragment) {
 }
 
 
-
-
-
 fun FragmentActivity.createTabView(position: Int): View {
     val tabBinding = TabItemBinding.inflate(LayoutInflater.from(this))
     tabBinding.tabTitle.text = when (position) {
@@ -99,21 +100,51 @@ fun FragmentActivity.createTabView(position: Int): View {
 }
 
 
- fun FragmentActivity.highlightSelectedTab(position: Int,tabLayout:TabLayout) {
+fun FragmentActivity.highlightSelectedTab(position: Int, tabLayout: TabLayout) {
     val tab = tabLayout.getTabAt(position)
     val tabBinding = TabItemBinding.bind(tab?.customView!!)
     tabBinding.tabTitle.setTextColor(ContextCompat.getColor(this, R.color.white))
     tabBinding.backgroundTab.setBackgroundResource(R.drawable.bg_recording_selected)
 }
 
- fun FragmentActivity.resetTabView(tab: TabLayout.Tab) {
+fun FragmentActivity.resetTabView(tab: TabLayout.Tab) {
     val tabBinding = TabItemBinding.bind(tab.customView!!)
     tabBinding.tabTitle.setTextColor(
         ContextCompat.getColor(
-           this,
+            this,
             R.color.textColor
         )
     )
     tabBinding.tabTitle.setTypeface(null, Typeface.NORMAL)
     tabBinding.backgroundTab.setBackgroundResource(R.drawable.bg_main_gradient)
 }
+
+
+fun FragmentActivity.timeDatePicker() {
+    val binding by lazy {
+        DialogDateTimePickerBottomSheetBinding.inflate(layoutInflater)
+    }
+    val dialog = BottomSheetDialog(this)
+    dialog.setContentView(binding.root)
+    binding.apply {
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        btnOk.setOnClickListener {
+
+        }
+        singleDayPicker.addOnDateChangedListener { label, date ->
+            // Handle the selected label and date
+            Log.d("DateSelected", "Label: $label, Date: $date")
+        }
+
+
+    }
+
+    dialog.show()
+
+
+}
+
+
+

@@ -20,6 +20,10 @@
     <string name="search_recording_hint">Search recordings</string>
     <string name="upgrade">Upgrade to pro for 10 import per day ( up to the allocated minutes)</string>
     <string name="continue_import">Continue to import</string>
+    <string name="from">From</string>
+    <string name="dummy_date">Mon, 12 Aug 2024, 16:00</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 
 
 </resources>

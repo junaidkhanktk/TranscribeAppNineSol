@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.transcribeapp.R
+import com.example.transcribeapp.bottomSheet.timeDatePicker
 import com.example.transcribeapp.databinding.FragmentCalenderBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -28,10 +29,13 @@ class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderB
             }
 
             fromEditText.setOnClickListener {
-                val dialog = DateTimePickerBottomSheetDialogFragment { dateTime ->
+
+                requireActivity().timeDatePicker()
+
+            /*    val dialog = DateTimePickerBottomSheetDialogFragment { dateTime ->
                     fromEditText.setText(dateTime)
                 }
-                dialog.show(parentFragmentManager, "DateTimePicker")
+                dialog.show(parentFragmentManager, "DateTimePicker")*/
             }
         }
     }

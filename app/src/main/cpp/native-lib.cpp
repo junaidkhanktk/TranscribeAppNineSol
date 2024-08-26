@@ -10,3 +10,8 @@ JNIEXPORT jstring JNICALL
 Java_com_example_transcribeapp_client_Keys_getSummaryUrl(JNIEnv *env, jobject thiz) {
     return env ->NewStringUTF("http://104.155.183.228:65475//");
 }
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_transcribeapp_client_Keys_getAuthUrl(JNIEnv *env, jobject thiz) {
+    return env ->NewStringUTF("https://transcribebackend-vzt2zxsi7q-uc.a.run.app");
+}

@@ -7,6 +7,17 @@
     tools:context=".fragment.SummaryFragment">
 
 
+    <Button
+        android:id="@+id/register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="login"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
     <TextView
         android:id="@+id/summaryTxt"
         android:layout_width="match_parent"

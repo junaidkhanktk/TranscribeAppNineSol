@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewbinding.ViewBinding
+import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
 import com.example.transcribeapp.importAllFile.ImportViewModel
 import com.example.transcribeapp.summary.SummaryViewModel
@@ -24,6 +25,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     protected val historyViewModel by viewModel<HistoryViewModel>()
     protected val summaryViewModel by viewModel<SummaryViewModel>()
     protected val importVieModel by viewModel<ImportViewModel>()
+    protected val authViewModel by viewModel<AuthViewModel>()
 
     private var _binding: VB? = null
     val binding get() = _binding

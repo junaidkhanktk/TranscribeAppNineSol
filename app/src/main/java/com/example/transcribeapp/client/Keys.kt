@@ -8,6 +8,7 @@ object Keys {
 
     external fun getUlrChat(): String
     external fun getSummaryUrl():String
+    external fun getAuthUrl():String
 
 
 }

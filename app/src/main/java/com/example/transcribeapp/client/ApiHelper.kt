@@ -1,6 +1,7 @@
 package com.example.transcribeapp.client
 
 import com.example.transcribeapp.apis.ApiChatService
+import com.example.transcribeapp.authorization.interfaces.AuthService
 import com.example.transcribeapp.importAllFile.ImportApiService
 import com.example.transcribeapp.summary.ApiSummaryService
 import com.example.transcribeapp.summary.TranscribeRequest
@@ -22,6 +23,15 @@ object ApiHelper {
             apiService = ApiSummaryService::class.java
         ).service
     }
+
+
+    val authService by lazy {
+        RetroFitHelper(
+            baseUrl = Keys.getAuthUrl(),
+            apiService = AuthService::class.java
+        ).service
+    }
+
 
     val transcribeService by lazy {
         RetroFitHelper(

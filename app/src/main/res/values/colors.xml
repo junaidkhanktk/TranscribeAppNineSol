@@ -9,5 +9,7 @@
     <color name="light_blue">#365776</color>
     <color name="light_blue_txt">#617181</color>
     <color name="progress_Dark">#D3D3D3</color>
+    <color name="light_black">#231F1F</color>
+    <color name="hint_color">#AEAEAE</color>
 
 </resources>

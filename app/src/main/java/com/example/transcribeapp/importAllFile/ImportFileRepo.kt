@@ -1,20 +1,15 @@
 package com.example.transcribeapp.importAllFile
 
 import android.util.Log
-import com.example.transcribeapp.client.ApiHelper.transcribeService
 import com.example.transcribeapp.extension.log
-import com.example.transcribeapp.summary.TranscribeRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
-
+/*
 class ImportFileRepo() {
     private var message: String? = null
     private var result: String? = null
@@ -60,15 +55,14 @@ class ImportFileRepo() {
 
     }
 
-}
+}*/*/
 
 
 
-class ImportFileRepo1(private val transcribeService: ImportApiService) {
+class ImportFileRepo(private val transcribeService: ImportApiService) {
     private val audioMimeType = "audio/*".toMediaTypeOrNull()
 
 
-/*
     suspend fun sendRequest(file: File): Result<String> = withContext(Dispatchers.IO) {
         try {
             val requestFile = file.asRequestBody(audioMimeType)
@@ -81,14 +75,24 @@ class ImportFileRepo1(private val transcribeService: ImportApiService) {
                 val success=response.body()?.data?.text
 
                 if (result!=null){
-                    Result.success()
+                    "onResponse: $result".log(Log.DEBUG, "ImportModule")
+                    Result.success(result)
+
+                }else{
+                    "onErrorResponse: Transcription result is null".log(Log.DEBUG, "ImportModule")
+                    Result.failure(Exception("Transcription result is null"))
                 }
 
             }else{
+                val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+                "onError: ${response.code()}, $errorMsg".log(Log.DEBUG, "ImportModule")
+                Result.failure(Exception("Error: ${response.code()}, $errorMsg"))
 
             }
+        }catch (e: Exception){
+            Result.failure(e)
         }
     }
-*/
+
 
 }

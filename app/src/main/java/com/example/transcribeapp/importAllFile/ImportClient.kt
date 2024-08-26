@@ -17,10 +17,7 @@ interface ImportApiService {
 
 }
 
-data class TranscribeRequest(
-    @SerializedName("audio")
-    val audio:File
-)
+
 
 data class TranscribeResponse(
     @SerializedName("success")

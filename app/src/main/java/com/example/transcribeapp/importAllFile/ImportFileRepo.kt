@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.transcribeapp.client.ApiHelper.transcribeService
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.summary.TranscribeRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -11,6 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+
 
 class ImportFileRepo() {
     private var message: String? = null
@@ -56,5 +59,36 @@ class ImportFileRepo() {
         })
 
     }
+
+}
+
+
+
+class ImportFileRepo1(private val transcribeService: ImportApiService) {
+    private val audioMimeType = "audio/*".toMediaTypeOrNull()
+
+
+/*
+    suspend fun sendRequest(file: File): Result<String> = withContext(Dispatchers.IO) {
+        try {
+            val requestFile = file.asRequestBody(audioMimeType)
+            val audioPart = MultipartBody.Part.createFormData("audio",file.name,requestFile)
+
+            val response=transcribeService.transcribe(audioPart).execute()
+            if (response.isSuccessful){
+                val result=response.body()?.data?.text
+                val message=response.body()?.message
+                val success=response.body()?.data?.text
+
+                if (result!=null){
+                    Result.success()
+                }
+
+            }else{
+
+            }
+        }
+    }
+*/
 
 }

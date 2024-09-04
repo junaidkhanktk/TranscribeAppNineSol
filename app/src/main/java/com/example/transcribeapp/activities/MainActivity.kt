@@ -106,6 +106,11 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
                 R.id.idHomeFragment->{
                     bottomNavigation.beVisible()
                 }
+                R.id.signUpFragment->{
+                    bottomNavigation.beGone()
+                    toolBar.beGone()
+
+                }
             }
         }
     }

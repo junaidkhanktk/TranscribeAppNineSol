@@ -3,6 +3,8 @@ package com.example.transcribeapp.extension
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -23,6 +25,8 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 fun String.log(logLevel: Int = Log.DEBUG, tag: String = "TESTING") {
@@ -187,3 +191,44 @@ fun View.manageBottomNavOnKeyboardState(context: Context, bottomNav: View) {
         }
     }
 }
+
+
+/*
+fun getSHA1Fingerprint(): String? {
+
+    */
+/* val sha1 = getSHA1Fingerprint()
+     Log.d("SHA1", "SHA1: $sha1")*//*
+
+    return try {
+        val packageInfo: PackageInfo = requireContext().packageManager.getPackageInfo(
+            requireContext().packageName,
+            PackageManager.GET_SIGNATURES
+        )
+        val signatures = packageInfo.signatures
+        val md = MessageDigest.getInstance("SHA-1")
+        for (signature in signatures) {
+            md.update(signature.toByteArray())
+            val digest = md.digest()
+            val hexString = StringBuilder()
+            for (i in digest.indices) {
+                if (i > 0) {
+                    hexString.append(":")
+                }
+                val hex = Integer.toHexString(0xFF and digest[i].toInt())
+                if (hex.length == 1) {
+                    hexString.append("0")
+                }
+                hexString.append(hex.uppercase())
+            }
+            return hexString.toString()
+        }
+        null
+    } catch (e: PackageManager.NameNotFoundException) {
+        Log.e("SHA1", "Package not found", e)
+        null
+    } catch (e: NoSuchAlgorithmException) {
+        Log.e("SHA1", "SHA-1 algorithm not found", e)
+        null
+    }
+}*/

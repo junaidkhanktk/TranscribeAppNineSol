@@ -13,7 +13,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.transcribeapp"
+        applicationId = "com.example.transcriber.App"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -23,11 +23,11 @@ android {
             abiFilters.addAll(listOf("armeabi-v7a", "armeabi", "arm64-v8a", "x86_64", "x86"))
         }*/
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        sourceSets {
+    /*    sourceSets {
             getByName("main") {
                 assets.srcDirs("src/main/assets", "$buildDir/generated/assets")
             }
-        }
+        }*/
     }
 
     tasks.register("genUUID") {
@@ -87,38 +87,43 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("com.karumi:dexter:6.2.3")
-    implementation("com.intuit.sdp:sdp-android:1.0.6")
-    implementation("com.intuit.ssp:ssp-android:1.1.0")
+    implementation(libs.dexter)
+    implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
 
-    val retrofitVersion = "2.9.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.1")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.converter.scalars)
+    implementation(libs.gson)
+    implementation(libs.logging.interceptor)
     // FOR DEPENDENCY INJECTION
-    implementation("io.insert-koin:koin-android:3.5.3")
+    implementation(libs.koin.android)
 
-    val roomVersion = "2.5.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:2.5.1")
-    implementation("androidx.room:room-ktx:$roomVersion")
 
-    implementation("com.jakewharton.timber:timber:5.0.1")
-    implementation("com.alphacephei:vosk-android:0.3.32+")
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    implementation(libs.timber)
+    implementation(libs.vosk.android)
+   // implementation(libs.jna)
     implementation("net.java.dev.jna:jna:5.13.0@aar")
 
-
     // Full exoplayer library
-    implementation("com.google.android.exoplayer:exoplayer:2.17.1")
+    implementation(libs.exoplayer)
 
-    val nav_version = "2.7.0" // Use the latest version
-    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.viewpager2)
 
     implementation (libs.singledateandtimepicker)
+
+
+    //googleSignUp
+    implementation (libs.play.services.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation (libs.googleid)
 
 }
 

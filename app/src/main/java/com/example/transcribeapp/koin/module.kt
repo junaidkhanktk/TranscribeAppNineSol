@@ -1,9 +1,13 @@
 package com.example.transcribeapp.koin
 
+import androidx.credentials.CredentialManager
 import com.example.transcribeapp.apis.ApiRepository
 import com.example.transcribeapp.apis.ChatViewModel
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthRepo
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
+import com.example.transcribeapp.authorization.google.GoogleSignInRepo
+import com.example.transcribeapp.authorization.google.GoogleSignInRepository
+import com.example.transcribeapp.authorization.google.GoogleSignInViewModel
 import com.example.transcribeapp.authorization.interfaces.AuthService
 import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.client.RetroFitHelper
@@ -19,6 +23,9 @@ import com.example.transcribeapp.recorder.AudioRecorderManager
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
 import com.example.transcribeapp.summary.SummaryRepo
 import com.example.transcribeapp.summary.SummaryViewModel
+import com.example.transcribeapp.utils.Constants
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
@@ -84,5 +91,23 @@ val viewModelModule = module{
     single { AuthRepo() }
     single { AuthViewModel(get()) }
 
+    single { CredentialManager.create(get()) }
+
+    single {
+        GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(Constants.GOOGLE_SIGNIN_KEY)
+            .setAutoSelectEnabled(false)
+            .build()
+    }
+    single<GoogleSignInRepository> {
+        GoogleSignInRepo(get(), get(), get())
+    }
+
+    /*single<GoogleSignInRepo> {
+        GoogleSignInRepo(get(), get(), get())
+    }*/
+
+    viewModel { GoogleSignInViewModel(get()) }
 
 }

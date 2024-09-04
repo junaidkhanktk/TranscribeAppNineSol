@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/idSplashFragment">
+    app:startDestination="@id/signUpFragment">
 
     <fragment
         android:id="@+id/idHomeFragment"
@@ -53,6 +53,11 @@
         android:name="com.example.transcribeapp.fragment.ImportFragment"
         android:label="fragment_import"
         tools:layout="@layout/fragment_import" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.transcribeapp.fragment.authorization.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 
 
 </navigation>

@@ -24,7 +24,7 @@ class SummaryFragment : BaseFragment<FragmentSummaryBinding>(FragmentSummaryBind
         }
 
         binding?.register?.setOnClickListener {
-            handleRegistration()
+           // handleRegistration()
         }
 
 
@@ -42,12 +42,10 @@ class SummaryFragment : BaseFragment<FragmentSummaryBinding>(FragmentSummaryBind
                         }
 
                         is UiState.Success -> {
-                            // Update UI with the transcription result
                             binding?.summaryTxt?.text = uiState.data
                         }
 
                         is UiState.Error -> {
-                            // Show error message
                             binding?.summaryTxt?.text = "Error: ${uiState.message}"
                         }
 
@@ -58,6 +56,7 @@ class SummaryFragment : BaseFragment<FragmentSummaryBinding>(FragmentSummaryBind
         }
 
 
+/*
         viewLifecycleOwner.lifecycleScope.launch {
             authViewModel.regResponse.collect { uiState ->
                 when (uiState) {
@@ -70,7 +69,6 @@ class SummaryFragment : BaseFragment<FragmentSummaryBinding>(FragmentSummaryBind
                     }
 
                     is UiState.Error -> {
-                        // Show error message
                         binding?.summaryTxt?.text = "Error: ${uiState.message}"
                     }
 
@@ -83,6 +81,7 @@ class SummaryFragment : BaseFragment<FragmentSummaryBinding>(FragmentSummaryBind
 
             }
         }
+*/
 
 
     }

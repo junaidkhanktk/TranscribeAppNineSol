@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TranscribeApp</string>
+    <string name="app_name">Transcriber</string>
 
     <string name="recognize_file">Recognize File</string>
     <string name="recognize_microphone">Recognize Microphone</string>
@@ -24,11 +24,31 @@
     <string name="dummy_date">Mon, 12 Aug 2024, 16:00</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
-    <string name="create_account">Create an account</string>
+    <string name="create_account">Create new account</string>
     <string name="welcome_please">Welcome Please enter your detail</string>
     <string name="name">Name</string>
     <string name="user_name_hint">Enter your name</string>
     <string name="continue_email">Continue with email</string>
+    <string name="your_email">What\'s your email?</string>
+    <string name="require_information">"We require this information to either access your existing account or to set up new account  "</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="next">Next</string>
+    <string name="enter_name_below">"Enter your name below so friends can find you  "</string>
+    <string name="f_name">First Name</string>
+    <string name="l_name">Last Name</string>
+    <string name="enter_f_name">Enter your first name</string>
+    <string name="enter_l_name">Enter your last name</string>
+    <string name="already_account">Already have an account<b><font color='#365776'>?</font></b></string>
+    <string name="login_here">Log in here</string>
+    <string name="password">Password</string>
+    <string name="password_char">Minimum 8 characters, with at least 1 uppercase, 1 lowercase, and 1 number required</string>
+    <string name="choose_password">Choose a Pasward</string>
+    <string name="verify_email">Verify your email address </string>
+    <string name="sent_email">We have sent you an email</string>
+    <string name="use_app">To use our app click on the email verification link sent \n to you on <b>userinfo@gmail.com</b> and click the \n<b>Conform Email Address</b>   button</string>
+    <string name="send_again">Send Again</string>
+    <string name="not_recieve">Didn\'t receive the email yet?</string>
+    <string name="open_email">Open email app</string>
 
 
 </resources>

@@ -15,6 +15,8 @@ import androidx.credentials.PasswordCredential
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.transcribeapp.R
 import com.example.transcribeapp.authorization.dataClasses.RegistrationRequest
 import com.example.transcribeapp.databinding.FragmentSignUpBinding
 import com.example.transcribeapp.extension.log
@@ -52,11 +54,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     .addCredentialOption(googleIdOption)
                     .build()
 
-
+            continueEmail.setOnClickListener {
+                findNavController().navigate(R.id.idHomeFragment)
+            }
             signUpGoogle.setOnClickListener {
-
-
-                // googleSignInViewModel.signInWithGoogle()
 
                 lifecycleScope.launch {
                     try {
@@ -79,23 +80,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     }
                 }
             }
-
-
-            /*
-                        lifecycleScope.launch {
-                            googleSignInViewModel.googleSignInResult.collect { result ->
-                                result?.onSuccess { handleSignIn(it) }
-                                    ?.onFailure { e ->
-                                        when (e) {
-                                            is GetCredentialCancellationException -> "GetCredentialCancellationException....${e.message}".log()
-                                            is NoCredentialException -> "NoCredentialException....${e.message}".log()
-                                            is GetCredentialException -> "Sign-in failed....${e.message}".log()
-                                        }
-                                    }
-                            }
-                        }*/
-
-
 
             viewLifecycleOwner.lifecycleScope.launch {
                 authViewModel.regResponse.collect { uiState ->
@@ -121,7 +105,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
                 }
             }
-
 
         }
 
@@ -180,7 +163,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     }
 
 
-    fun handleRegistration(userName: String, userEmail: String) {
+    private fun handleRegistration(userName: String, userEmail: String) {
         val request = RegistrationRequest(
             firstName = userName,
             password = userEmail,

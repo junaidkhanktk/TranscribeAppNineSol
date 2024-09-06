@@ -1,15 +1,8 @@
 package com.example.transcribeapp.activities
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.view.Window
-import android.view.WindowInsetsController
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment

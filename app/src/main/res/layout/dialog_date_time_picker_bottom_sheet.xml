@@ -54,8 +54,8 @@
         app:picker_textColor="@color/light_blue"
         app:picker_visibleItemCount="3" />
 
-  <!--  app:picker_curved="true"
-    app:picker_curvedMaxAngle="45"-->
+    <!--  app:picker_curved="true"
+      app:picker_curvedMaxAngle="45"-->
 
     <!-- Buttons -->
     <androidx.constraintlayout.widget.ConstraintLayout

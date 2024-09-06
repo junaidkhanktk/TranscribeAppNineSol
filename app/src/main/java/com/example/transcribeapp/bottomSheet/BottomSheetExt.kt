@@ -28,7 +28,7 @@ fun setupFullHeight(bottomSheet: View) {
     bottomSheet.layoutParams = layoutParams
 }
 
-fun fullHeightDialog(bottomSheet: BottomSheetDialog) {
+/*fun fullHeightDialog(bottomSheet: BottomSheetDialog) {
     val parentLayout =
         bottomSheet.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
     parentLayout?.let { it ->
@@ -36,7 +36,7 @@ fun fullHeightDialog(bottomSheet: BottomSheetDialog) {
         setupFullHeight(it)
         behaviour.state = BottomSheetBehavior.STATE_EXPANDED
     }
-}
+}*/
 
 fun FragmentActivity.recordingBottomSheet(showFragment: Fragment) {
     val binding by lazy {
@@ -46,7 +46,7 @@ fun FragmentActivity.recordingBottomSheet(showFragment: Fragment) {
     val dialog = BottomSheetDialog(this)
     dialog.setContentView(binding.root)
 
-    fullHeightDialog(dialog)
+   // fullHeightDialog(dialog)
 
     val fragments =
         listOf(SummaryFragment(), ConversationFragment.cancelDialog(dialog), AiChatFragmentInner())

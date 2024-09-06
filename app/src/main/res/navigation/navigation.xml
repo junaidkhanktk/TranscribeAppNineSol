@@ -58,6 +58,28 @@
         android:name="com.example.transcribeapp.fragment.authorization.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/createAccount"
+        android:name="com.example.transcribeapp.fragment.authorization.CreateAccount"
+        android:label="CreateAccount"
+        tools:layout="@layout/fragment_create_account"
+        />
+    <fragment
+        android:id="@+id/emailFragment"
+        android:name="com.example.transcribeapp.fragment.authorization.EmailFragment"
+        android:label="EmailFragment"
+        tools:layout="@layout/fragment_email"
+        />
+    <fragment
+        android:id="@+id/password"
+        android:name="com.example.transcribeapp.fragment.authorization.Password"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_password" />
+    <fragment
+        android:id="@+id/verifyEmail"
+        android:name="com.example.transcribeapp.fragment.authorization.VerifyEmail"
+        android:label="fragment_verify_email"
+        tools:layout="@layout/fragment_verify_email" />
 
 
 </navigation>

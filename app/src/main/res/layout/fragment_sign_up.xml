@@ -27,7 +27,7 @@
         app:srcCompat="@drawable/app_logo" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/continue_email"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
@@ -45,9 +45,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="@+id/materialButton"
-        app:layout_constraintStart_toStartOf="@+id/materialButton"
-        app:layout_constraintTop_toBottomOf="@+id/materialButton"
+        app:layout_constraintEnd_toEndOf="@+id/continue_email"
+        app:layout_constraintStart_toStartOf="@+id/continue_email"
+        app:layout_constraintTop_toBottomOf="@+id/continue_email"
         app:srcCompat="@drawable/or_icon" />
 
     <androidx.appcompat.widget.AppCompatImageView

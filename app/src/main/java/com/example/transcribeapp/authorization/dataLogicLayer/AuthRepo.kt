@@ -19,9 +19,21 @@ class AuthRepo() {
         withContext(Dispatchers.IO) {
             try {
                 val response = authService.register(request).execute()
-                if (response.isSuccessful && response.body() != null) {
-                    "onResponse Register: ${response.body()!!}".log(Log.DEBUG, "AuthRepo")
-                    Result.success(response.body()!!)
+                if (response.isSuccessful) {
+
+                    val isSucces = response.body()!!.success
+                    val message=response.body()!!.message
+
+                    if (isSucces){
+                        "onResponse Register: ${response.body()!!}".log(Log.DEBUG, "AuthRepo")
+                        Result.success(response.body()!!)
+                    }else{
+                        "onResponse Register else: ${response.body()!!}".log(Log.DEBUG, "AuthRepo")
+                        "Registration failed: ${response.errorBody().toString()}".log(Log.DEBUG, "AuthRepo")
+                        Result.failure(Exception(message))
+                    }
+
+
                 } else {
                     "onError Register: Registration failed: ${response.message()}".log(
                         Log.DEBUG,
@@ -34,7 +46,7 @@ class AuthRepo() {
                     Log.DEBUG,
                     "AuthRepo"
                 )
-               Result.failure(e)
+                Result.failure(e)
 
             }
         }
@@ -45,7 +57,7 @@ class AuthRepo() {
             val response = authService.verifyOtp(request).execute()
             if (response.isSuccessful && response.body() != null) {
                 "onResponse verifyOtp: ${response.body()!!}".log(Log.DEBUG, "AuthRepo")
-               Result.success(response.body()!!)
+                Result.success(response.body()!!)
             } else {
                 "onError Register: Registration failed: ${response.message()}".log(
                     Log.DEBUG,
@@ -58,7 +70,7 @@ class AuthRepo() {
                 Log.DEBUG,
                 "AuthRepo"
             )
-         Result.failure(e)
+            Result.failure(e)
         }
     }
 
@@ -77,7 +89,7 @@ class AuthRepo() {
                     Log.DEBUG,
                     "AuthRepo"
                 )
-               Result.failure(Exception("login failed: ${response.message()}"))
+                Result.failure(Exception("login failed: ${response.message()}"))
             }
 
         } catch (e: Exception) {

@@ -21,7 +21,7 @@ class AudioRecorderManager(
     private var timeHandler: TimeHandler? = null
     var recording = false
     var onPause = false
-    private lateinit var audioFile: File
+ lateinit var audioFile: File
 
 
 

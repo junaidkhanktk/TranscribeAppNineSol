@@ -2,10 +2,8 @@ package com.example.transcribeapp.client
 
 import com.example.transcribeapp.apis.ApiChatService
 import com.example.transcribeapp.authorization.interfaces.AuthService
-import com.example.transcribeapp.importAllFile.ImportApiService
+import com.example.transcribeapp.history.server.upload.UploadRecordApiService
 import com.example.transcribeapp.summary.ApiSummaryService
-import com.example.transcribeapp.summary.TranscribeRequest
-import java.security.Key
 import java.util.concurrent.TimeUnit
 
 object ApiHelper {
@@ -35,8 +33,8 @@ object ApiHelper {
 
     val transcribeService by lazy {
         RetroFitHelper(
-            baseUrl = Keys.getSummaryUrl(),
-            apiService = ImportApiService::class.java,
+            baseUrl = Keys.getAuthUrl(),
+            apiService = UploadRecordApiService::class.java,
                     connectionTimeOut = 30,
             connectionTimeUnit = TimeUnit.SECONDS,
             readTimeOut = 90,

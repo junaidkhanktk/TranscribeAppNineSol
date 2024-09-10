@@ -124,6 +124,9 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation (libs.googleid)
+    implementation( "io.github.chaosleung:pinview:1.4.4")
+    implementation ("androidx.paging:paging-runtime-ktx:3.3.2")
+
 
 }
 

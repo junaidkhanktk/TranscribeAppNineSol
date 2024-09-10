@@ -1,13 +1,10 @@
 package com.example.transcribeapp.bottomSheet
 
-import android.app.Activity
-import android.app.Dialog
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.CalendarView.OnDateChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

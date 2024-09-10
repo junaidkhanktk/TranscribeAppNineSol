@@ -103,14 +103,21 @@ class ConversationFragment :
                         audioRecorderManger.fileName
                     )
                     "Attempting to insert history".log(Log.DEBUG, logTagConversation)
-                    historyViewModel.insertHistory(history)
 
+                    userHistoryViewModel.uploadRecordData(
+                        titelTxt!!,
+                        userTxt!!,
+                        audioRecorderManger.audioFile,
+                        "",
+                        userTxt!!
+                    )
 
+                    // historyViewModel.insertHistory(history)
 
                     withContext(Dispatchers.Main) {
                         // findNavController().navigateUp()
                         bottomSheetDialog?.dismiss()
-                        historyViewModel.setSelectedItemHistory(history)
+                        // historyViewModel.setSelectedItemHistory(history)
                         val bundle = Bundle()
                         bundle.putString("destination", "sourceB")
                         findNavController().navigate(R.id.idRecordingFragment, bundle)

@@ -1,9 +1,6 @@
 package com.example.transcribeapp.fragment.authorization
 
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.credentials.GetCredentialException
-import androidx.credentials.GetCredentialResponse
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,13 +8,17 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialResponse
 import androidx.credentials.PasswordCredential
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.transcribeapp.R
+import com.example.transcribeapp.authorization.dataClasses.LoginRequest
+import com.example.transcribeapp.authorization.dataClasses.OtpRequest
 import com.example.transcribeapp.authorization.dataClasses.RegistrationRequest
+import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.databinding.FragmentSignUpBinding
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.fragment.BaseFragment
@@ -27,15 +28,11 @@ import com.google.android.gms.fido.fido2.api.common.PublicKeyCredential
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::inflate) {
-
+    var email = ""
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,8 +52,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     .build()
 
             continueEmail.setOnClickListener {
-                findNavController().navigate(R.id.idHomeFragment)
+               findNavController().navigate(R.id.emailFragment)
+               // findNavController().navigate(R.id.idHomeFragment)
+                //findNavController().navigate(R.id.verifyEmail)
+
             }
+
             signUpGoogle.setOnClickListener {
 
                 lifecycleScope.launch {
@@ -71,7 +72,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     } catch (e: NoCredentialException) {
                         Toast.makeText(
                             requireContext(),
-                            "No credential available",
+                            "No credential available try other way",
                             Toast.LENGTH_SHORT
                         ).show()
                         "NoCredentialException....${e.message}".log()
@@ -80,6 +81,36 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     }
                 }
             }
+
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                authViewModel.loginResponse.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Idle -> {
+
+                        }
+
+                        is UiState.Loading -> {
+                            //  binding?.summaryTxt?.text = "Loading..."
+                        }
+
+                        is UiState.Error -> {
+
+                            "Error ${uiState.message}".log()
+                        }
+
+                        is UiState.Success -> {
+                            Keys.token = uiState.data?.user?.token.toString()
+                            "Token ${uiState.data?.user?.token.toString()}".log()
+                            findNavController().navigate(R.id.idHomeFragment)
+                        }
+
+
+                    }
+
+                }
+            }
+
 
             viewLifecycleOwner.lifecycleScope.launch {
                 authViewModel.regResponse.collect { uiState ->
@@ -93,11 +124,22 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                         }
 
                         is UiState.Error -> {
-                            //binding?.summaryTxt?.text = "Error: ${uiState.message}"
+                            if (uiState.message == "Email already exists. OTP sent to email") {
+                             /*   val login = LoginRequest(
+                                    email = email,
+                                    password = "123456"
+                                )
+                                authViewModel.login(login)*/
+
+                              findNavController().navigate(R.id.verifyEmail)
+                                //authViewModel.regResponse
+                            }
+                            "Error ${uiState.message}".log()
                         }
 
                         is UiState.Success -> {
-                            // binding?.summaryTxt?.text = uiState.data.toString()
+                            "Token ${uiState.data?.user?.token.toString()}".log()
+                            findNavController().navigate(R.id.verifyEmail)
                         }
 
 
@@ -112,8 +154,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     }
 
     private fun handleSignIn(result: GetCredentialResponse) {
-        val credential = result.credential
-        when (credential) {
+        when (val credential = result.credential) {
             is PublicKeyCredential -> {
                 val responseJson = credential.data
                 "PublicKeyCredential....${responseJson}+".log()
@@ -164,13 +205,23 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
 
     private fun handleRegistration(userName: String, userEmail: String) {
+        email = userEmail
+
+
+       /* val login = LoginRequest(
+            email = userEmail,
+            password = "123456"
+        )
+        authViewModel.login(login)*/
+
         val request = RegistrationRequest(
             firstName = userName,
-            password = userEmail,
+            password = "123456",
             email = userEmail
         )
 
         authViewModel.register(request)
+
     }
 
 

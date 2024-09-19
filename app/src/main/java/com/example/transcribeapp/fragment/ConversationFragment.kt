@@ -31,7 +31,6 @@ class ConversationFragment :
     BaseFragment<FragmentConversationBinding>(FragmentConversationBinding::inflate),
     RecognitionListener {
 
-    //private val speechRecognitionManager: SpeechRecognitionManager by inject { parametersOf(this) }
     private lateinit var speechRecognitionManager: SpeechRecognitionManager
     private val audioRecorderManger: AudioRecorderManager by inject { parametersOf(binding) }
     private var bottomSheetDialog: BottomSheetDialog? = null
@@ -39,8 +38,8 @@ class ConversationFragment :
 
     private val logTagConversation = "ConversationScreen"
     private var fullText = ""
-    private var titelTxt: String? = null
-    private var userTxt: String? = null
+    private var titleTxt=""
+    private var userTxt = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,22 +70,15 @@ class ConversationFragment :
 
 
                 userTxt = binding?.resultText?.text?.trim().toString()
-                /*  userTxt = "The photo picker provides a browsable interface that presents the user with their media library, sorted by date from newest to oldest. As shown in the privacy best practices codelab, the photo picker provides a safe, built-in way for users to grant your app access to only selected images and videos, instead of their entire media library.\n" +
-                          "\n" +
-                          "Users who have eligible cloud media providers on their device are also able to select from photos and videos stored remotely. Learn more about cloud media providers.\n" +
-                          "\n" +
-                          "The tool updates automatically, offering expanded functionality to your app's users over time without requiring any code changes."
-                  userTxt = "fgdkvcml;,zl; m,kbvl"*/
-                lifecycleScope.launch(Dispatchers.IO) {
-                    summaryViewModel.sendRequest(userTxt!!)
-                }
 
-                /*         requireContext().showToast("clicked")
-                         return@setOnClickListener*/
+                /*  lifecycleScope.launch(Dispatchers.IO) {
+                      summaryViewModel.sendRequest(userTxt!!)
+                  }*/
+
                 audioRecorderManger.stopRecording()
-                titelTxt = title.text?.trim().toString()
+                titleTxt = title.text?.trim().toString()
                 binding?.apply {
-                    if (titelTxt.isNullOrBlank()) {
+                    if (titleTxt.isBlank()) {
                         requireContext().showToast("Please Enter title")
                         return@setOnClickListener
                     }
@@ -95,26 +87,19 @@ class ConversationFragment :
                 }
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val history = History(
-                        titelTxt!!,
-                        userTxt!!,
-                        getFormattedDate(),
-                        getCurrentTimeMillis(),
-                        audioRecorderManger.fileName
-                    )
-                    "Attempting to insert history".log(Log.DEBUG, logTagConversation)
-                    historyViewModel.insertHistory(history)
 
+
+                    userHistoryViewModel.uploadRecordData(
+                        titleTxt,
+                        userTxt,
+                        audioRecorderManger.audioFile,
+                        "",
+                        ""
+                    )
 
 
                     withContext(Dispatchers.Main) {
-                        // findNavController().navigateUp()
                         bottomSheetDialog?.dismiss()
-                        historyViewModel.setSelectedItemHistory(history)
-                        val bundle = Bundle()
-                        bundle.putString("destination", "sourceB")
-                        findNavController().navigate(R.id.idRecordingFragment, bundle)
-
                         "history inserted successfully".log(Log.DEBUG, logTagConversation)
                         "result ${binding?.resultText?.text}".log(Log.DEBUG, logTagConversation)
                     }

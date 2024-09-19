@@ -54,7 +54,9 @@ class ApiRepository() {
             })
 
 
-}}
+}
+
+}
 
 
 

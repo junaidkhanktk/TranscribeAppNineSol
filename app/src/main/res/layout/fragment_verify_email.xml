@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
- <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -55,17 +55,17 @@
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6"
         tools:layout_editor_absoluteX="52dp" />
 
-   <androidx.appcompat.widget.AppCompatTextView
-       android:id="@+id/already_txt"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="@dimen/_10sdp"
-       android:text="@string/not_recieve"
-       android:textColor="@color/black"
-       android:layout_marginEnd="@dimen/_40sdp"
-       app:layout_constraintEnd_toEndOf="@+id/appCompatTextView7"
-       app:layout_constraintStart_toStartOf="@+id/appCompatTextView7"
-       app:layout_constraintTop_toBottomOf="@+id/appCompatTextView7" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/already_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_40sdp"
+        android:text="@string/not_recieve"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/appCompatTextView7"
+        app:layout_constraintStart_toStartOf="@+id/appCompatTextView7"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView7" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/send_again"
@@ -78,18 +78,43 @@
         app:layout_constraintStart_toEndOf="@+id/already_txt"
         app:layout_constraintTop_toTopOf="@+id/already_txt" />
 
+
+    <com.chaos.view.PinView
+        android:id="@+id/pinview"
+        style="@style/PinWidget.PinView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:cursorVisible="true"
+        android:gravity="center"
+        android:inputType="number"
+        android:itemBackground="#F5F5F5"
+        app:hideLineWhenFilled="false"
+        app:itemCount="6"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:itemHeight="50dp"
+        app:itemRadius="10dp"
+        app:itemWidth="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/already_txt"
+        app:lineColor="#F5F5F5" />
+
+
+
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/next"
         android:layout_width="0dp"
         android:layout_height="@dimen/_50sdp"
-        android:layout_marginTop="@dimen/_20sdp"
         android:backgroundTint="@color/blue"
         android:fontFamily="@font/open_sans_bold"
         android:text="@string/open_email"
         android:textSize="@dimen/_12ssp"
         app:cornerRadius="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/send_again"
-        app:layout_constraintStart_toStartOf="@+id/already_txt"
-        app:layout_constraintTop_toBottomOf="@+id/already_txt" />
+        app:layout_constraintStart_toStartOf="@+id/already_txt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

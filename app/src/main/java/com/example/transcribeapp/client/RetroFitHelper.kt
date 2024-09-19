@@ -1,6 +1,7 @@
 package com.example.transcribeapp.client
 
 
+import com.example.transcribeapp.client.Keys.token
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -32,7 +33,7 @@ class RetroFitHelper<T>(
             .connectTimeout(connectionTimeOut!!, connectionTimeUnit!!)
             .readTimeout(readTimeOut!!, readTimeUnit!!)
             .writeTimeout(writeTimeOut!!, writeTimeUnit!!)
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(AuthInterceptor(token))
             .build()
     }
 

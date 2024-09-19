@@ -28,34 +28,46 @@ class RecordingFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fragments: List<Fragment>
         val destination = arguments?.getString("destination")
 
-        fragments = when (destination) {
-            "sourceA" -> listOf(SummaryFragment(), ConversationFragment(), AiChatFragmentInner())
-             else -> listOf(SummaryFragment(), ConversationFragment(), AiChatFragmentInner())
+        val title = arguments?.getString("Title")
+        val timeStamp = arguments?.getLong("TimeStamp")
+
+
+        val playerFragment = PlayerFragment().apply {
+            arguments = Bundle().apply {
+                putString("Title", title)
+                if (timeStamp != null) {
+                    putLong("TimeStamp", timeStamp)
+                }
+            }
+        }
+
+
+        val summaryFragment = SummaryFragment().apply {
+            arguments = Bundle().apply {
+                putString("Title", title)
+                if (timeStamp != null) {
+                    putLong("TimeStamp", timeStamp)
+                }
+            }
         }
 
 
 
+        val fragments: List<Fragment> = listOf(summaryFragment, playerFragment, AiChatFragmentInner())
+
         binding?.apply {
 
             viewPager.adapter = ViewPagerAdapter(this@RecordingFragment, fragments)
-
-            if (destination == "sourceB") {
-                viewPager.setCurrentItem(1, false) // Load PlayerFragment by default
-            } else {
-                viewPager.setCurrentItem(1, false) // Load ConversationFragment by default
-            }
+            viewPager.setCurrentItem(1, false)
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.customView = createTabView(position)
             }.attach()
 
-            // Initial setup to highlight the first tab
             highlightSelectedTab(1)
 
-            // Add a tab selected listener to update tab views
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     highlightSelectedTab(tab.position)
@@ -66,7 +78,6 @@ class RecordingFragment :
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab) {
-                    // No action needed
                 }
             })
 

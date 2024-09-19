@@ -1,21 +1,25 @@
 package com.example.transcribeapp.recyclerView
 
 import android.content.Context
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.paging.filter
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.transcribeapp.adapter.GenericRvAdapter
+import com.example.transcribeapp.adapter.GenericPagingAdapter
 import com.example.transcribeapp.databinding.FragmentHomeBinding
 import com.example.transcribeapp.databinding.HistoryItemLayoutBinding
-import com.example.transcribeapp.extension.getFormattedTime
-import com.example.transcribeapp.extension.getTimeAgoWithDate
+import com.example.transcribeapp.extension.convertToDateTime
+import com.example.transcribeapp.extension.getRecordCategory
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.extension.setFormattedTextWithDots
-import com.example.transcribeapp.extension.startUpdatingTimeAgo
-import com.example.transcribeapp.history.History
-import com.example.transcribeapp.history.mvvm.HistoryViewModel
+import com.example.transcribeapp.history.server.get.Recordings
+import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -23,55 +27,55 @@ import org.koin.android.ext.android.inject
 fun Fragment.historyRcv(
     context: Context,
     binding: FragmentHomeBinding,
-    onItemClick: (Int) -> Unit,
+    onItemClick: (String,String,Long) -> Unit,
 ) {
 
-    val historyViewModel by inject<HistoryViewModel>()
+    val userHistoryViewModel by inject<UserHistoryViewModel>()
 
-
-    val historyAdapter: GenericRvAdapter<History, HistoryItemLayoutBinding> =
-        GenericRvAdapter(
-            inflater = { LayoutInflater, parent, attachToRoot ->
-                HistoryItemLayoutBinding.inflate(LayoutInflater, parent, attachToRoot)
+    val historyAdapter: GenericPagingAdapter<Recordings, HistoryItemLayoutBinding> =
+        GenericPagingAdapter(
+            inflater = { layoutInflater, parent, attachToRoot ->
+                HistoryItemLayoutBinding.inflate(layoutInflater, parent, attachToRoot)
             },
-
-            viewHolderBinder = { item, position ->
-
+            viewHolderBinder = { item, _ ->
                 title.text = item.title
-                date.text = item.currentDate
-                time.text = getFormattedTime(item.currentTime)
-               // origionalTxt.text = ". ${item.text}"
-                origionalTxt.setFormattedTextWithDots(item.text)
-
-
-                daysWeekAgo.text = getTimeAgoWithDate(item.currentTime)
-                startUpdatingTimeAgo(item.currentTime) { timeAgo ->
-                    timeAgoTxt.text = timeAgo
+                date.text = convertToDateTime(item.timeStamp)
+                item.transcribeTxt.let {
+                    transcribeTxt.setFormattedTextWithDots(it)
                 }
-
+               // origionalTxt.setFormattedTextWithDots(item.transcribeTxt,3)
+                daysWeekAgo.text = getRecordCategory(item.timeStamp)
             }
-
         )
 
-    historyAdapter.setonItemClickListener { item, pos ->
+    historyAdapter.setOnItemClickListener { item, pos ->
         "$pos".log()
-        "listSize: ${historyAdapter.currentList.size}".log()
-        historyViewModel.setSelectedItemHistory(item)
-        onItemClick.invoke(pos)
+        "listSize: $item".log()
+
+        onItemClick.invoke(item.title,item.id,item.timeStamp)
 
     }
 
     binding.historyRcv.apply {
 
-        lifecycleScope.launch {
-            historyViewModel.readHistory.collect { historyList ->
-                "data size ${historyList.size}".log()
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            userHistoryViewModel.recordingsFlow.collect { uiState ->
+
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 setAdapter(historyAdapter)
-                historyAdapter.submitList(historyList)
+                historyAdapter.submitData(uiState)
             }
         }
 
+
+
+        historyAdapter.addLoadStateListener { loadState ->
+            binding.progress.isVisible = loadState.source.refresh is LoadState.Loading
+
+            // binding.errorText.isVisible = loadState.source.refresh is LoadState.Error
+        }
 
     }
 
@@ -81,12 +85,18 @@ fun Fragment.historyRcv(
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-            lifecycleScope.launch {
-                historyViewModel.readHistory.collect { historyList ->
-                    val filteredList = historyList.filter {
-                        it.title.contains(s.toString(), ignoreCase = true) || it.text.contains(s.toString(), ignoreCase = true)
+            viewLifecycleOwner.lifecycleScope.launch {
+                userHistoryViewModel.recordingsFlow.collect { uiState ->
+
+                    val filteredList = uiState.filter {
+                        it.title.contains(
+                            s.toString(),
+                            ignoreCase = true
+                        ) || it.title.contains(s.toString(), ignoreCase = true)
                     }
-                    historyAdapter.submitList(filteredList)
+                    historyAdapter.submitData(filteredList)
+
+
                 }
             }
 
@@ -96,4 +106,9 @@ fun Fragment.historyRcv(
     })
 
 }
+
+
+
+
+
 

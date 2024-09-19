@@ -2,10 +2,63 @@ package com.example.transcribeapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+
+class GenericPagingAdapter<T : Any, VB : ViewBinding>(
+    private val inflater: (LayoutInflater, ViewGroup, Boolean) -> VB,
+    private val viewHolderBinder: VB.(T, Int) -> Unit,
+    diffCallback: DiffUtil.ItemCallback<T> = DefaultDiffCallback()
+) : PagingDataAdapter<T, GenericPagingAdapter<T, VB>.ViewHolder>(diffCallback) {
+
+    private var onItemClickListener: ((T, Int) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (T, Int) -> Unit) {
+        onItemClickListener = listener
+    }
+
+    inner class ViewHolder(private val binding: VB) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: T?) {
+            item?.let {item->
+                binding.apply {
+                    viewHolderBinder.invoke(this, item, adapterPosition)
+                    itemView.setOnClickListener {
+                        onItemClickListener?.invoke(item, adapterPosition)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = inflater.invoke(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+    }
+
+    private class DefaultDiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
+        override fun areItemsTheSame(oldItem: T, newItem: T) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: T, newItem: T) = true
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 class GenericRvAdapter<T, VB : ViewBinding>(
     private val inflater: (LayoutInflater, ViewGroup, Boolean) -> VB,

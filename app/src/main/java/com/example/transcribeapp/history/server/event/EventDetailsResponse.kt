@@ -23,5 +23,38 @@ data class Data(
     @SerializedName("transcribe_text")
     val text: String,
     @SerializedName("aiChat")
-    val aiChat: String?,
+    val aiChat: AiChat,
+)
+
+data class AiChat(
+    @SerializedName("_id")
+    val id: String,
+    @SerializedName("userId")
+    val userId: String,
+    @SerializedName("chatId")
+    val chatId: String,
+    @SerializedName("eventId")
+    val eventId: String?, // Nullable
+    @SerializedName("recordingId")
+    val recordingId: String,
+    @SerializedName("chatSpecialist")
+    val chatSpecialist: String?, // Nullable
+    @SerializedName("isArchived")
+    val isArchived: Boolean,
+    @SerializedName("prompts")
+    val prompts: List<Prompt>,
+    @SerializedName("__v")
+    val v: Int
+)
+
+
+data class Prompt(
+    @SerializedName("_id")
+    val id: String,
+    @SerializedName("prompt")
+    val prompt: String,
+    @SerializedName("response")
+    val response: String,
+    @SerializedName("createdAt")
+    val createdAt: String
 )

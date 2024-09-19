@@ -120,7 +120,7 @@ class AudioRecorderManager(
     }
 
     private fun generateFileName(): String {
-        val timestamp = System.currentTimeMillis()
-        return "${context.cacheDir.absolutePath}/audioRecord_$timestamp.wav"
+       // val timestamp = System.currentTimeMillis()
+        return "${context.cacheDir.absolutePath}/audioRecord.mp3"
     }
 }

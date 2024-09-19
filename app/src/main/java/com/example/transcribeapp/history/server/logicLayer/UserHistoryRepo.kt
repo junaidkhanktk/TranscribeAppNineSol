@@ -2,6 +2,8 @@ package com.example.transcribeapp.history.server.logicLayer
 
 import android.util.Log
 import com.example.transcribeapp.extension.log
+import com.example.transcribeapp.history.server.event.EventApiService
+import com.example.transcribeapp.history.server.event.EventDetailsResponse
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import com.example.transcribeapp.history.server.upload.UploadRecordApiService
@@ -18,6 +20,7 @@ import java.io.File
 class UserHistoryRepo(
     private val uploadRService: UploadRecordApiService,
     private val getRService: GetRecordingApiService,
+    private val getEventService: EventApiService,
 ) {
     private val audioMimeType = "audio/*".toMediaTypeOrNull()
     suspend fun uploadRecordData(
@@ -78,81 +81,82 @@ class UserHistoryRepo(
         withContext(Dispatchers.IO) {
             try {
                 val response = getRService.getRecordingsWithoutEvent(page, limit)
+
                 if (response.isSuccessful) {
                     val message = response.body()?.success
 
                     if (message == true) {
-                            "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
-                            Result.success(response.body()!!)
+                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
+                        Result.success(response.body()!!)
 
                     } else {
-                        "onErrorResponse : ${response.errorBody().toString()}".log(Log.DEBUG, "UploadModule")
+                        "onErrorResponse : ${response.errorBody().toString()}".log(
+                            Log.DEBUG,
+                            "UploadModule"
+                        )
                         Result.failure(Exception("recodingResult result is null"))
                     }
 
                 } else {
-                    "onErrorResponse not success: ${response.errorBody().toString()}".log(Log.DEBUG, "UploadModule")
+                    "onErrorResponse not success: ${response.errorBody().toString()}".log(
+                        Log.DEBUG,
+                        "UploadModule"
+                    )
+
+                    "onErrorResponse not success reason : ${response.errorBody()?.string()}".log(
+                        Log.DEBUG,
+                        "UploadModule"
+                    )
+
                     Result.failure(Exception("Some thing went Wrong Please try again"))
                 }
             } catch (e: Exception) {
                 "Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
                 Result.failure(e)
-            }catch (e:HttpException){
+            } catch (e: HttpException) {
                 "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
                 Result.failure(e)
             }
         }
 
 
-    /* fun req(
-         title: String,
-         conversation: String,
-         recordingFile: File,
-         eventId: String,
-         transcribeText: String,
-     ) {
+    suspend fun getEventDetails(eventId: String): Result<EventDetailsResponse> =
+        withContext(Dispatchers.IO) {
+            try {
+                val response =getEventService.getEventDetails("null-event-details",eventId).execute()
+                if (response.isSuccessful){
+                    val message = response.body()?.success
 
-         val requestFile = recordingFile.asRequestBody(audioMimeType)
-         val audioPart =
-             MultipartBody.Part.createFormData("recording", recordingFile.name, requestFile)
+                    if (message == true) {
+                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
+                        Result.success(response.body()!!)
 
-         val titlePart = title.toRequestBody("text/plain".toMediaTypeOrNull())
-         val conversationPart =
-             conversation.toRequestBody("text/plain".toMediaTypeOrNull())
-         val eventIdPart = eventId.toRequestBody("text/plain".toMediaTypeOrNull())
-         val transcribeTextPart =
-             transcribeText.toRequestBody("text/plain".toMediaTypeOrNull())
+                    }else{
+                        "onErrorResponse : ${response.errorBody().toString()}".log(
+                            Log.DEBUG,
+                            "UploadModule"
+                        )
+                        Result.failure(Exception("EventDetail result is null"))
+                    }
 
-         transcribeService.uploadRecording(
-             audioPart,
-             titlePart,
-             conversationPart,
-             eventIdPart,
-             transcribeTextPart
-         ).enqueue(object : retrofit2.Callback<UploadResponse> {
-             override fun onResponse(
-                 call: Call<UploadResponse>,
-                 response: Response<UploadResponse>,
-             ) {
+                }else{
+                    "onErrorResponse not success: ${response.errorBody().toString()}".log(
+                        Log.DEBUG,
+                        "UploadModule"
+                    )
+                    Result.failure(Exception("Some thing went Wrong Please try again"))
+                }
 
-                 if (response.isSuccessful) {
-                     "success:${response.body()}".log(Log.DEBUG, "UploadModule")
-                     "success:${response.body()?.data}".log(Log.DEBUG, "UploadModule")
-                     "success error:${response.errorBody().toString()}".log(Log.DEBUG, "UploadModule")
-                 } else {
-                     "error:${response.errorBody().toString()}".log(Log.DEBUG, "UploadModule")
-                     "error:${response.errorBody().toString()}".log(Log.DEBUG, "UploadModule")
-                 }
 
-             }
+            } catch (e: Exception) {
+                "Exception Get event:${e.message}".log(Log.DEBUG, "UploadModule")
+                Result.failure(e)
+            } catch (e: HttpException) {
+                "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
+                Result.failure(e)
+            }
+        }
 
-             override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
-                 "onFailure:${t.message}".log(Log.DEBUG, "UploadModule")
-             }
-
-         })
-
-     }*/
 }
 
 

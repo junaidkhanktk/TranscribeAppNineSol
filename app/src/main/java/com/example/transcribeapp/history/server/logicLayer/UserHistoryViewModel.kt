@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.cachedIn
-import com.example.transcribeapp.extension.log
+import com.example.transcribeapp.history.server.event.EventDetailsResponse
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import com.example.transcribeapp.history.server.get.Recordings
 import com.example.transcribeapp.history.server.upload.UploadResponse
@@ -18,20 +18,16 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
-    private var currentPage = 1
-    private var totalPages = 1
-    var isLoading = false
+
     private val _uploadResult = MutableStateFlow<UiState<UploadResponse?>>(UiState.Idle)
     val uploadResult = _uploadResult.asStateFlow()
 
     private val _recodingResult = MutableStateFlow<UiState<RecordingResponse?>>(UiState.Idle)
     val recodingResult = _recodingResult.asStateFlow()
-   // private var accumulatedRecordingResponse: RecordingResponse? = null
 
+    private val _eventDetailResult = MutableStateFlow<UiState<EventDetailsResponse?>>(UiState.Idle)
+    val eventDetailResult = _eventDetailResult.asStateFlow()
 
- /*   val recordingsFlow = Pager(PagingConfig(pageSize = 10)) {
-        RecordingsPagingSource(repo)
-    }.flow.cachedIn(viewModelScope)*/
 
     private var currentPagingSource: RecordingsPagingSource? = null
 
@@ -45,17 +41,17 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
     }.flow.cachedIn(viewModelScope)
 
 
-
     private fun invalidatePagingSource() {
         currentPagingSource?.invalidate()
     }
+
     fun uploadRecordData(
         title: String,
         conversation: String,
         recordingFile: File,
         eventId: String,
         transcribeText: String,
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = viewModelScope.launch {
 
         _uploadResult.value = UiState.Loading
 
@@ -71,46 +67,18 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
 
     }
 
-
-    fun getRecordData(page: Int = 1, limit: Int = 10) = viewModelScope.launch {
-
-        if (isLoading || page > totalPages) return@launch
-
-        _recodingResult.value = UiState.Loading
-        isLoading = true
-        val result = repo.getRecordData(page, limit)
+    fun getEventDetails(eventId: String) = viewModelScope.launch {
+        _eventDetailResult.value = UiState.Loading
+        val result = repo.getEventDetails(eventId)
         if (result.isSuccess) {
-            result.getOrNull()?.let { recordingResponse ->
-                /*val currentRecordings =
-                    accumulatedRecordingResponse?.data?.recordings ?: mutableListOf()
-
-                currentRecordings.addAll(recordingResponse.data.recordings)
-
-                accumulatedRecordingResponse = recordingResponse.copy(
-                    data = recordingResponse.data.copy(
-                        recordings = currentRecordings
-                    )
-                )*/
-                _recodingResult.value = UiState.Success(recordingResponse)
-
-                currentPage = recordingResponse.data.pagination.page
-                totalPages = recordingResponse.data.pagination.totalPages
-            }
-        } else {
-            _recodingResult.value =
-                UiState.Error(result.exceptionOrNull()?.message ?: "An Unknown error occurred")
-        }
-
-        isLoading = false
-
-    }
-
-    fun loadNextPage() {
-        if (currentPage < totalPages) {
-            "nextPageload ViewModel".log()
-            getRecordData(currentPage + 1)
+            _eventDetailResult.value = UiState.Success(result.getOrNull())
+        }else{
+            _eventDetailResult.value =UiState.Error(result.exceptionOrNull()?.message?:"An Unknown error occurred")
         }
     }
 
+    fun clearEventDetails() {
+        _eventDetailResult.value = UiState.Idle
+    }
 
 }

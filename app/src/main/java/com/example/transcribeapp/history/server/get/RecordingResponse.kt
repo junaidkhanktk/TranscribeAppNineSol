@@ -20,6 +20,8 @@ data class Recordings(
     val title: String,
     @SerializedName("dateOrTime")
     val dataTime: String,
+    @SerializedName("transcribe_text")
+    val transcribeTxt: String,
     @SerializedName("timestamp")
     val timeStamp: Long,
 )

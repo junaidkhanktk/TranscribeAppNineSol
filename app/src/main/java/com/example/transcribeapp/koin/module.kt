@@ -13,6 +13,7 @@ import com.example.transcribeapp.fragment.ConversationFragment
 import com.example.transcribeapp.history.HistoryDataBase.Companion.getDataBase
 import com.example.transcribeapp.history.mvvm.HistoryRepo
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
+import com.example.transcribeapp.history.server.event.EventApiService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.upload.UploadRecordApiService
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryRepo
@@ -85,10 +86,15 @@ val networkModule = module {
             apiService = GetRecordingApiService::class.java
         ).service
     }
+    single {
+        RetroFitHelper(
+            baseUrl = Keys.getAuthUrl(),
+            apiService = EventApiService::class.java
+        ).service
+    }
 
 
 }
-
 
 val viewModelModule = module {
     single { HistoryRepo(get()) }
@@ -108,7 +114,7 @@ val viewModelModule = module {
     single { AuthViewModel(get()) }
 
     viewModel { GoogleSignInViewModel(get()) }
-    single { UserHistoryRepo(uploadRService = get(), getRService = get()) }
+    single { UserHistoryRepo(uploadRService = get(), getRService = get(), getEventService = get()) }
     single { UserHistoryViewModel(repo = get()) }
 
 }

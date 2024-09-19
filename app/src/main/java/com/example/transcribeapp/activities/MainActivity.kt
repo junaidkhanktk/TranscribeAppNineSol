@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
                 R.id.idHomeFragment->{
                     bottomNavigation.beVisible()
                 }
-                R.id.signUpFragment->{
+                R.id.signUpFragment,R.id.emailFragment,R.id.createAccount,R.id.password,R.id.verifyEmail ->{
                     bottomNavigation.beGone()
                     toolBar.beGone()
 

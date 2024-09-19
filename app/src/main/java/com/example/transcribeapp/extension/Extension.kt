@@ -6,10 +6,15 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -100,15 +105,50 @@ fun String.parseJson(): String {
 
 }
 
-fun TextView.setFormattedTextWithDots(text: String, maxLines: Int = 3) {
-    // Split the text into lines and limit it to the specified maxLines
-    val lines = text.split("\n").take(maxLines)
-    // Add a dot at the beginning of each line
-    val formattedText = lines.joinToString("\n") { ". $it" }
+
+fun TextView.setFormattedTextWithDots(text: String?, maxLines: Int = 3) {
+
+    if (text.isNullOrEmpty()) {
+        this.text = ".No text available"
+        this.maxLines = maxLines
+        return
+    }
+
+    // Split the text into words, then try to reconstruct it into lines
+    val words = text.split(" ")
+
+    val lines = mutableListOf<String>()
+    var currentLine = StringBuilder()
+
+    for (word in words) {
+        // Check if adding the next word exceeds the max characters in a typical line
+        if (currentLine.length + word.length + 1 <= 50) {  // Assume 50 characters per line (customize this as per your TextView width)
+            if (currentLine.isNotEmpty()) {
+                currentLine.append(" ")
+            }
+            currentLine.append(word)
+        } else {
+            // When the current line is full, add it to the lines list
+            lines.add(currentLine.toString())
+            currentLine = StringBuilder(word)
+        }
+        // Stop if we have reached the max number of lines
+        if (lines.size >= maxLines) break
+    }
+
+    // Add the last line if it's not empty
+    if (currentLine.isNotEmpty() && lines.size < maxLines) {
+        lines.add(currentLine.toString())
+    }
+
+    // Add a single  dot at the beginning of each line and three dot at the end
+    val formattedText = lines.joinToString("\n") { ". $it ..." }
+
     // Set the text to the TextView and apply the maxLines property
     this.text = formattedText
     this.maxLines = maxLines
 }
+
 
 fun Context.uriToFile(uri: Uri): File? {
     val inputStream = contentResolver.openInputStream(uri)
@@ -193,12 +233,66 @@ fun View.manageBottomNavOnKeyboardState(context: Context, bottomNav: View) {
 }
 
 
-/*
-fun getSHA1Fingerprint(): String? {
+fun String.removeBoldMarkers(): SpannableString {
+    val boldPattern = "\\*\\*(.*?)\\*\\*".toRegex()
 
-    */
-/* val sha1 = getSHA1Fingerprint()
-     Log.d("SHA1", "SHA1: $sha1")*//*
+    val matches = boldPattern.findAll(this)
+
+    // Create a SpannableStringBuilder to build the processed text
+    val spannableStringBuilder = SpannableStringBuilder(this)
+
+    // Adjustment variable to account for changes in the length due to removal of "**" markers
+    var adjustment = 0
+
+    // Apply bold styling to the identified matches
+    matches.forEach { match ->
+        val startIndex = match.range.first - adjustment
+        val endIndex = match.range.last + 1 - adjustment
+
+        // Apply the bold style to the specified range
+        spannableStringBuilder.setSpan(
+            StyleSpan(Typeface.BOLD),
+            startIndex,
+            endIndex - 2, // endIndex - 2 to exclude the first "**"
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Remove the "**" markers
+        spannableStringBuilder.delete(endIndex - 2, endIndex)
+        spannableStringBuilder.delete(startIndex, startIndex + 2)
+
+        // Adjust the offset due to changes in length
+        adjustment += 4 // 2 characters removed from both the start and end
+    }
+
+    return SpannableString(spannableStringBuilder)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*fun getSHA1Fingerprint(): String? {
+
+ val sha1 = getSHA1Fingerprint()
+     Log.d("SHA1", "SHA1: $sha1")
 
     return try {
         val packageInfo: PackageInfo = requireContext().packageManager.getPackageInfo(
@@ -232,3 +326,7 @@ fun getSHA1Fingerprint(): String? {
         null
     }
 }*/
+
+
+
+

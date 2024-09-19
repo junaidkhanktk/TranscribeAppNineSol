@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // userHistoryViewModel.getRecordData(1,10)
+        // userHistoryViewModel.getRecordData(1,10)
 
         binding?.apply {
             imgRecording.setOnClickListener {
@@ -33,9 +33,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             "HasCode MAin : ${historyViewModel.hashCode()}".log(Log.DEBUG, "ConverstionScreen")
 
-            historyRcv(requireContext(), this) {
+            historyRcv(requireContext(), this) { title, recordId, timeStamp, ->
+               // userHistoryViewModel.clearEventDetails()
+                userHistoryViewModel.getEventDetails(recordId)
                 val bundle = Bundle()
-                bundle.putString("destination", "sourceB")
+                bundle.putString("Title", title)
+                bundle.putLong("TimeStamp", timeStamp)
+
                 findNavController().navigate(R.id.idRecordingFragment, bundle)
             }
 

@@ -52,10 +52,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     .build()
 
             continueEmail.setOnClickListener {
-                //findNavController().navigate(R.id.emailFragment)
-                findNavController().navigate(R.id.idHomeFragment)
+               findNavController().navigate(R.id.emailFragment)
+               // findNavController().navigate(R.id.idHomeFragment)
+                //findNavController().navigate(R.id.verifyEmail)
 
             }
+
             signUpGoogle.setOnClickListener {
 
                 lifecycleScope.launch {
@@ -70,7 +72,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     } catch (e: NoCredentialException) {
                         Toast.makeText(
                             requireContext(),
-                            "No credential available",
+                            "No credential available try other way",
                             Toast.LENGTH_SHORT
                         ).show()
                         "NoCredentialException....${e.message}".log()
@@ -128,7 +130,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                                     password = "123456"
                                 )
                                 authViewModel.login(login)*/
-
 
                               findNavController().navigate(R.id.verifyEmail)
                                 //authViewModel.regResponse

@@ -52,8 +52,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     .build()
 
             continueEmail.setOnClickListener {
-               findNavController().navigate(R.id.emailFragment)
-               // findNavController().navigate(R.id.idHomeFragment)
+              // findNavController().navigate(R.id.emailFragment)
+             findNavController().navigate(R.id.idHomeFragment)
                 //findNavController().navigate(R.id.verifyEmail)
 
             }

@@ -14,14 +14,12 @@ import com.example.transcribeapp.extension.beVisible
 import com.example.transcribeapp.extension.setLightStatusBar
 
 
-class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-
-
 
 
     private lateinit var navController: NavController
@@ -36,24 +34,28 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
 
         binding.bottomNavigation.setupWithNavController(navController)
 
-        binding.bottomNavigation.setOnItemSelectedListener  { item:MenuItem ->
+        binding.bottomNavigation.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.idHomeFragment -> {
                     navController.navigate(R.id.idHomeFragment)
                     true
                 }
+
                 R.id.idAiFragment -> {
                     navController.navigate(R.id.idAiFragment)
                     true
                 }
+
                 R.id.idCalenderFragment -> {
                     navController.navigate(R.id.idCalenderFragment)
                     true
                 }
+
                 R.id.idImportFragment -> {
                     navController.navigate(R.id.idImportFragment)
                     true
                 }
+
                 else -> false
             }
         }
@@ -61,26 +63,26 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
         window.setLightStatusBar()
 
 
-       /* val window: Window = window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = Color.WHITE
+        /* val window: Window = window
+         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+         window.statusBarColor = Color.WHITE
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.setSystemBarsAppearance(
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }*/
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+             window.insetsController?.setSystemBarsAppearance(
+                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+             )
+         } else {
+             @Suppress("DEPRECATION")
+             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+         }*/
 
 
     }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 
 
     override fun onDestinationChanged(
@@ -90,16 +92,17 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
     ) {
 
         binding.apply {
-            when(destination.id){
+            when (destination.id) {
 
-                R.id.idRecordingFragment->{
+                R.id.idRecordingFragment -> {
                     bottomNavigation.beGone()
                 }
 
-                R.id.idHomeFragment->{
+                R.id.idHomeFragment -> {
                     bottomNavigation.beVisible()
                 }
-                R.id.signUpFragment,R.id.emailFragment,R.id.createAccount,R.id.password,R.id.verifyEmail ->{
+
+                R.id.signUpFragment, R.id.emailFragment, R.id.createAccount, R.id.password, R.id.verifyEmail, R.id.aiChatFragmentInner -> {
                     bottomNavigation.beGone()
                     toolBar.beGone()
 

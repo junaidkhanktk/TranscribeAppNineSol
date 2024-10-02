@@ -126,6 +126,12 @@ dependencies {
     implementation (libs.googleid)
     implementation( "io.github.chaosleung:pinview:1.4.4")
     implementation ("androidx.paging:paging-runtime-ktx:3.3.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    //
+//    implementation (libs.msal)
+    implementation ("com.microsoft:quickauth:0.4.0")
+
 
 
 }

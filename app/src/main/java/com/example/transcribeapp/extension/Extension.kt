@@ -24,6 +24,7 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import com.example.transcribeapp.BuildConfig
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
@@ -42,6 +43,17 @@ fun String.log(logLevel: Int = Log.DEBUG, tag: String = "TESTING") {
         Log.WARN -> Timber.tag(tag).w(this)
         Log.ERROR -> Timber.tag(tag).e(this)
         Log.ASSERT -> Timber.tag(tag).wtf(this)
+    }
+}
+fun logE(message: String) {
+    if (BuildConfig.DEBUG) {
+        Log.e("printLog", message)
+    }
+}
+
+fun logD(message: String) {
+    if (BuildConfig.DEBUG) {
+        Log.d("printLog", message)
     }
 }
 

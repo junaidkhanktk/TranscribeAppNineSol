@@ -97,6 +97,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 R.id.idRecordingFragment -> {
                     bottomNavigation.beGone()
                 }
+                R.id.testFragment -> {
+                    bottomNavigation.beGone()
+                }
 
                 R.id.idHomeFragment -> {
                     bottomNavigation.beVisible()

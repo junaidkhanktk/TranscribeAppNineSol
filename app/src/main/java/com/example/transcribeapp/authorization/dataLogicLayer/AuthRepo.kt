@@ -24,6 +24,7 @@ class AuthRepo() {
                     val isSucces = response.body()!!.success
                     val message=response.body()!!.message
 
+
                     if (isSucces){
                         "onResponse Register: ${response.body()!!}".log(Log.DEBUG, "AuthRepo")
                         Result.success(response.body()!!)

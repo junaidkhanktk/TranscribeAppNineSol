@@ -28,7 +28,7 @@ class VerifyEmail : BaseFragment<FragmentVerifyEmailBinding>(FragmentVerifyEmail
                 val otp = pinview.text.toString()
                 val otpRequest = OtpRequest(
                     otp = otp,
-                    email = "testingturteel@gmail.com"
+                    email = "abdulmuqeet.ninessol@gmail.com"
                 )
 
                 authViewModel.verifyOtp(otpRequest)
@@ -55,6 +55,7 @@ class VerifyEmail : BaseFragment<FragmentVerifyEmailBinding>(FragmentVerifyEmail
 
                     is UiState.Success -> {
                         Keys.token = uiState.data?.user?.token.toString()
+                        tinyDB.putValue("AuthorizationToken",uiState.data?.user?.token.toString())
                         "Token ${uiState.data?.user?.token.toString()}".log()
                         findNavController().navigate(R.id.idHomeFragment)
                     }

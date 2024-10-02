@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/signUpFragment">
+    app:startDestination="@id/testFragment">
 
     <fragment
         android:id="@+id/idHomeFragment"
@@ -80,6 +80,11 @@
         android:name="com.example.transcribeapp.fragment.authorization.VerifyEmail"
         android:label="fragment_verify_email"
         tools:layout="@layout/fragment_verify_email" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.example.transcribeapp.TestFragment"
+        android:label="fragment_test"
+        tools:layout="@layout/fragment_test" />
 
 
 </navigation>

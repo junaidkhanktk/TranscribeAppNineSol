@@ -2,11 +2,13 @@ package com.example.transcribeapp.client
 
 
 import com.example.transcribeapp.client.Keys.token
+import com.example.transcribeapp.utils.TinyDB
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 
 class RetroFitHelper<T>(
     private val baseUrl: String,
@@ -19,6 +21,7 @@ class RetroFitHelper<T>(
     private val writeTimeUnit: TimeUnit? = TimeUnit.SECONDS,
 
     ) {
+
 
     private val retrofit by lazy {
         Retrofit.Builder()

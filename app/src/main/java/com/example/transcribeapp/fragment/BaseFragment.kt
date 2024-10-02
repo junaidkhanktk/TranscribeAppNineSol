@@ -14,6 +14,8 @@ import com.example.transcribeapp.history.mvvm.HistoryViewModel
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
 import com.example.transcribeapp.importAllFile.ImportViewModel
 import com.example.transcribeapp.summary.SummaryViewModel
+import com.example.transcribeapp.utils.TinyDB
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
@@ -26,6 +28,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     protected val importVieModel by viewModel<ImportViewModel>()
     protected val authViewModel by viewModel<AuthViewModel>()
     protected val userHistoryViewModel by viewModel<UserHistoryViewModel>()
+    protected val tinyDB = get<TinyDB>()
 
     private var _binding: VB? = null
     val binding get() = _binding

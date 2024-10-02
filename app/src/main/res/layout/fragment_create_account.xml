@@ -73,7 +73,7 @@
 
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/email_edit_text"
+            android:id="@+id/first_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
@@ -116,7 +116,7 @@
 
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/l_name_edit_text"
+            android:id="@+id/last_name_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"

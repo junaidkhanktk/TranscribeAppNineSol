@@ -1,5 +1,6 @@
 package com.example.transcribeapp.fragment.authorization
 
+import android.content.pm.PackageManager
 import android.credentials.GetCredentialException
 import android.os.Build
 import android.os.Bundle
@@ -15,8 +16,6 @@ import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.transcribeapp.R
-import com.example.transcribeapp.authorization.dataClasses.LoginRequest
-import com.example.transcribeapp.authorization.dataClasses.OtpRequest
 import com.example.transcribeapp.authorization.dataClasses.RegistrationRequest
 import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.databinding.FragmentSignUpBinding
@@ -28,18 +27,44 @@ import com.google.android.gms.fido.fido2.api.common.PublicKeyCredential
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::inflate) {
     var email = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        backPress {
+            try {
+                val info = requireContext().packageManager.getPackageInfo(
+                    "com.example.transcriber.App", // TODO Change the package name
+                    PackageManager.GET_SIGNATURES)
+                for (signature in info.signatures) {
+                    val md = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                   // Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                }
+            } catch (e: PackageManager.NameNotFoundException) {
+
+            } catch (e: NoSuchAlgorithmException) {
+
+            }
+        }
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
+
             val credentialManager = androidx.credentials.CredentialManager.create(requireContext())
+
             val googleIdOption: GetGoogleIdOption =
                 GetGoogleIdOption.Builder().setFilterByAuthorizedAccounts(false)
                     .setServerClientId(Constants.GOOGLE_SIGNIN_KEY).setAutoSelectEnabled(false)
@@ -49,9 +74,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                 androidx.credentials.GetCredentialRequest.Builder()
                     .addCredentialOption(googleIdOption).build()
 
+
+
+
+
             continueEmail.setOnClickListener {
-                // findNavController().navigate(R.id.emailFragment)
-                findNavController().navigate(R.id.idHomeFragment)
+                //findNavController().navigate(R.id.emailFragment)
+              findNavController().navigate(R.id.idHomeFragment)
                 //findNavController().navigate(R.id.verifyEmail)
 
             }
@@ -68,11 +97,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     } catch (e: GetCredentialCancellationException) {
                         "GetCredentialCancellationException....${e.message}".log()
                     } catch (e: NoCredentialException) {
-                        Toast.makeText(
-                            requireContext(),
+                        Toast.makeText(requireContext(),
                             "No credential available try other way",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            Toast.LENGTH_SHORT).show()
                         "NoCredentialException....${e.message}".log()
                     } catch (e: GetCredentialException) {
                         "Sign-in failed....${e.message}+$".log()
@@ -104,6 +131,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                             "Token ${uiState.data?.user?.token.toString()}".log()
                             findNavController().navigate(R.id.idHomeFragment)
                         }
+
+
+
                     }
                 }
             }
@@ -121,11 +151,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                         }
 
                         is UiState.Error -> {
-                            if (uiState.message == "Email already exists. Try with a different email") {/*   val login = LoginRequest(
-                                       email = email,
-                                       password = "123456"
-                                   )
-                                   authViewModel.login(login)*/
+
+
+                            if (uiState.message == "Email already exists. OTP sent to email") {/*   val login = LoginRequest(
+                                    email = email,
+                                    password = "123456"
+                                )
+                                authViewModel.login(login)*/
 
                                 findNavController().navigate(R.id.verifyEmail)
                                 //authViewModel.regResponse
@@ -144,10 +176,20 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                 }
             }
 
-        }
+
+
+
 
 
     }
+
+
+
+
+
+
+
+}
 
     private fun handleSignIn(result: GetCredentialResponse) {
         when (val credential = result.credential) {
@@ -168,8 +210,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             is CustomCredential -> {
                 if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
-                        val googleIdTokenCredential =
-                            GoogleIdTokenCredential.createFrom(credential.data)
+                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
                         Log.d("TAG", "handleSignIn:........... " + googleIdTokenCredential.idToken)
                         // Validate and authenticate the Google ID token on your server
@@ -211,6 +252,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
          )
          authViewModel.login(login)*/
 
+
         val request = RegistrationRequest(
             firstName = userName,
             lastName = "",
@@ -220,6 +262,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             provider = "google",
             providerId = 1234
         )
+
+        /*       val request = RegistrationRequest(firstName = userName,
+                   password = "123456",
+                   email = userEmail)*/
 
         authViewModel.register(request)
 

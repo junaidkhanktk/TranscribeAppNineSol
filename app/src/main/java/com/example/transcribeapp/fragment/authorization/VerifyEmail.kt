@@ -28,7 +28,7 @@ class VerifyEmail : BaseFragment<FragmentVerifyEmailBinding>(FragmentVerifyEmail
                 val otp = pinview.text.toString()
                 val otpRequest = OtpRequest(
                     otp = otp,
-                    email = "mrt39498@gmail.com"
+                    email = "testingturteel@gmail.com"
                 )
 
                 authViewModel.verifyOtp(otpRequest)

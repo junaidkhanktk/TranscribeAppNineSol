@@ -81,10 +81,16 @@
         android:label="fragment_verify_email"
         tools:layout="@layout/fragment_verify_email" />
     <fragment
+
         android:id="@+id/userProfileSetting"
         android:name="com.example.transcribeapp.fragment.authorization.UserProfileSetting"
         android:label="fragment_user_profile_setting"
         tools:layout="@layout/fragment_user_profile_setting" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.example.transcribeapp.TestFragment"
+        android:label="fragment_test"
+        tools:layout="@layout/fragment_test" />
 
 
 </navigation>

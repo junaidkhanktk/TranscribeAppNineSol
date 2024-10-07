@@ -3,6 +3,8 @@ package com.example.transcribeapp.extension
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
@@ -22,14 +24,20 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+
+import com.example.transcribeapp.BuildConfig
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import kotlin.random.Random
 
 
@@ -41,6 +49,17 @@ fun String.log(logLevel: Int = Log.DEBUG, tag: String = "TESTING") {
         Log.WARN -> Timber.tag(tag).w(this)
         Log.ERROR -> Timber.tag(tag).e(this)
         Log.ASSERT -> Timber.tag(tag).wtf(this)
+    }
+}
+fun logE(message: String) {
+    if (BuildConfig.DEBUG) {
+        Log.e("printLog", message)
+    }
+}
+
+fun logD(message: String) {
+    if (BuildConfig.DEBUG) {
+        Log.d("printLog", message)
     }
 }
 
@@ -313,14 +332,13 @@ fun Fragment.listFragments() {
 
 
 
-/*fun getSHA1Fingerprint(): String? {
+fun Context.getSHA1Fingerprint(): String? {
 
- val sha1 = getSHA1Fingerprint()
-     Log.d("SHA1", "SHA1: $sha1")
+
 
     return try {
-        val packageInfo: PackageInfo = requireContext().packageManager.getPackageInfo(
-            requireContext().packageName,
+        val packageInfo: PackageInfo = this.packageManager.getPackageInfo(
+            this.packageName,
             PackageManager.GET_SIGNATURES
         )
         val signatures = packageInfo.signatures
@@ -349,7 +367,7 @@ fun Fragment.listFragments() {
         Log.e("SHA1", "SHA-1 algorithm not found", e)
         null
     }
-}*/
+}
 
 
 

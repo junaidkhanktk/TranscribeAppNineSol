@@ -1,6 +1,7 @@
 package com.example.transcribeapp.client
 
 
+
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -8,12 +9,16 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
+
+import com.example.transcribeapp.client.Keys.token
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.context.GlobalContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import org.koin.android.ext.android.inject
 
 class RetroFitHelper<T>(
     private val baseUrl: String,
@@ -26,6 +31,7 @@ class RetroFitHelper<T>(
     private val writeTimeUnit: TimeUnit? = TimeUnit.SECONDS,
 
     ) {
+
 
     private val retrofit by lazy {
         Retrofit.Builder()

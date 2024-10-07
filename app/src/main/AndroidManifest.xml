@@ -37,6 +37,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.microsoft.identity.client.BrowserTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="com.example.transcriber.App"
+                    android:path="/QxLBYCJ7U4t53ZRhhES2Xkpu7bQ="
+                    android:scheme="msauth"
+                    tools:ignore="AppLinkUrlError" />
+            </intent-filter>
+        </activity>
+
+        <!--   android:path="/QxLBYCJ7U4t53ZRhhES2Xkpu7bQ="-->
+        <!--"redirect_uri" : "msauth://com.example.transcriber.App/QxLBYCJ7U4t53ZRhhES2Xkpu7bQ%3D",-->
+
     </application>
 
 </manifest>

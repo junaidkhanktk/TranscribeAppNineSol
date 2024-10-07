@@ -137,4 +137,8 @@ val viewModelModule = module {
     }
     single { UserHistoryViewModel(repo = get()) }
 
+    single {
+        TinyDB(get())
+    }
+
 }

@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.example.transcribeapp.history.server.aichat.AiChatRequestBody
 import com.example.transcribeapp.history.server.aichat.AiChatResponse
 import com.example.transcribeapp.history.server.event.EventDetailsResponse
+import com.example.transcribeapp.history.server.eventCalander.UploadCalanderEventReq
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import com.example.transcribeapp.history.server.get.Recordings
 import com.example.transcribeapp.history.server.upload.UploadResponse
@@ -47,6 +48,10 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
 
     private fun invalidatePagingSource() {
         currentPagingSource?.invalidate()
+    }
+
+    fun upLoadCalenderEvent(request: UploadCalanderEventReq) = viewModelScope.launch{
+        repo.upLoadCalenderEvent(request)
     }
 
     fun uploadRecordData(

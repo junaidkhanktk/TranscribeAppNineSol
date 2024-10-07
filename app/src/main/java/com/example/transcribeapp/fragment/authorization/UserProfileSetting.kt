@@ -21,10 +21,10 @@ class UserProfileSetting :
         super.onViewCreated(view, savedInstanceState)
 
         binding?.apply {
-            Glide.with(requireContext())
+          /*  Glide.with(requireContext())
                 .load(Keys.profile)
                 .circleCrop()
-                .into(profileImg)
+                .into(profileImg)*/
 
 
             backBtn.setOnClickListener {

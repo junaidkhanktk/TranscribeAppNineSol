@@ -6,17 +6,15 @@ import com.example.transcribeapp.authorization.dataLogicLayer.AuthRepo
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
 import com.example.transcribeapp.authorization.google.GoogleSignInViewModel
 import com.example.transcribeapp.authorization.interfaces.AuthService
-import com.example.transcribeapp.client.AuthInterceptor
 import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.client.RetroFitHelper
 import com.example.transcribeapp.databinding.FragmentConversationBinding
 import com.example.transcribeapp.fragment.ConversationFragment
-import com.example.transcribeapp.helpers.TinyDB
 import com.example.transcribeapp.history.HistoryDataBase.Companion.getDataBase
 import com.example.transcribeapp.history.mvvm.HistoryRepo
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
-import com.example.transcribeapp.history.server.aichat.AiChatService
 import com.example.transcribeapp.history.server.event.EventApiService
+import com.example.transcribeapp.history.server.eventCalander.UploadCalenderEventService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.upload.UploadRecordApiService
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryRepo
@@ -28,6 +26,7 @@ import com.example.transcribeapp.recorder.AudioRecorderManager
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
 import com.example.transcribeapp.summary.SummaryRepo
 import com.example.transcribeapp.summary.SummaryViewModel
+import com.example.transcribeapp.utils.TinyDB
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
@@ -49,9 +48,6 @@ val allModules = module {
             binding
         )
     }
-    single { TinyDB(get()) }
-    single { AuthInterceptor(get()) }
-
 
     single { SpeechRecognitionManager(context = get(), recognitionListener = get()) }
 }
@@ -102,7 +98,7 @@ val networkModule = module {
     single {
         RetroFitHelper(
             baseUrl = Keys.getAuthUrl(),
-            apiService = AiChatService::class.java
+            apiService = UploadCalenderEventService::class.java
         ).service
     }
 
@@ -132,7 +128,7 @@ val viewModelModule = module {
             uploadRService = get(),
             getRService = get(),
             getEventService = get(),
-            aiChatService = get()
+            get()
         )
     }
     single { UserHistoryViewModel(repo = get()) }

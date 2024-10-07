@@ -135,6 +135,7 @@ dependencies {
     implementation( "com.microsoft.identity.client:msal:2.0.15")
 
 
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
 }
 

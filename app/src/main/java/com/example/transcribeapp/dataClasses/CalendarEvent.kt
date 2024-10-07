@@ -1,13 +1,16 @@
 package com.example.transcribeapp.dataClasses
 
 /**
-* @Author: Naveed Ur Rehman
-* @Designation: Android Developer
-* @Date: 26/09/2024
-* @Gmail: naveedurrehman.ninesol@gmail.com
-* @Company: Ninesol Technologies
+ * @Author: Naveed Ur Rehman
+ * @Designation: Android Developer
+ * @Date: 26/09/2024
+ * @Gmail: naveedurrehman.ninesol@gmail.com
+ * @Company: Ninesol Technologies
+ */
+data class CalendarEvent(
+    val id: Long,
+    val title: String,
+    val startTime: Long,
+    val endTime: Long
+)
 
-*///data class CalendarEvent()
-
-
-//data class CalendarEvent(val str : String)

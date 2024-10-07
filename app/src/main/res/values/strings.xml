@@ -45,7 +45,7 @@
     <string name="choose_password">Choose a Pasward</string>
     <string name="verify_email">Verify your email address </string>
     <string name="sent_email">We,ve sent you an OTP on your email</string>
-    <string name="use_app">To use our app check the OTP we have sent to you on <b>userinfo@gmail.com</b> </string>
+    <string name="use_app">To use our app check the OTP we have sent to you on userinfo@gmail.com</string>
     <string name="send_again">Send Again</string>
     <string name="not_recieve">Didn\'t receive the OTP yet?</string>
     <string name="open_email">Open email app</string>

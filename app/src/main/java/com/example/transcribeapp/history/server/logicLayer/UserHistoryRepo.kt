@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.history.server.event.EventApiService
 import com.example.transcribeapp.history.server.event.EventDetailsResponse
+import com.example.transcribeapp.history.server.eventCalander.UploadCalanderEventReq
+import com.example.transcribeapp.history.server.eventCalander.UploadCalenderEventService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import com.example.transcribeapp.history.server.upload.UploadRecordApiService
@@ -21,8 +23,32 @@ class UserHistoryRepo(
     private val uploadRService: UploadRecordApiService,
     private val getRService: GetRecordingApiService,
     private val getEventService: EventApiService,
+    private val uploadCEventService: UploadCalenderEventService,
 ) {
     private val audioMimeType = "audio/*".toMediaTypeOrNull()
+
+
+    suspend fun upLoadCalenderEvent(request: UploadCalanderEventReq) = withContext(Dispatchers.IO) {
+        try {
+
+            val result = uploadCEventService.uploadCEvent(request).execute()
+
+            if (result.isSuccessful) {
+                val response =result.body()?.string()
+                "success:${response}".log(Log.DEBUG, "UploadModule")
+            }else{
+                "Error uploading :${result.errorBody()?.string()}".log(Log.DEBUG, "UploadModule")
+                "Error uploading code :${result.code()}".log(Log.DEBUG, "UploadModule")
+            }
+
+        } catch (e: Exception) {
+            "Exception:${e.message}".log(Log.DEBUG, "UploadModule")
+        } catch (e: HttpException) {
+            "ExceptionHTTP:${e.message}".log(Log.DEBUG, "UploadModule")
+        }
+
+    }
+
     suspend fun uploadRecordData(
         title: String,
         conversation: String,
@@ -54,8 +80,7 @@ class UserHistoryRepo(
 
             if (response.isSuccessful) {
                 val result = response.body()?.data?.text
-                val message = response.body()?.message
-                val success = response.body()?.data?.text
+
                 if (result != null) {
                     "onResponse: $result".log(Log.DEBUG, "UploadModule")
                     "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
@@ -123,15 +148,16 @@ class UserHistoryRepo(
     suspend fun getEventDetails(eventId: String): Result<EventDetailsResponse> =
         withContext(Dispatchers.IO) {
             try {
-                val response =getEventService.getEventDetails("null-event-details",eventId).execute()
-                if (response.isSuccessful){
+                val response =
+                    getEventService.getEventDetails("null-event-details", eventId).execute()
+                if (response.isSuccessful) {
                     val message = response.body()?.success
 
                     if (message == true) {
                         "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
                         Result.success(response.body()!!)
 
-                    }else{
+                    } else {
                         "onErrorResponse : ${response.errorBody().toString()}".log(
                             Log.DEBUG,
                             "UploadModule"
@@ -139,7 +165,7 @@ class UserHistoryRepo(
                         Result.failure(Exception("EventDetail result is null"))
                     }
 
-                }else{
+                } else {
                     "onErrorResponse not success: ${response.errorBody().toString()}".log(
                         Log.DEBUG,
                         "UploadModule"

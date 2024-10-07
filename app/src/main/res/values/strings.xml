@@ -45,12 +45,32 @@
     <string name="choose_password">Choose a Pasward</string>
     <string name="verify_email">Verify your email address </string>
     <string name="sent_email">We,ve sent you an OTP on your email</string>
-    <string name="use_app">To use our app check the OTP we have sent to you on <b>userinfo@gmail.com</b> </string>
+    <string name="use_app">To use our app check the OTP we have sent to you on userinfo@gmail.com</string>
     <string name="send_again">Send Again</string>
     <string name="not_recieve">Didn\'t receive the OTP yet?</string>
     <string name="open_email">Open email app</string>
     <string name="summary_keyword">Summary  Keywords</string>
     <string name="enter_address">Email Address</string>
+    <string name="ask_about_meeting">Ask anything about this meeting</string>
+    <string name="open" />
+    <string name="close" />
+    <string name="rat_app">Rate the App</string>
+    <string name="feed_back">Feedback</string>
+    <string name="share_app">Share the App</string>
+    <string name="about_app">About the App</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="setting">Settings</string>
+    <string name="pref">Prefrences</string>
+    <string name="notification">Notification</string>
+    <string name="meeting">Meeting Settings</string>
+    <string name="support">Support</string>
+    <string name="faq">FAQ</string>
+    <string name="account">Account</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="log_out">Log Out</string>
+
+
+    <string name="ms_sign_in_path"> IqOtbA9XeEWmQKaBRtq69HMzvkM=</string>
 
 
 </resources>

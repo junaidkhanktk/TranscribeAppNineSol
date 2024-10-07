@@ -14,6 +14,7 @@ import com.example.transcribeapp.history.HistoryDataBase.Companion.getDataBase
 import com.example.transcribeapp.history.mvvm.HistoryRepo
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
 import com.example.transcribeapp.history.server.event.EventApiService
+import com.example.transcribeapp.history.server.eventCalander.UploadCalenderEventService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.upload.UploadRecordApiService
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryRepo
@@ -93,6 +94,13 @@ val networkModule = module {
         ).service
     }
 
+    single {
+        RetroFitHelper(
+            baseUrl = Keys.getAuthUrl(),
+            apiService = UploadCalenderEventService::class.java
+        ).service
+    }
+
 
 }
 
@@ -114,7 +122,14 @@ val viewModelModule = module {
     single { AuthViewModel(get()) }
 
     viewModel { GoogleSignInViewModel(get()) }
-    single { UserHistoryRepo(uploadRService = get(), getRService = get(), getEventService = get()) }
+    single {
+        UserHistoryRepo(
+            uploadRService = get(),
+            getRService = get(),
+            getEventService = get(),
+            get()
+        )
+    }
     single { UserHistoryViewModel(repo = get()) }
 
 }

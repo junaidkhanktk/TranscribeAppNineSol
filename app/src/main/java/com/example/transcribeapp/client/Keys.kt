@@ -9,7 +9,7 @@ object Keys {
     external fun getUlrChat(): String
     external fun getSummaryUrl(): String
     external fun getAuthUrl(): String
-    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZWE2YjE1M2Q3MDRjMGRlZGFlNWI5MSIsImlhdCI6MTcyNjYzODg3MCwiZXhwIjoxNzI3MjQzNjcwfQ.Rt9iB98pOriBySLqS5hbBvv5RuimlzboKlU-A87o41c"
+    var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjQwMWVkZGVhZWI0YmRmNDM0OTRjNSIsImlhdCI6MTcyNzI2NzMwOSwiZXhwIjoxNzI3ODcyMTA5fQ.RWUOKzciBdCjU0m_V6ZT_6USHiB34XpXolxtdjLotp0"
 
 
 }

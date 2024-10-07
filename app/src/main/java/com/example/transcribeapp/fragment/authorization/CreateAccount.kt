@@ -13,14 +13,21 @@ import com.example.transcribeapp.fragment.BaseFragment
 
 class CreateAccount :
     BaseFragment<FragmentCreateAccountBinding>(FragmentCreateAccountBinding::inflate) {
-
+    val bundle = Bundle()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding?.apply {
+        val bundleEmailValue = arguments?.getString("email")
+        binding?.run  {
          next.setOnClickListener {
-             findNavController().navigate(R.id.password)
+             val firstName = firstEditText.text?.trim().toString()
+             val lastName = lastNameEditText.text?.trim().toString()
+
+             val fullName = "$firstName $lastName"
+             bundle.putString("email",bundleEmailValue)
+             bundle.putString("name",fullName)
+
+             findNavController().navigate(R.id.password,bundle)
          }
         }
 

@@ -26,6 +26,7 @@ import com.example.transcribeapp.recorder.AudioRecorderManager
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
 import com.example.transcribeapp.summary.SummaryRepo
 import com.example.transcribeapp.summary.SummaryViewModel
+import com.example.transcribeapp.utils.TinyDB
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
@@ -131,5 +132,9 @@ val viewModelModule = module {
         )
     }
     single { UserHistoryViewModel(repo = get()) }
+
+    single {
+        TinyDB(get())
+    }
 
 }

@@ -2,7 +2,7 @@ package com.example.transcribeapp.authorization.dataClasses
 
 import com.google.gson.annotations.SerializedName
 
-data class RegistrationRequest(
+data class  RegistrationRequest(
     @SerializedName("first_name")
     val firstName: String,
     

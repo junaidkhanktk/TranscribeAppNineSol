@@ -16,9 +16,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clChat"
         android:layout_width="match_parent"

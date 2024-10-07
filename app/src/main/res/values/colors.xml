@@ -13,5 +13,6 @@
     <color name="hint_color">#AEAEAE</color>
     <color name="blue">#0F72D7</color>
     <color name="text_color_new">#838383</color>
+    <color name="red">#FF0000</color>
 
 </resources>

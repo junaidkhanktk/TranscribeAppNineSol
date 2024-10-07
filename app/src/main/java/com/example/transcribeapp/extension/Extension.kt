@@ -3,8 +3,6 @@ package com.example.transcribeapp.extension
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
@@ -24,14 +22,15 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import kotlin.random.Random
 
 
 fun String.log(logLevel: Int = Log.DEBUG, tag: String = "TESTING") {
@@ -272,8 +271,33 @@ fun String.removeBoldMarkers(): SpannableString {
 
 
 
+fun generateChatId(): String {
+    val prefix = "123_"
+    val randomDigits = Random.nextInt(1000, 9999)
+    return "$prefix$randomDigits"
+}
+
+val generatedIds = mutableSetOf<String>() // Global Set to store unique IDs
+
+fun generateUniqueChatId(): String {
+    var newId: String
+    do {
+        val randomDigits = (1000..9999).random() // Generates 4 random digits
+        newId = "123_$randomDigits" // ID format: 123_XXXX
+    } while (generatedIds.contains(newId)) // Ensure no duplicates
+
+    generatedIds.add(newId) // Add the new unique ID to the set
+    return newId
+}
 
 
+
+fun Fragment.listFragments() {
+    val fm = (requireParentFragment() as NavHostFragment).childFragmentManager
+    fm.fragments.forEachIndexed { index, fragment ->
+      ("Fragment $index: ${fragment.javaClass.simpleName}").log(Log.DEBUG,"FRAGMENTSTACK")
+    }
+}
 
 
 

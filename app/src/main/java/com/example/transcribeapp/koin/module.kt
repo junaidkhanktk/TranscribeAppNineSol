@@ -6,13 +6,16 @@ import com.example.transcribeapp.authorization.dataLogicLayer.AuthRepo
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
 import com.example.transcribeapp.authorization.google.GoogleSignInViewModel
 import com.example.transcribeapp.authorization.interfaces.AuthService
+import com.example.transcribeapp.client.AuthInterceptor
 import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.client.RetroFitHelper
 import com.example.transcribeapp.databinding.FragmentConversationBinding
 import com.example.transcribeapp.fragment.ConversationFragment
+import com.example.transcribeapp.helpers.TinyDB
 import com.example.transcribeapp.history.HistoryDataBase.Companion.getDataBase
 import com.example.transcribeapp.history.mvvm.HistoryRepo
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
+import com.example.transcribeapp.history.server.aichat.AiChatService
 import com.example.transcribeapp.history.server.event.EventApiService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.upload.UploadRecordApiService
@@ -46,6 +49,9 @@ val allModules = module {
             binding
         )
     }
+    single { TinyDB(get()) }
+    single { AuthInterceptor(get()) }
+
 
     single { SpeechRecognitionManager(context = get(), recognitionListener = get()) }
 }
@@ -93,6 +99,13 @@ val networkModule = module {
         ).service
     }
 
+    single {
+        RetroFitHelper(
+            baseUrl = Keys.getAuthUrl(),
+            apiService = AiChatService::class.java
+        ).service
+    }
+
 
 }
 
@@ -114,7 +127,14 @@ val viewModelModule = module {
     single { AuthViewModel(get()) }
 
     viewModel { GoogleSignInViewModel(get()) }
-    single { UserHistoryRepo(uploadRService = get(), getRService = get(), getEventService = get()) }
+    single {
+        UserHistoryRepo(
+            uploadRService = get(),
+            getRService = get(),
+            getEventService = get(),
+            aiChatService = get()
+        )
+    }
     single { UserHistoryViewModel(repo = get()) }
 
 }

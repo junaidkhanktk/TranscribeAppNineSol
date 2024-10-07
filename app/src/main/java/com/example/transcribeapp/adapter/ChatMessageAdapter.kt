@@ -1,20 +1,12 @@
 package com.example.transcribeapp.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.transcribeapp.R
 import com.example.transcribeapp.dataClasses.ChatMessage
 import com.example.transcribeapp.dataClasses.MessageType
 import com.example.transcribeapp.databinding.ItemAnswerBinding
 import com.example.transcribeapp.databinding.ItemQuestionBinding
-
-import kotlin.math.log
 
 class ChatMessageAdapter(private var messages: MutableList<ChatMessage>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -67,24 +59,18 @@ class ChatMessageAdapter(private var messages: MutableList<ChatMessage>) :
         notifyItemInserted(messages.size - 1)
     }
 
-    fun setMessages(newMessages: List<ChatMessage>) {
-        messages = newMessages.toMutableList()
-    }
-
-    fun getLastMessage(): ChatMessage? {
-        return if (messages.isNotEmpty()) messages.last() else null
-    }
 
     class QuestionViewHolder(private val binding: ItemQuestionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(message: ChatMessage) {
-            binding.imgQuestion.setImageResource(message.imageResId)
+            //binding.imgQuestion.setImageResource(message.imageResId)
             binding.tvQuestion.text = message.text
+
         }
     }
 
     class AnswerViewHolder(private val binding: ItemAnswerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(message: ChatMessage) {
-            binding.imgAnswer.setImageResource(message.imageResId)
+           // binding.imgAnswer.setImageResource(message.imageResId)
             binding.tvAnswer.text = message.text
         }
     }

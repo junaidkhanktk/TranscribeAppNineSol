@@ -10,22 +10,27 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
+import com.example.transcribeapp.extension.listFragments
+import com.example.transcribeapp.helpers.TinyDB
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
 import com.example.transcribeapp.importAllFile.ImportViewModel
 import com.example.transcribeapp.summary.SummaryViewModel
+import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 abstract class BaseFragment<VB : ViewBinding>(
-    private val inflate: Inflate<VB>
+    private val inflate: Inflate<VB>,
 ) : Fragment() {
-        protected val historyViewModel by viewModel<HistoryViewModel>()
+    protected val historyViewModel by viewModel<HistoryViewModel>()
     protected val summaryViewModel by viewModel<SummaryViewModel>()
     protected val importVieModel by viewModel<ImportViewModel>()
     protected val authViewModel by viewModel<AuthViewModel>()
     protected val userHistoryViewModel by viewModel<UserHistoryViewModel>()
+    protected val tinyDB: TinyDB = get()
 
     private var _binding: VB? = null
     val binding get() = _binding
@@ -47,9 +52,10 @@ abstract class BaseFragment<VB : ViewBinding>(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = inflate.invoke(inflater, container, false)
+        // listFragments()
         return binding?.root
     }
 

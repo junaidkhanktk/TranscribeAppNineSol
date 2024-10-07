@@ -23,7 +23,7 @@ data class Data(
     @SerializedName("transcribe_text")
     val text: String,
     @SerializedName("aiChat")
-    val aiChat: AiChat,
+    val aiChat: AiChat?=null,
 )
 
 data class AiChat(
@@ -34,15 +34,15 @@ data class AiChat(
     @SerializedName("chatId")
     val chatId: String,
     @SerializedName("eventId")
-    val eventId: String?, // Nullable
+    val eventId: String?,
     @SerializedName("recordingId")
     val recordingId: String,
     @SerializedName("chatSpecialist")
-    val chatSpecialist: String?, // Nullable
+    val chatSpecialist: String?,
     @SerializedName("isArchived")
     val isArchived: Boolean,
     @SerializedName("prompts")
-    val prompts: List<Prompt>,
+    val prompts: List<Prompt>?,
     @SerializedName("__v")
     val v: Int
 )

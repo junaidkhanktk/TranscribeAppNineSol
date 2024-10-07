@@ -2,12 +2,18 @@ package com.example.transcribeapp.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.example.transcribeapp.R
+import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.databinding.ActivityMainBinding
 import com.example.transcribeapp.extension.beGone
 import com.example.transcribeapp.extension.beVisible
@@ -20,6 +26,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+    private lateinit var toggle: ActionBarDrawerToggle
 
 
     private lateinit var navController: NavController
@@ -31,6 +38,17 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener(this@MainActivity)
+
+        setupNaveViewClick()
+        toggle = ActionBarDrawerToggle(this, binding.container, R.string.open, R.string.close)
+
+
+
+
+        binding.container.addDrawerListener(toggle)
+        binding.menu.setOnClickListener {
+            binding.container.openDrawer(GravityCompat.START)
+        }
 
         binding.bottomNavigation.setupWithNavController(navController)
 
@@ -100,16 +118,68 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
                 R.id.idHomeFragment -> {
                     bottomNavigation.beVisible()
+                    toolBar.beVisible()
                 }
 
-                R.id.signUpFragment, R.id.emailFragment, R.id.createAccount, R.id.password, R.id.verifyEmail, R.id.aiChatFragmentInner -> {
-                    bottomNavigation.beGone()
-                    toolBar.beGone()
+                R.id.signUpFragment, R.id.emailFragment,
+                R.id.createAccount, R.id.password, R.id.verifyEmail,
+                R.id.aiChatFragmentInner, R.id.idSummaryFragment,
+                R.id.idConversationFragment, R.id.userProfileSetting,
+                -> {
 
+                    toolBar.visibility = View.GONE
+                    bottomNavigation.visibility = View.INVISIBLE
+                    /* toolBar.beGone()
+                     bottomNavigation.beGone()*/
                 }
             }
         }
     }
+
+
+    private fun setupNaveViewClick() {
+
+        binding.apply {
+
+            Glide.with(this@MainActivity)
+                .load(Keys.profile)
+                .circleCrop()
+                .into(customMenu.profileImg)
+
+            customMenu.cross.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+            }
+
+            customMenu.rateApp.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+            }
+
+            customMenu.feedBack.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+            }
+
+            customMenu.shareApp.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+
+            }
+            customMenu.contactUs.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+            }
+
+            customMenu.aboutApp.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+            }
+
+            customMenu.setting.setOnClickListener {
+                container.closeDrawer(GravityCompat.START)
+                navController.navigate(R.id.userProfileSetting)
+            }
+
+
+        }
+
+    }
+
 
 }
 

@@ -14,6 +14,6 @@ enum class MessageType {
 
 data class ChatMessage(
     val messageType: MessageType,
-    val text: String,
-    val imageResId: Int
+    val text: String?,
+    //val imageResId: Int
 )

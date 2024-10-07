@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -51,6 +52,7 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
         val timeDate = arguments?.getLong("TimeStamp")
 
         binding?.apply {
+
             title.text = title1
             dateTime.text = timeDate?.let { convertToDateTime(it) }
         }
@@ -88,7 +90,9 @@ class PlayerFragment : BaseFragment<FragmentPlayerBinding>(FragmentPlayerBinding
                     is UiState.Success -> {
                         binding?.apply {
                             progress.beGone()
+
                             idTxt.text = uiState.data?.data?.text
+                            idTxt.movementMethod = ScrollingMovementMethod()
                             durationTxt.text = uiState.data?.data?.duration ?: "3:44"
                             uiState.data?.data?.recording?.let { prepareMediaPlayer(it) }
                             //dateTime.text =

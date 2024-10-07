@@ -6,6 +6,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.cachedIn
+import com.example.transcribeapp.history.server.aichat.AiChatRequestBody
+import com.example.transcribeapp.history.server.aichat.AiChatResponse
 import com.example.transcribeapp.history.server.event.EventDetailsResponse
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import com.example.transcribeapp.history.server.get.Recordings
@@ -28,6 +30,8 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
     private val _eventDetailResult = MutableStateFlow<UiState<EventDetailsResponse?>>(UiState.Idle)
     val eventDetailResult = _eventDetailResult.asStateFlow()
 
+    private val _aiChatResult = MutableStateFlow<UiState<AiChatResponse?>>(UiState.Idle)
+    val aiChatResult = _aiChatResult.asStateFlow()
 
     private var currentPagingSource: RecordingsPagingSource? = null
 
@@ -52,15 +56,14 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
         eventId: String,
         transcribeText: String,
     ) = viewModelScope.launch {
-
         _uploadResult.value = UiState.Loading
 
         val result =
             repo.uploadRecordData(title, conversation, recordingFile, eventId, transcribeText)
         if (result.isSuccess) {
+            invalidatePagingSource()
             _uploadResult.value = UiState.Success(result.getOrNull())
         } else {
-            invalidatePagingSource()
             _uploadResult.value =
                 UiState.Error(result.exceptionOrNull()?.message ?: "An Unknown error occurred")
         }
@@ -72,13 +75,29 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
         val result = repo.getEventDetails(eventId)
         if (result.isSuccess) {
             _eventDetailResult.value = UiState.Success(result.getOrNull())
-        }else{
-            _eventDetailResult.value =UiState.Error(result.exceptionOrNull()?.message?:"An Unknown error occurred")
+        } else {
+            _eventDetailResult.value =
+                UiState.Error(result.exceptionOrNull()?.message ?: "An Unknown error occurred")
         }
     }
+
+
+    fun aiChat(chatReq: AiChatRequestBody) = viewModelScope.launch {
+        _aiChatResult.value = UiState.Loading
+        val result = repo.aiChat(chatReq)
+        if (result.isSuccess) {
+            _aiChatResult.value = UiState.Success(result.getOrNull())
+        } else {
+            _aiChatResult.value =
+                UiState.Error(result.exceptionOrNull()?.message ?: "An Unknown error occurred")
+
+        }
+    }
+
 
     fun clearEventDetails() {
         _eventDetailResult.value = UiState.Idle
     }
+
 
 }

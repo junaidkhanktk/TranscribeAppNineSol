@@ -2,10 +2,7 @@ package com.example.transcribeapp.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.transcribeapp.R
 import com.example.transcribeapp.adapter.ChatMessageAdapter
@@ -13,7 +10,6 @@ import com.example.transcribeapp.apis.ChatViewModel
 import com.example.transcribeapp.dataClasses.ChatMessage
 import com.example.transcribeapp.dataClasses.MessageType
 import com.example.transcribeapp.databinding.FragmentAIChatBinding
-import com.example.transcribeapp.extension.isKeyboardOpen
 import com.example.transcribeapp.extension.manageBottomNavOnKeyboardState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,7 +40,7 @@ class AIChatFragment : BaseFragment<FragmentAIChatBinding>(FragmentAIChatBinding
                     ChatMessage(
                         MessageType.QUESTION,
                         userMessage,
-                        R.drawable.ic_ai_image
+
                     )
                 )
                 chatViewModel.processChat(userMessage)
@@ -61,7 +57,7 @@ class AIChatFragment : BaseFragment<FragmentAIChatBinding>(FragmentAIChatBinding
                 ChatMessage(
                     MessageType.ANSWER,
                     response,
-                    R.drawable.ic_ai_image
+
                 )
             )
             binding?.rvChatResponses?.smoothScrollToPosition(chatMessageAdapter.itemCount - 1)

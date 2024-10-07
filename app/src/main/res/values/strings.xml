@@ -51,6 +51,23 @@
     <string name="open_email">Open email app</string>
     <string name="summary_keyword">Summary  Keywords</string>
     <string name="enter_address">Email Address</string>
+    <string name="ask_about_meeting">Ask anything about this meeting</string>
+    <string name="open" />
+    <string name="close" />
+    <string name="rat_app">Rate the App</string>
+    <string name="feed_back">Feedback</string>
+    <string name="share_app">Share the App</string>
+    <string name="about_app">About the App</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="setting">Settings</string>
+    <string name="pref">Prefrences</string>
+    <string name="notification">Notification</string>
+    <string name="meeting">Meeting Settings</string>
+    <string name="support">Support</string>
+    <string name="faq">FAQ</string>
+    <string name="account">Account</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="log_out">Log Out</string>
 
 
 </resources>

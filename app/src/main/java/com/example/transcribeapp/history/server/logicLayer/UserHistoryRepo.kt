@@ -2,6 +2,9 @@ package com.example.transcribeapp.history.server.logicLayer
 
 import android.util.Log
 import com.example.transcribeapp.extension.log
+import com.example.transcribeapp.history.server.aichat.AiChatRequestBody
+import com.example.transcribeapp.history.server.aichat.AiChatResponse
+import com.example.transcribeapp.history.server.aichat.AiChatService
 import com.example.transcribeapp.history.server.event.EventApiService
 import com.example.transcribeapp.history.server.event.EventDetailsResponse
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
@@ -14,6 +17,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.File
 
@@ -21,8 +25,10 @@ class UserHistoryRepo(
     private val uploadRService: UploadRecordApiService,
     private val getRService: GetRecordingApiService,
     private val getEventService: EventApiService,
+    private val aiChatService: AiChatService,
 ) {
     private val audioMimeType = "audio/*".toMediaTypeOrNull()
+
     suspend fun uploadRecordData(
         title: String,
         conversation: String,
@@ -57,12 +63,15 @@ class UserHistoryRepo(
                 val message = response.body()?.message
                 val success = response.body()?.data?.text
                 if (result != null) {
-                    "onResponse: $result".log(Log.DEBUG, "UploadModule")
-                    "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
+                    "onResponse: $result".log(Log.DEBUG, "UserHistoryRepo")
+                    "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UserHistoryRepo")
                     Result.success(response.body()!!)
 
                 } else {
-                    "onErrorResponse: Transcription result is null".log(Log.DEBUG, "UploadModule")
+                    "onErrorResponse: Transcription result is null".log(
+                        Log.DEBUG,
+                        "UserHistoryRepo"
+                    )
                     Result.failure(Exception("Transcription result is null"))
                 }
             } else {
@@ -70,9 +79,9 @@ class UserHistoryRepo(
             }
         } catch (e: Exception) {
             val exceptionDetails = Log.getStackTraceString(e)
-            "Exception:${e.message}".log(Log.DEBUG, "UploadModule")
-            "Exception:${e}".log(Log.DEBUG, "UploadModule")
-            "Exception:${exceptionDetails}".log(Log.DEBUG, "UploadModule")
+            "Exception:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
+            "Exception:${e}".log(Log.DEBUG, "UserHistoryRepo")
+            "Exception:${exceptionDetails}".log(Log.DEBUG, "UserHistoryRepo")
             Result.failure(e)
         }
     }
@@ -86,13 +95,13 @@ class UserHistoryRepo(
                     val message = response.body()?.success
 
                     if (message == true) {
-                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
+                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UserHistoryRepo")
                         Result.success(response.body()!!)
 
                     } else {
                         "onErrorResponse : ${response.errorBody().toString()}".log(
                             Log.DEBUG,
-                            "UploadModule"
+                            "UserHistoryRepo"
                         )
                         Result.failure(Exception("recodingResult result is null"))
                     }
@@ -100,61 +109,113 @@ class UserHistoryRepo(
                 } else {
                     "onErrorResponse not success: ${response.errorBody().toString()}".log(
                         Log.DEBUG,
-                        "UploadModule"
+                        "UserHistoryRepo"
                     )
 
                     "onErrorResponse not success reason : ${response.errorBody()?.string()}".log(
                         Log.DEBUG,
-                        "UploadModule"
+                        "UserHistoryRepo"
                     )
 
                     Result.failure(Exception("Some thing went Wrong Please try again"))
                 }
             } catch (e: Exception) {
-                "Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
+                "Exception Get Record:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
                 Result.failure(e)
             } catch (e: HttpException) {
-                "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
+                "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
                 Result.failure(e)
             }
         }
 
-
     suspend fun getEventDetails(eventId: String): Result<EventDetailsResponse> =
         withContext(Dispatchers.IO) {
             try {
-                val response =getEventService.getEventDetails("null-event-details",eventId).execute()
-                if (response.isSuccessful){
+                val response =
+                    getEventService.getEventDetails("null-event-details", eventId).execute()
+                if (response.isSuccessful) {
                     val message = response.body()?.success
 
                     if (message == true) {
-                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
+                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UserHistoryRepo")
                         Result.success(response.body()!!)
 
-                    }else{
+                    } else {
                         "onErrorResponse : ${response.errorBody().toString()}".log(
                             Log.DEBUG,
-                            "UploadModule"
+                            "UserHistoryRepo"
                         )
                         Result.failure(Exception("EventDetail result is null"))
                     }
 
-                }else{
+                } else {
                     "onErrorResponse not success: ${response.errorBody().toString()}".log(
                         Log.DEBUG,
-                        "UploadModule"
+                        "UserHistoryRepo"
                     )
                     Result.failure(Exception("Some thing went Wrong Please try again"))
                 }
 
 
             } catch (e: Exception) {
-                "Exception Get event:${e.message}".log(Log.DEBUG, "UploadModule")
+                "Exception Get event:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
                 Result.failure(e)
             } catch (e: HttpException) {
-                "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
+                "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
                 Result.failure(e)
             }
+        }
+
+    suspend fun aiChat(chatReq: AiChatRequestBody): Result<AiChatResponse> =
+        withContext(Dispatchers.IO) {
+            try {
+                val response = aiChatService.sendChatRequest(chatReq).execute()
+                "Response Code: ${response.code()}".log(Log.DEBUG, "UserHistoryRepo")
+                "Response Headers: ${response.headers()}".log(Log.DEBUG, "UserHistoryRepo")
+                if (response.isSuccessful) {
+                    val message = response.body()?.success
+                    if (message == true) {
+                        "responseChat: ${response.body()!!}".log(Log.DEBUG, "UserHistoryRepo")
+                        Result.success(response.body()!!)
+
+                    } else {
+                        "onError Response chat : ${response.errorBody().toString()}".log(
+                            Log.DEBUG,
+                            "UserHistoryRepo"
+                        )
+
+                        "ErrorBodyChat chat : ${response.body().toString()}".log(
+                            Log.DEBUG,
+                            "UserHistoryRepo"
+                        )
+
+                        Result.failure(Exception("AiChat result is null"))
+                    }
+
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    "onError Response code: ${response.code()}, Body: $errorBody".log(
+                        Log.DEBUG,
+                        "UserHistoryRepo"
+                    )
+
+
+                    "onError Response chat : ${response.errorBody().toString()}".log(
+                        Log.DEBUG,
+                        "UserHistoryRepo"
+                    )
+                    Result.failure(Exception("AiChat result is null"))
+                }
+
+
+            } catch (e: Exception) {
+                "Exception AiChat:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
+                Result.failure(e)
+            } catch (e: HttpException) {
+                "HTTP Exception AiChat:${e.message}".log(Log.DEBUG, "UserHistoryRepo")
+                Result.failure(e)
+            }
+
         }
 
 }

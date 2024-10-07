@@ -42,17 +42,14 @@ class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderB
     private fun showDateTimePicker(onDateTimeSelected: (String) -> Unit) {
         val currentDate = Calendar.getInstance()
 
-        // Show DatePickerDialog
         DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
             val selectedDate = Calendar.getInstance()
             selectedDate.set(year, month, dayOfMonth)
 
-            // Show TimePickerDialog after Date is selected
             TimePickerDialog(requireContext(), { _, hourOfDay, minute ->
                 selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
                 selectedDate.set(Calendar.MINUTE, minute)
 
-                // Format the date and time and set it to the corresponding EditText
                 val dateTime = SimpleDateFormat("EEE, MMM d, yyyy HH:mm", Locale.getDefault())
                     .format(selectedDate.time)
                 onDateTimeSelected(dateTime)

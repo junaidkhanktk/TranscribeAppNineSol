@@ -40,20 +40,18 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
         binding?.apply {
             val credentialManager = androidx.credentials.CredentialManager.create(requireContext())
-            val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(Constants.GOOGLE_SIGNIN_KEY)
-                .setAutoSelectEnabled(false)
-                .build()
+            val googleIdOption: GetGoogleIdOption =
+                GetGoogleIdOption.Builder().setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(Constants.GOOGLE_SIGNIN_KEY).setAutoSelectEnabled(false)
+                    .build()
 
             val request: androidx.credentials.GetCredentialRequest =
                 androidx.credentials.GetCredentialRequest.Builder()
-                    .addCredentialOption(googleIdOption)
-                    .build()
+                    .addCredentialOption(googleIdOption).build()
 
             continueEmail.setOnClickListener {
-              // findNavController().navigate(R.id.emailFragment)
-             findNavController().navigate(R.id.idHomeFragment)
+                // findNavController().navigate(R.id.emailFragment)
+                findNavController().navigate(R.id.idHomeFragment)
                 //findNavController().navigate(R.id.verifyEmail)
 
             }
@@ -100,14 +98,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                         }
 
                         is UiState.Success -> {
-                            Keys.token = uiState.data?.user?.token.toString()
+                           // Keys.token = uiState.data?.user?.token.toString()
+                            val token = uiState.data?.user?.token.toString()
+                            tinyDB.putValue("authToken",token)
                             "Token ${uiState.data?.user?.token.toString()}".log()
                             findNavController().navigate(R.id.idHomeFragment)
                         }
-
-
                     }
-
                 }
             }
 
@@ -124,14 +121,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                         }
 
                         is UiState.Error -> {
-                            if (uiState.message == "Email already exists. OTP sent to email") {
-                             /*   val login = LoginRequest(
-                                    email = email,
-                                    password = "123456"
-                                )
-                                authViewModel.login(login)*/
+                            if (uiState.message == "Email already exists. Try with a different email") {/*   val login = LoginRequest(
+                                       email = email,
+                                       password = "123456"
+                                   )
+                                   authViewModel.login(login)*/
 
-                              findNavController().navigate(R.id.verifyEmail)
+                                findNavController().navigate(R.id.verifyEmail)
                                 //authViewModel.regResponse
                             }
                             "Error ${uiState.message}".log()
@@ -181,9 +177,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                         googleIdTokenCredential.profilePictureUri
                         val email = googleIdTokenCredential.id
                         val name = googleIdTokenCredential.displayName
+                        val picUrl = googleIdTokenCredential.profilePictureUri
 
                         if (name != null) {
-                            handleRegistration(name, email)
+                            handleRegistration(name, email, picUrl.toString())
                         }
 
                         "picture....${googleIdTokenCredential.profilePictureUri}+ id: ${googleIdTokenCredential.id} name: ${googleIdTokenCredential.displayName} ".log()
@@ -204,20 +201,24 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     }
 
 
-    private fun handleRegistration(userName: String, userEmail: String) {
+    private fun handleRegistration(userName: String, userEmail: String, picUrl: String) {
         email = userEmail
 
 
-       /* val login = LoginRequest(
-            email = userEmail,
-            password = "123456"
-        )
-        authViewModel.login(login)*/
+        /* val login = LoginRequest(
+             email = userEmail,
+             password = "123456"
+         )
+         authViewModel.login(login)*/
 
         val request = RegistrationRequest(
             firstName = userName,
+            lastName = "",
             password = "123456",
-            email = userEmail
+            email = userEmail,
+            picture = picUrl,
+            provider = "google",
+            providerId = 1234
         )
 
         authViewModel.register(request)

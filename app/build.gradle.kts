@@ -117,6 +117,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
 
     implementation (libs.singledateandtimepicker)
+    implementation ( libs.glide)
 
 
     //googleSignUp

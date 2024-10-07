@@ -27,13 +27,6 @@ import com.google.android.gms.fido.fido2.api.common.PublicKeyCredential
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.microsoft.quickauth.signin.ClientCreatedListener
-import com.microsoft.quickauth.signin.MSQAAccountInfo
-import com.microsoft.quickauth.signin.MSQASignInClient
-import com.microsoft.quickauth.signin.MSQASignInOptions
-import com.microsoft.quickauth.signin.MSQATokenResult
-import com.microsoft.quickauth.signin.error.MSQAException
-import cz.msebera.android.httpclient.extras.Base64
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -52,7 +45,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                 for (signature in info.signatures) {
                     val md = MessageDigest.getInstance("SHA")
                     md.update(signature.toByteArray())
-                    Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                //    Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
                 }
             } catch (e: PackageManager.NameNotFoundException) {
 

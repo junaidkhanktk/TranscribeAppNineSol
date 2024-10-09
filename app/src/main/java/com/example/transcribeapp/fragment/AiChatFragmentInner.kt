@@ -5,11 +5,11 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.transcribeapp.R
 import com.example.transcribeapp.adapter.ChatMessageAdapter
 import com.example.transcribeapp.dataClasses.ChatMessage
 import com.example.transcribeapp.dataClasses.MessageType
 import com.example.transcribeapp.databinding.FragmentAiChatInnerBinding
+import com.example.transcribeapp.dialogs.chatDialog
 import com.example.transcribeapp.extension.beGone
 import com.example.transcribeapp.extension.beVisible
 import com.example.transcribeapp.extension.generateUniqueChatId
@@ -33,6 +33,8 @@ class AiChatFragmentInner :
 
 
         chatMessageAdapter = ChatMessageAdapter(mutableListOf())
+
+        requireActivity().chatDialog()
 
         binding?.apply {
             rvChatResponses.adapter = chatMessageAdapter

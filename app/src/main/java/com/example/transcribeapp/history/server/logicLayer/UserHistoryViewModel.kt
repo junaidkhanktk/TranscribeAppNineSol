@@ -9,12 +9,10 @@ import androidx.paging.cachedIn
 import com.example.transcribeapp.history.server.aichat.AiChatRequestBody
 import com.example.transcribeapp.history.server.aichat.AiChatResponse
 import com.example.transcribeapp.history.server.event.EventDetailsResponse
-import com.example.transcribeapp.history.server.eventCalander.UploadCalanderEventReq
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import com.example.transcribeapp.history.server.get.Recordings
 import com.example.transcribeapp.history.server.upload.UploadResponse
 import com.example.transcribeapp.uiState.UiState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -50,9 +48,9 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
         currentPagingSource?.invalidate()
     }
 
-    fun upLoadCalenderEvent(request: UploadCalanderEventReq) = viewModelScope.launch{
+  /*  fun upLoadCalenderEvent(request: UploadCalanderEventReq) = viewModelScope.launch{
         repo.upLoadCalenderEvent(request)
-    }
+    }*/
 
     fun uploadRecordData(
         title: String,
@@ -100,9 +98,6 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
     }
 
 
-    fun clearEventDetails() {
-        _eventDetailResult.value = UiState.Idle
-    }
 
 
 }

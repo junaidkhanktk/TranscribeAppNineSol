@@ -56,7 +56,7 @@
             android:id="@+id/userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/opensans_regular"
+            android:fontFamily="@font/open_sans_regular"
             android:text="Junaidkhan.09ktk@gmail.com"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"

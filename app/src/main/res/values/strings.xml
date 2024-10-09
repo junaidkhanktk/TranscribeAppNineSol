@@ -71,6 +71,11 @@
 
 
     <string name="ms_sign_in_path"> IqOtbA9XeEWmQKaBRtq69HMzvkM=</string>
+    <string name="ask_any">Ask anything in **** AI Chat</string>
+    <string name="summarize_call">Summarize my call for last week</string>
+    <string name="ratio">How should i prepare for my 1:1\n today?</string>
+    <string name="status_acm">What\'s the Status of my ACME\n deal?</string>
+    <string name="sentiment">What was the sentiment in the\n last All Hands meeting?</string>
 
 
 </resources>

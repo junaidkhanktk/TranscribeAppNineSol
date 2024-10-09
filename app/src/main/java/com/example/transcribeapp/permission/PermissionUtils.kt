@@ -89,7 +89,6 @@ object PermissionUtils {
 }
 
 
-
 val notificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
     arrayOf(
         Manifest.permission.POST_NOTIFICATIONS
@@ -117,4 +116,9 @@ val readStoragePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIR
 
 val micPermission = arrayOf(
     Manifest.permission.RECORD_AUDIO
+)
+
+val calenderPermission = arrayOf(
+    Manifest.permission.READ_CALENDAR,
+    Manifest.permission.WRITE_CALENDAR,
 )

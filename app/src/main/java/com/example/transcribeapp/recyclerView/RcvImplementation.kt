@@ -56,7 +56,6 @@ fun Fragment.historyRcv(
     historyAdapter.setOnItemClickListener { item, pos ->
         "$pos".log()
         "listSize: $item".log()
-
         onItemClick.invoke(item.title, item.id, item.timeStamp)
 
     }
@@ -150,7 +149,6 @@ fun Fragment.questionsRcv(
     onItemClick: (String) -> Unit,
 ) {
 
-    val userHistoryViewModel by inject<UserHistoryViewModel>()
 
     val questionAdapter: GenericRvAdapter<chatQuestion, QuestionRcvItemBinding> =
         GenericRvAdapter(

@@ -1,24 +1,29 @@
 package com.example.transcribeapp.koin
 
+import com.example.transcribeapp.apis.ApiChatService
 import com.example.transcribeapp.apis.ApiRepository
 import com.example.transcribeapp.apis.ChatViewModel
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthRepo
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
 import com.example.transcribeapp.authorization.google.GoogleSignInViewModel
 import com.example.transcribeapp.authorization.interfaces.AuthService
+import com.example.transcribeapp.calanderEvents.logicLayer.CalenderEventRepo
+import com.example.transcribeapp.calanderEvents.logicLayer.CalenderEventViewModel
+import com.example.transcribeapp.client.AuthInterceptor
 import com.example.transcribeapp.client.Keys
-import com.example.transcribeapp.client.RetroFitHelper
 import com.example.transcribeapp.databinding.FragmentConversationBinding
 import com.example.transcribeapp.fragment.ConversationFragment
+import com.example.transcribeapp.helpers.TinyDB
 import com.example.transcribeapp.history.HistoryDataBase.Companion.getDataBase
 import com.example.transcribeapp.history.mvvm.HistoryRepo
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
+import com.example.transcribeapp.history.server.aichat.AiChatService
 import com.example.transcribeapp.history.server.event.EventApiService
-import com.example.transcribeapp.history.server.eventCalander.UploadCalenderEventService
+import com.example.transcribeapp.calanderEvents.uploadEventCalender.UploadCalenderEventService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
-import com.example.transcribeapp.history.server.upload.UploadRecordApiService
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryRepo
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
+import com.example.transcribeapp.history.server.upload.UploadRecordApiService
 import com.example.transcribeapp.importAllFile.ImportApiService
 import com.example.transcribeapp.importAllFile.ImportFileRepo
 import com.example.transcribeapp.importAllFile.ImportViewModel
@@ -26,9 +31,12 @@ import com.example.transcribeapp.recorder.AudioRecorderManager
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
 import com.example.transcribeapp.summary.SummaryRepo
 import com.example.transcribeapp.summary.SummaryViewModel
-import com.example.transcribeapp.utils.TinyDB
+import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.GlobalContext
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val allModules = module {
@@ -50,57 +58,154 @@ val allModules = module {
     }
 
     single { SpeechRecognitionManager(context = get(), recognitionListener = get()) }
+
+    single { TinyDB(get()) }
+    single { AuthInterceptor(get()) }
+
 }
 
 val networkModule = module {
+
+
+    /* single {
+         Retrofit.Builder()
+             .baseUrl(Keys.getAuthUrl())
+             .addConverterFactory(GsonConverterFactory.create())
+             .client(
+                 OkHttpClient.Builder()
+                     .connectTimeout(30, TimeUnit.SECONDS)
+                     .readTimeout(30, TimeUnit.SECONDS)
+                     .writeTimeout(30, TimeUnit.SECONDS)
+                     .addInterceptor(GlobalContext.get().get<AuthInterceptor>())
+                     .build()
+             )
+             .build()
+     }*/
+
+
+
     single {
-        RetroFitHelper(
-            baseUrl = Keys.getSummaryUrl(),
-            apiService = ImportApiService::class.java,
-            readTimeOut = 90,
-            readTimeUnit = TimeUnit.SECONDS,
-            writeTimeOut = 90,
-            writeTimeUnit = TimeUnit.SECONDS
-        ).service
+        /*instanceCount += 1
+        "Retrofit instance created. Current count1: $instanceCount".log(Log.DEBUG,"RetroFitHelper")*/
+
+        Retrofit.Builder()
+            .baseUrl(Keys.getAuthUrl())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(GlobalContext.get().get<AuthInterceptor>())
+                    .build()
+            )
+            .build()
+    }
+
+
+    single {
+        get<Retrofit>().create(ImportApiService::class.java)
     }
 
     single {
-        RetroFitHelper(
-            baseUrl = Keys.getAuthUrl(),
-            apiService = AuthService::class.java
-        ).service
+        get<Retrofit>().create(AuthService::class.java)
     }
 
     single {
-        RetroFitHelper(
-            baseUrl = Keys.getAuthUrl(),
-            apiService = UploadRecordApiService::class.java,
-            readTimeOut = 90,
-            readTimeUnit = TimeUnit.SECONDS,
-            writeTimeOut = 90,
-            writeTimeUnit = TimeUnit.SECONDS
-        ).service
+        get<Retrofit>().create(UploadRecordApiService::class.java)
     }
 
     single {
-        RetroFitHelper(
-            baseUrl = Keys.getAuthUrl(),
-            apiService = GetRecordingApiService::class.java
-        ).service
-    }
-    single {
-        RetroFitHelper(
-            baseUrl = Keys.getAuthUrl(),
-            apiService = EventApiService::class.java
-        ).service
+        get<Retrofit>().create(GetRecordingApiService::class.java)
     }
 
     single {
-        RetroFitHelper(
-            baseUrl = Keys.getAuthUrl(),
-            apiService = UploadCalenderEventService::class.java
-        ).service
+        get<Retrofit>().create(EventApiService::class.java)
     }
+
+    single {
+        get<Retrofit>().create(UploadCalenderEventService::class.java)
+    }
+
+    single {
+        get<Retrofit>().create(AiChatService::class.java)
+    }
+
+
+    single {
+        get<Retrofit>().create(AuthService::class.java)
+    }
+
+    single {
+        get<Retrofit>().create(ApiChatService::class.java)
+    }
+
+
+    /*
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getSummaryUrl(),
+                apiService = ImportApiService::class.java,
+                readTimeOut = 90,
+                readTimeUnit = TimeUnit.SECONDS,
+                writeTimeOut = 90,
+                writeTimeUnit = TimeUnit.SECONDS
+            ).service
+        }
+
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = AuthService::class.java
+            ).service
+        }
+
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = UploadRecordApiService::class.java,
+                readTimeOut = 90,
+                readTimeUnit = TimeUnit.SECONDS,
+                writeTimeOut = 90,
+                writeTimeUnit = TimeUnit.SECONDS
+            ).service
+        }
+
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = GetRecordingApiService::class.java
+            ).service
+        }
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = EventApiService::class.java
+            ).service
+        }
+
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = UploadCalenderEventService::class.java
+            ).service
+        }
+
+
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = AiChatService::class.java
+            ).service
+        }
+
+
+        single {
+            RetroFitHelper(
+                baseUrl = Keys.getAuthUrl(),
+                apiService = AuthService::class.java
+            ).service
+        }*/
 
 
 }
@@ -108,7 +213,7 @@ val networkModule = module {
 val viewModelModule = module {
     single { HistoryRepo(get()) }
     single { HistoryViewModel(historyDao = get()) }
-    single { ApiRepository() }
+    single { ApiRepository(get()) }
     single { ChatViewModel(repo = get()) }
 
     single { ImportFileRepo(get()) }
@@ -119,7 +224,7 @@ val viewModelModule = module {
     single { SummaryRepo() }
     single { SummaryViewModel(repo = get()) }
 
-    single { AuthRepo() }
+    single { AuthRepo(get()) }
     single { AuthViewModel(get()) }
 
     viewModel { GoogleSignInViewModel(get()) }
@@ -128,7 +233,7 @@ val viewModelModule = module {
             uploadRService = get(),
             getRService = get(),
             getEventService = get(),
-            get()
+            aiChatService = get()
         )
     }
     single { UserHistoryViewModel(repo = get()) }
@@ -136,5 +241,8 @@ val viewModelModule = module {
     single {
         TinyDB(get())
     }
+
+    single { CalenderEventRepo(uploadCEventService = get()) }
+    single { CalenderEventViewModel(get()) }
 
 }

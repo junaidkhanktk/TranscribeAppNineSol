@@ -2,6 +2,7 @@ package com.example.transcribeapp.client
 
 
 
+import android.util.Log
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -11,6 +12,7 @@ import org.koin.dsl.module
 import org.koin.java.KoinJavaComponent.get
 
 import com.example.transcribeapp.client.Keys.token
+import com.example.transcribeapp.extension.log
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,6 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import org.koin.android.ext.android.inject
+import org.vosk.LogLevel
 
 class RetroFitHelper<T>(
     private val baseUrl: String,
@@ -31,14 +34,22 @@ class RetroFitHelper<T>(
     private val writeTimeUnit: TimeUnit? = TimeUnit.SECONDS,
 
     ) {
-
+    companion object {
+        var retrofitInstanceCount = 0
+    }
 
     private val retrofit by lazy {
+
+        retrofitInstanceCount++
+        "Retrofit instance created. Current count: $retrofitInstanceCount".log(Log.DEBUG,"RetroFitHelper")
+        "Retrofit instance hash code: ${System.identityHashCode(this)}".log(Log.DEBUG,"RetroFitHelper")
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient())
             .build()
+
+
     }
 
     private fun okHttpClient(): OkHttpClient {
@@ -55,5 +66,7 @@ class RetroFitHelper<T>(
     }
 
     val service: T get() = retrofit.create(apiService)
+
+
 
 }

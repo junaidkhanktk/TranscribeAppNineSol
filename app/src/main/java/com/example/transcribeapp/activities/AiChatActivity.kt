@@ -23,7 +23,7 @@ class AiChatActivity : AppCompatActivity() {
         getResponse()
         setContentView(binding.root)
         binding.btnAi.setOnClickListener {
-            chatViewModel.processChat(binding.etAi.text.trim().toString())
+           // chatViewModel.processChat(binding.etAi.text.trim().toString())
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.transcribeapp.history.server.eventCalander
+package com.example.transcribeapp.calanderEvents.uploadEventCalender
 
 data class UploadCalanderEventReq(
     val description: String,

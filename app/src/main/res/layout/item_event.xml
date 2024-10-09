@@ -1,27 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_margin="@dimen/_5sdp"
+    android:layout_marginTop="@dimen/_5sdp">
 
-    <TextView
-        android:id="@+id/eventTitle"
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/uPerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_c1"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/clock"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+
+            app:layout_goneMarginStart="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:srcCompat="@drawable/clock_calender" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/eventTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/open_sans_regular"
+            android:text="8:00 AM - 9:30 PM"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/_12ssp"
+           app:layout_constraintTop_toTopOf="@+id/clock"
+           app:layout_constraintStart_toEndOf="@+id/clock"
+           app:layout_constraintBottom_toBottomOf="@+id/clock"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_gravity="clip_vertical"
+            app:srcCompat="@drawable/call_icon"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="@+id/eventTime"
+            app:layout_constraintBottom_toBottomOf="@+id/eventTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lowerLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:background="@drawable/bg_c2"
+        app:layout_constraintTop_toBottomOf="@+id/uPerLayout"
 
-    <TextView
-        android:id="@+id/eventStartTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        >
 
-    <TextView
-        android:id="@+id/eventEndTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/eventTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="OfferLanded Marketing \n Agency meeting"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5" />
 
-</LinearLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/user"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/eventTitle"
+            app:layout_constraintTop_toBottomOf="@+id/eventTitle"
+            app:srcCompat="@drawable/person_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/open_sans_regular"
+            android:text="junaid"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/user"
+            app:layout_constraintStart_toEndOf="@+id/user"
+            app:layout_constraintTop_toTopOf="@+id/user" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

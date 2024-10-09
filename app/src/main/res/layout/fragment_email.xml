@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_40sdp"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/open_sans_regular"
         android:text="@string/require_information"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp"

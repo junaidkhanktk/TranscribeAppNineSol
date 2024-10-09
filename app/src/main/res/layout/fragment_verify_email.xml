@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/open_sans_regular"
         android:gravity="center"
         android:text="@string/use_app"
         android:textColor="@color/black"

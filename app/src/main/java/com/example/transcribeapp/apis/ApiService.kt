@@ -7,9 +7,18 @@ import retrofit2.http.POST
 
 interface ApiChatService {
 
-        @POST("/chatbot/")
-        fun chatRequest(@Body requestBody: RequestBody): Call<ChatResponse>
+    @POST("/chatbot/")
+    fun chatRequest(@Body requestBody: SimpleChatRequestBody): Call<ChatResponse>
 
 
 }
-data class ChatResponse(val response: String)
+
+data class SimpleChatRequestBody(
+    val chatId: String,
+    val chatSpecialist: String = "chatbot",
+    val prompt: String,
+    val is_dummy_response: Boolean = false,
+    val chat_directory: String = "chatbot"
+)
+
+data class ChatResponse(val message: String)

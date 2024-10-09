@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="textColor">#636262</color>
+    <color name="textColor">#505050</color>
     <color name="bottom_nav_item_color">#FF000000</color>
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="bg_chat_item">#F5F5F5</color>
@@ -11,7 +11,7 @@
     <color name="progress_Dark">#D3D3D3</color>
     <color name="light_black">#231F1F</color>
     <color name="hint_color">#AEAEAE</color>
-    <color name="blue">#0F72D7</color>
+    <color name="blue">#42ADED</color>
     <color name="text_color_new">#838383</color>
     <color name="red">#FF0000</color>
 

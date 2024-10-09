@@ -8,22 +8,22 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 
-class ApiRepository() {
-    fun processChat(userMsg: String, onResponse: (String) -> Unit, onError: (String) -> Unit) {
-        val mediaType = "application/json; charset=utf-8".toMediaType()
+class ApiRepository(private val chatService:ApiChatService) {
+    fun processChat(request: SimpleChatRequestBody, onResponse: (String) -> Unit, onError: (String) -> Unit) {
+       /* val mediaType = "application/json; charset=utf-8".toMediaType()
         val sanitizedUserMsg = userMsg.replace("\\n", " ").replace("\\r", "")
         val userMsgJson = JSONObject().put("message", sanitizedUserMsg).toString()
-        val requestBody = userMsgJson.toRequestBody(mediaType)
-        Log.d("Request JSON:", "processChat:$userMsgJson ")
+        val requestBody = userMsgJson.toRequestBody(mediaType)*/
+      //  Log.d("Request JSON:", "processChat:$userMsgJson ")
 
 
-        ApiHelper.chatService.chatRequest(requestBody).enqueue(object : retrofit2.Callback<ChatResponse> {
+     chatService.chatRequest(request).enqueue(object : retrofit2.Callback<ChatResponse> {
                 override fun onResponse(
                     call: Call<ChatResponse>,
                     response: Response<ChatResponse>,
                 ) {
                     if (response.isSuccessful) {
-                        val replay = response.body()?.response
+                        val replay = response.body()?.message
                         if (replay != null) {
                             onResponse.invoke(replay)
                         } else {

@@ -1,6 +1,7 @@
 package com.example.transcribeapp.client
 
 
+import com.example.transcribeapp.client.Keys.token
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.helpers.TinyDB
 
@@ -18,7 +19,7 @@ class AuthInterceptor(private val tinyDB: TinyDB) : Interceptor {
         val request = chain.request()
             .newBuilder()
             .addHeader("Content-type", "multipart/form-data")
-            .addHeader("Authorization", "Bearer $authToken")
+            .addHeader("Authorization", "Bearer $token")
             .build()
         return chain.proceed(request)
     }

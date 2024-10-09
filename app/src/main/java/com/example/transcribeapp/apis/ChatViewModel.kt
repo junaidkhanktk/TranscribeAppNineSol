@@ -15,9 +15,9 @@ class ChatViewModel(
     private val _chatError = MutableLiveData<String>()
     val chatError:LiveData<String> = _chatError
 
-    fun processChat(userMsg: String) {
+    fun processChat(request: SimpleChatRequestBody) {
             repo.processChat(
-                userMsg,
+                request,
                 onResponse = {
                     _chatResponse.value=it
                 },

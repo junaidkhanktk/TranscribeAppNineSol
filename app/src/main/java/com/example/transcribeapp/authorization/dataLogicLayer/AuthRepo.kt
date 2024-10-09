@@ -7,12 +7,13 @@ import com.example.transcribeapp.authorization.dataClasses.OtpRequest
 import com.example.transcribeapp.authorization.dataClasses.OtpResponse
 import com.example.transcribeapp.authorization.dataClasses.RegistrationRequest
 import com.example.transcribeapp.authorization.dataClasses.RegistrationResponse
+import com.example.transcribeapp.authorization.interfaces.AuthService
 import com.example.transcribeapp.client.ApiHelper.authService
 import com.example.transcribeapp.extension.log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AuthRepo() {
+class AuthRepo(private val authService:AuthService) {
 
 
     suspend fun register(request: RegistrationRequest): Result<RegistrationResponse> =

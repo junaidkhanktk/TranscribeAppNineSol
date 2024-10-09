@@ -371,4 +371,13 @@ fun Context.getSHA1Fingerprint(): String? {
 
 
 
+private fun logMemoryUsage(tag: String = "MemoryUsage") {
+    val runtime = Runtime.getRuntime()
+    val usedMemory = runtime.totalMemory() - runtime.freeMemory()
+    val maxMemory = runtime.maxMemory()
+    val availableMemory = runtime.freeMemory()
 
+    Log.d(tag, "Used Memory: ${usedMemory / 1024 / 1024} MB")
+    Log.d(tag, "Max Memory: ${maxMemory / 1024 / 1024} MB")
+    Log.d(tag, "Free Memory: ${availableMemory / 1024 / 1024} MB")
+}

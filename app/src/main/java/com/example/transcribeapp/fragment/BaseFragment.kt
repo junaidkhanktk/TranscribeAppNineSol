@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.example.transcribeapp.authorization.dataLogicLayer.AuthViewModel
+import com.example.transcribeapp.calanderEvents.logicLayer.CalenderEventViewModel
 import com.example.transcribeapp.extension.listFragments
 import com.example.transcribeapp.helpers.TinyDB
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
@@ -30,6 +31,7 @@ abstract class BaseFragment<VB : ViewBinding>(
     protected val importVieModel by viewModel<ImportViewModel>()
     protected val authViewModel by viewModel<AuthViewModel>()
     protected val userHistoryViewModel by viewModel<UserHistoryViewModel>()
+    protected val calenderEventViewModel by viewModel<CalenderEventViewModel>()
 
     protected val tinyDB: TinyDB = get()
 

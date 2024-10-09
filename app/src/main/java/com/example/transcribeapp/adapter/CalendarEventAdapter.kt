@@ -8,7 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.transcribeapp.R
+import com.example.transcribeapp.adapter.ChatMessageAdapter.AnswerViewHolder
 import com.example.transcribeapp.dataClasses.CalendarEvent
+import com.example.transcribeapp.databinding.ItemAnswerBinding
+import com.example.transcribeapp.databinding.ItemEventBinding
+import com.example.transcribeapp.databinding.ItemQuestionBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -20,7 +24,8 @@ import java.util.Locale
  * @Gmail: naveedurrehman.ninesol@gmail.com
  * @Company: Ninesol Technologies
  */
-class CalendarEventAdapter : ListAdapter<CalendarEvent, CalendarEventAdapter.CalendarEventViewHolder>(DIFF_CALLBACK) {
+class CalendarEventAdapter :
+    ListAdapter<CalendarEvent, CalendarEventAdapter.CalendarEventViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CalendarEvent>() {
@@ -28,15 +33,19 @@ class CalendarEventAdapter : ListAdapter<CalendarEvent, CalendarEventAdapter.Cal
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: CalendarEvent, newItem: CalendarEvent): Boolean {
+            override fun areContentsTheSame(
+                oldItem: CalendarEvent,
+                newItem: CalendarEvent,
+            ): Boolean {
                 return oldItem == newItem
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarEventViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_event, parent, false)
-        return CalendarEventViewHolder(view)
+
+        val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CalendarEventViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CalendarEventViewHolder, position: Int) {
@@ -44,13 +53,27 @@ class CalendarEventAdapter : ListAdapter<CalendarEvent, CalendarEventAdapter.Cal
         holder.bind(event)
     }
 
-    class CalendarEventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CalendarEventViewHolder(private val binding: ItemEventBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(event: CalendarEvent) {
             itemView.findViewById<TextView>(R.id.eventTitle).text = event.title
-            itemView.findViewById<TextView>(R.id.eventStartTime).text =
-                SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date(event.startTime))
-            itemView.findViewById<TextView>(R.id.eventEndTime).text =
-                SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date(event.endTime))
+            binding.apply {
+
+                eventTitle.text = event.title
+
+                val sTime = SimpleDateFormat(
+                    "hh:mm a",
+                    Locale.getDefault()
+                ).format(Date(event.startTime))
+                val eTime = SimpleDateFormat(
+                    "hh:mm a",
+                    Locale.getDefault()
+                ).format(Date(event.endTime))
+               // dd MMM yyyy, HH:mm
+                eventTime.text = "$sTime - $eTime"
+            }
+
+
         }
     }
 }

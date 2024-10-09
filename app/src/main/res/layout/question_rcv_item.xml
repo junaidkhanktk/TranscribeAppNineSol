@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="what are the main action to be completed for a live Navigotot"
         android:textColor="@color/white"
-        android:fontFamily="@font/opensans_regular"
+        android:fontFamily="@font/open_sans_regular"
         android:textSize="@dimen/_13ssp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_7sdp"

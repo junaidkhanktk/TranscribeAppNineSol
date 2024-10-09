@@ -1,92 +1,68 @@
 package com.example.transcribeapp.fragment
 
-import android.Manifest
-
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.Log
-import android.view.LayoutInflater
 
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.transcribeapp.R
 import com.example.transcribeapp.adapter.CalendarEventAdapter
 import com.example.transcribeapp.dataClasses.CalendarEvent
-import com.example.transcribeapp.databinding.FragmentAIChatBinding
 import com.example.transcribeapp.databinding.FragmentCalenderBinding
-import com.example.transcribeapp.history.server.eventCalander.UploadCalanderEventReq
+import com.example.transcribeapp.extension.log
+import com.example.transcribeapp.calanderEvents.uploadEventCalender.UploadCalanderEventReq
+import com.example.transcribeapp.permission.PermissionUtils
+import com.example.transcribeapp.permission.calenderPermission
 
 import java.util.Calendar
 
 
 class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderBinding::inflate) {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: CalendarEventAdapter
+    private lateinit var calenderAdapter: CalendarEventAdapter
 
-    // Request code for calendar permissions
-    private val CALENDAR_PERMISSION_REQUEST_CODE = 100
-    private val appTag = "MyAppTag"  // Unique identifier for app-created events
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_calender, container, false)
-
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = CalendarEventAdapter()
-        recyclerView.adapter = adapter
-
-        // Request calendar permissions
-        requestCalendarPermissions()
-
-        // Button to open the device's calendar for adding an event
-        view.findViewById<Button>(R.id.btnAddEvent).setOnClickListener {
-            openCalendarToAddEvent()
-        }
-
-
-
-
-        return view
-    }
+    private val appTag = "MyAppTag"
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val req = UploadCalanderEventReq(
-            description = "this is my testing event",
-            endTime ="1725761316",
-            startTime = "1725761320",
-            title = "jjjjjjj"
-        )
-        userHistoryViewModel.upLoadCalenderEvent(req)
+        adEventInRcv()
+
+
+        // requestCalendarPermissions()
+
+
+        binding?.apply {
+            btnAddEvent.setOnClickListener {
+                PermissionUtils.checkPermission(
+                    context = requireActivity(),
+                    permissionArray = calenderPermission,
+                    permissionListener = object : PermissionUtils.OnPermissionListener {
+                        override fun onPermissionSuccess() {
+                            openCalendarToAddEvent()
+                        }
+
+                    }
+                )
+            }
+        }
+
+
+    }
+
+    private fun adEventInRcv() {
+        binding?.recyclerView?.apply {
+            layoutManager = LinearLayoutManager(context)
+            calenderAdapter = CalendarEventAdapter()
+            adapter = calenderAdapter
+        }
 
     }
 
 
-    // Request calendar read/write permissions at runtime
-    private fun requestCalendarPermissions() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR),
-            CALENDAR_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    // Open calendar intent to create a new event
     private fun openCalendarToAddEvent() {
         val beginTime = Calendar.getInstance()
         val endTime = beginTime.clone() as Calendar
@@ -118,8 +94,10 @@ class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderB
             CalendarContract.Events.DTSTART,
             CalendarContract.Events.DTEND
         )
-        Log.d("CalenderValues", "fetchAppCreatedCalendarEvents:${CalendarContract.Events._ID} ")
-        Log.d("CalenderValues", "fetchAppCreatedCalendarEvents:${CalendarContract.Events.TITLE} ")
+        "CalenderValues ID:${CalendarContract.Events._ID} ".log()
+        "CalenderValues TITLE:${CalendarContract.Events.TITLE} "
+
+
         // Filter to only include events with the app tag
         val selection =
             "${CalendarContract.Events.TITLE} LIKE ? OR ${CalendarContract.Events.DESCRIPTION} LIKE ?"
@@ -139,25 +117,35 @@ class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderB
             val startIndex = it.getColumnIndex(CalendarContract.Events.DTSTART)
             val endIndex = it.getColumnIndex(CalendarContract.Events.DTEND)
 
+            "CalenderValues idIndex:$idIndex ".log()
+            "CalenderValues titleIndex:$titleIndex ".log()
+            "CalenderValues startIndex:$startIndex ".log()
+            "CalenderValues endIndex:$endIndex ".log()
 
-
-
-            Log.d("CalenderValues", "idIndex:$idIndex ")
-            Log.d("CalenderValues", "titleIndex:$titleIndex ")
-            Log.d("CalenderValues", "startIndex:$startIndex ")
-            Log.d("CalenderValues", "endIndex:$endIndex ")
 
             while (it.moveToNext()) {
                 val eventId = it.getLong(idIndex)
                 val title = it.getString(titleIndex)
                 val startTime = it.getLong(startIndex)
                 val endTime = it.getLong(endIndex)
-                Log.d("CalenderValues", "eventId:$eventId ")
-                Log.d("CalenderValues", "title:$title ")
-                Log.d("CalenderValues", "startTime:$startTime ")
-                Log.d("CalenderValues", "endTime:$endTime ")
+
+
+                "CalenderValues eventId:$eventId ".log()
+                "CalenderValues title:$title ".log()
+                "CalenderValues startTime:$startTime ".log()
+                "CalenderValues endTime:$endTime ".log()
 
                 events.add(CalendarEvent(eventId, title, startTime, endTime))
+
+
+                val req = UploadCalanderEventReq(
+                    description = title,
+                    endTime = endTime.toString(),
+                    startTime = startTime.toString(),
+                    title = title
+                )
+                calenderEventViewModel.upLoadCalenderEvent(req)
+
             }
         }
         return events
@@ -171,21 +159,10 @@ class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderB
 
     private fun updateEventsInRecyclerView() {
         val events = fetchAppCreatedCalendarEvents()
-        adapter.submitList(events)
-
+        calenderAdapter.submitList(events)
 
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == CALENDAR_PERMISSION_REQUEST_CODE) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-               // updateEventsInRecyclerView()
-            }
-        }
-    }
+
 }
 

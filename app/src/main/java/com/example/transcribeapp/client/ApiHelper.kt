@@ -8,6 +8,10 @@ import java.util.concurrent.TimeUnit
 
 object ApiHelper {
 
+    var instanceCount = 0
+
+
+
     val chatService by lazy {
         RetroFitHelper(
             baseUrl = Keys.getUlrChat(),

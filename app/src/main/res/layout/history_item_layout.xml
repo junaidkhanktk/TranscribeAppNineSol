@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:fontFamily="@font/opensans_regular"
+            android:fontFamily="@font/open_sans_regular"
             android:maxLines="3"
             android:text=".mettin about whether\n.hhhhhhh\n.hgfffggggghhggg"
             android:textColor="@color/text_color_new"

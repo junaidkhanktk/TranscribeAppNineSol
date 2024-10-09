@@ -171,7 +171,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgRecording"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"

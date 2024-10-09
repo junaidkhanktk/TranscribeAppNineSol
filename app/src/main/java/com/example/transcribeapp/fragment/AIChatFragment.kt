@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.transcribeapp.R
 import com.example.transcribeapp.adapter.ChatMessageAdapter
 import com.example.transcribeapp.apis.ChatViewModel
+import com.example.transcribeapp.apis.SimpleChatRequestBody
 import com.example.transcribeapp.dataClasses.ChatMessage
 import com.example.transcribeapp.dataClasses.MessageType
 import com.example.transcribeapp.databinding.FragmentAIChatBinding
@@ -41,9 +42,15 @@ class AIChatFragment : BaseFragment<FragmentAIChatBinding>(FragmentAIChatBinding
                         MessageType.QUESTION,
                         userMessage,
 
-                    )
+                        )
                 )
-                chatViewModel.processChat(userMessage)
+                val chatRequest =SimpleChatRequestBody(
+                    chatId = "123_231",
+                    prompt =userMessage,
+                )
+
+
+                    chatViewModel.processChat(chatRequest)
                 binding?.etAi?.text?.clear()
                 binding?.rvChatResponses?.smoothScrollToPosition(chatMessageAdapter.itemCount - 1)
             }
@@ -58,7 +65,7 @@ class AIChatFragment : BaseFragment<FragmentAIChatBinding>(FragmentAIChatBinding
                     MessageType.ANSWER,
                     response,
 
-                )
+                    )
             )
             binding?.rvChatResponses?.smoothScrollToPosition(chatMessageAdapter.itemCount - 1)
         }

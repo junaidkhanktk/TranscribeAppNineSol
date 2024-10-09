@@ -19,7 +19,7 @@ import com.example.transcribeapp.history.mvvm.HistoryRepo
 import com.example.transcribeapp.history.mvvm.HistoryViewModel
 import com.example.transcribeapp.history.server.aichat.AiChatService
 import com.example.transcribeapp.history.server.event.EventApiService
-import com.example.transcribeapp.calanderEvents.uploadEventCalender.UploadCalenderEventService
+import com.example.transcribeapp.calanderEvents.eventCalender.CalenderEventService
 import com.example.transcribeapp.history.server.get.GetRecordingApiService
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryRepo
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
@@ -124,7 +124,7 @@ val networkModule = module {
     }
 
     single {
-        get<Retrofit>().create(UploadCalenderEventService::class.java)
+        get<Retrofit>().create(CalenderEventService::class.java)
     }
 
     single {
@@ -242,7 +242,7 @@ val viewModelModule = module {
         TinyDB(get())
     }
 
-    single { CalenderEventRepo(uploadCEventService = get()) }
+    single { CalenderEventRepo(calenderEventService = get()) }
     single { CalenderEventViewModel(get()) }
 
 }

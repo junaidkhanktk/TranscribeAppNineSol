@@ -14,9 +14,14 @@ import androidx.paging.filter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.transcribeapp.adapter.GenericPagingAdapter
 import com.example.transcribeapp.adapter.GenericRvAdapter
+import com.example.transcribeapp.calanderEvents.eventCalender.Event
+import com.example.transcribeapp.calanderEvents.logicLayer.CalenderEventViewModel
 import com.example.transcribeapp.databinding.FragmentAiChatInnerBinding
+import com.example.transcribeapp.databinding.FragmentCalenderEventBinding
 import com.example.transcribeapp.databinding.FragmentHomeBinding
 import com.example.transcribeapp.databinding.HistoryItemLayoutBinding
+import com.example.transcribeapp.databinding.ItemEventBinding
+import com.example.transcribeapp.databinding.ItemEventCalenderBinding
 import com.example.transcribeapp.databinding.QuestionRcvItemBinding
 import com.example.transcribeapp.extension.convertToDateTime
 import com.example.transcribeapp.extension.getRecordCategory
@@ -27,6 +32,10 @@ import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 fun Fragment.historyRcv(
@@ -142,14 +151,94 @@ fun Fragment.historyRcv(
 }
 
 
+fun Fragment.calenderEventRcv(
+    context: Context,
+    binding: FragmentCalenderEventBinding,
+    onItemClick: (String, String, Long) -> Unit,
+) {
+
+    val calenderEventViewModel by inject<CalenderEventViewModel>()
+
+
+
+    val historyAdapter: GenericPagingAdapter<Event, ItemEventCalenderBinding> =
+        GenericPagingAdapter(
+            inflater = { layoutInflater, parent, attachToRoot ->
+                ItemEventCalenderBinding.inflate(layoutInflater, parent, attachToRoot)
+            },
+            viewHolderBinder = { item, _ ->
+                eventTitle.text = item.title
+
+                val sTime = SimpleDateFormat(
+                    "hh:mm a",
+                    Locale.getDefault()
+                ).format(Date(item.startTime))
+                val eTime = SimpleDateFormat(
+                    "hh:mm a",
+                    Locale.getDefault()
+                ).format(Date(item.endTime))
+                // dd MMM yyyy, HH:mm
+                eventTime.text = "$sTime - $eTime"
+
+
+
+        /*        date.text = convertToDateTime(item.timeStamp)
+                item.transcribeTxt.let {
+                    transcribeTxt.setFormattedTextWithDots(it)
+                }
+                daysWeekAgo.text = getRecordCategory(item.timeStamp)*/
+            }
+        )
+
+    historyAdapter.setOnItemClickListener { item, pos ->
+        "$pos".log()
+        "listSize: $item".log()
+        onItemClick.invoke(item.title, item.id, 22554)
+
+    }
+
+    binding.eventRcv.apply {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            calenderEventViewModel.allCEvent.collect { uiState ->
+
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                setAdapter(historyAdapter)
+                historyAdapter.submitData(uiState)
+                scrollToPosition(0)
+
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            historyAdapter.loadStateFlow.collectLatest { state ->
+                binding.progress.isVisible = (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
+
+                val refreshState = state.source.refresh
+                if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
+                    scrollToPosition(0)
+                }
+            }
+        }
+
+
+    }
+
+
+
+}
+
+
+
+
 fun Fragment.questionsRcv(
     context: Context,
     questions: String,
     binding: FragmentAiChatInnerBinding,
     onItemClick: (String) -> Unit,
 ) {
-
-
     val questionAdapter: GenericRvAdapter<chatQuestion, QuestionRcvItemBinding> =
         GenericRvAdapter(
             inflater = { layoutInflater, parent, attachToRoot ->
@@ -182,6 +271,12 @@ fun Fragment.questionsRcv(
 
 
 }
+
+
+
+
+
+
 
 data class chatQuestion(val chatQuestion: String)
 

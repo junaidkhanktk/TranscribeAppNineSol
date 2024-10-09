@@ -11,7 +11,7 @@ import com.example.transcribeapp.adapter.CalendarEventAdapter
 import com.example.transcribeapp.dataClasses.CalendarEvent
 import com.example.transcribeapp.databinding.FragmentCalenderBinding
 import com.example.transcribeapp.extension.log
-import com.example.transcribeapp.calanderEvents.uploadEventCalender.UploadCalanderEventReq
+import com.example.transcribeapp.calanderEvents.eventCalender.UploadCalenderEventReq
 import com.example.transcribeapp.permission.PermissionUtils
 import com.example.transcribeapp.permission.calenderPermission
 
@@ -138,7 +138,7 @@ class CalenderFragment : BaseFragment<FragmentCalenderBinding>(FragmentCalenderB
                 events.add(CalendarEvent(eventId, title, startTime, endTime))
 
 
-                val req = UploadCalanderEventReq(
+                val req = UploadCalenderEventReq(
                     description = title,
                     endTime = endTime.toString(),
                     startTime = startTime.toString(),

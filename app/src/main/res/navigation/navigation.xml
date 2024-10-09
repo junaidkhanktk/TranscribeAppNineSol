@@ -91,6 +91,11 @@
         android:name="com.example.transcribeapp.TestFragment"
         android:label="fragment_test"
         tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/calenderEventFragment"
+        android:name="com.example.transcribeapp.fragment.CalenderEventFragment"
+        android:label="fragment_calender_event"
+        tools:layout="@layout/fragment_calender_event" />
 
 
 </navigation>

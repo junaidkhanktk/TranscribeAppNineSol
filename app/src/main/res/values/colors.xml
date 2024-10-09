@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="textColor">#505050</color>
+    <color name="textColorS">#212121</color>
     <color name="bottom_nav_item_color">#FF000000</color>
     <color name="bottom_nav_background">#FFFFFF</color>
     <color name="bg_chat_item">#F5F5F5</color>

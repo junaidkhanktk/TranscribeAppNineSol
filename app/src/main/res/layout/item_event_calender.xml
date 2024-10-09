@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_50ssp"
+    android:layout_marginStart="@dimen/_5sdp"
     android:layout_marginTop="@dimen/_5sdp">
 
 
@@ -11,7 +12,7 @@
         android:id="@+id/uPerLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/bg_event_item"
+        android:background="@drawable/bg_event_item_calender"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -59,8 +60,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lowerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_event_item"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/bg_event_item_calender2"
         app:layout_constraintTop_toBottomOf="@+id/uPerLayout"
 
         >

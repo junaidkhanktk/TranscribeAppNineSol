@@ -1,4 +1,4 @@
-package com.example.transcribeapp.calanderEvents.getAllEvent
+package com.example.transcribeapp.calanderEvents.eventCalender
 
 import com.example.transcribeapp.history.server.get.Pagination
 import com.google.gson.annotations.SerializedName
@@ -9,7 +9,7 @@ data class AllEventResponse(
 )
 
 data class EventData(
-    @SerializedName("events") val events: List<Event>,
+    @SerializedName("events") val events: MutableList<Event>,
     @SerializedName("pagination")   val pagination: Pagination,
 )
 

@@ -76,6 +76,7 @@
     <string name="ratio">How should i prepare for my 1:1\n today?</string>
     <string name="status_acm">What\'s the Status of my ACME\n deal?</string>
     <string name="sentiment">What was the sentiment in the\n last All Hands meeting?</string>
+    <string name="upcoming">Upcoming</string>
 
 
 </resources>

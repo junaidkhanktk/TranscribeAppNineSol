@@ -30,7 +30,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // userHistoryViewModel.getRecordData(1,10)
         uploadStatus()
         binding?.apply {
-
+            clAiMeetingGuide.setOnClickListener {
+                findNavController().navigate(R.id.calenderEventFragment)
+            }
 
             /*  searchBoxContainer.searchEditText.setOnFocusChangeListener { view, b ->
                   val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)

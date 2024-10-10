@@ -18,7 +18,7 @@ class CalenderEventFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        calenderEventViewModel.getAllCalenderEvent()
         calenderEventRcv(requireContext(), binding!!) { title, recordId, timeStamp ->
 
         }

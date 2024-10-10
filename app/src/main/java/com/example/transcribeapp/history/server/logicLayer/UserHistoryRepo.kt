@@ -150,11 +150,11 @@ class UserHistoryRepo(
         }
 
 
-    suspend fun getEventDetails(eventId: String): Result<EventDetailsResponse> =
+    suspend fun getEventDetails(eventType:String, eventId: String): Result<EventDetailsResponse> =
         withContext(Dispatchers.IO) {
             try {
                 val response =
-                    getEventService.getEventDetails("null-event-details", eventId).execute()
+                    getEventService.getEventDetails(eventType, eventId).execute()
                 if (response.isSuccessful) {
                     val message = response.body()?.success
 

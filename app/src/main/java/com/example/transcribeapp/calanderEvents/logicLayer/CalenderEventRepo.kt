@@ -35,10 +35,10 @@ class CalenderEventRepo(
 
     }
 
-    suspend fun getAllCalenderEvent(page: Int, limit: Int): Result<AllEventResponse> =
+    suspend fun getAllCalenderEvent(): Result<AllEventResponse> =
         withContext(Dispatchers.IO) {
             try {
-                val response = calenderEventService.getAllEvent (page, limit)
+                val response = calenderEventService.getAllEvent ()
 
                 if (response.isSuccessful) {
                     val message = response.body()?.success

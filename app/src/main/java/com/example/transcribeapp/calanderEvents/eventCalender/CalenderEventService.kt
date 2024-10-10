@@ -16,9 +16,6 @@ interface CalenderEventService {
     ): Call<ResponseBody>
 
     @GET("api/events/")
-    suspend fun getAllEvent(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-    ): Response<AllEventResponse>
+    suspend fun getAllEvent(): Response<AllEventResponse>
 
 }

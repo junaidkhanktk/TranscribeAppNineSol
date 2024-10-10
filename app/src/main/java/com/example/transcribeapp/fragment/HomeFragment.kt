@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             historyRcv(requireContext(), this) { title, recordId, timeStamp ->
                 // userHistoryViewModel.clearEventDetails()
-                userHistoryViewModel.getEventDetails(recordId)
+                userHistoryViewModel.getEventDetails("null-event-details",recordId)
                 val bundle = Bundle()
                 bundle.putString("Title", title)
                 bundle.putLong("TimeStamp", timeStamp)

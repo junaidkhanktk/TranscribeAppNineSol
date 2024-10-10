@@ -17,7 +17,8 @@ class AllEventPagingSource(private val repo: CalenderEventRepo) :
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Event> {
         val page = params.key ?: 1
         return try {
-            val result = repo.getAllCalenderEvent(page, params.loadSize)
+           // val result = repo.getAllCalenderEvent(page, params.loadSize)
+            val result = repo.getAllCalenderEvent()
             if (result.isSuccess) {
                 val allEvent = result.getOrNull()?.data?.events ?: emptyList()
                 LoadResult.Page(

@@ -29,6 +29,7 @@ import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.extension.setFormattedTextWithDots
 import com.example.transcribeapp.history.server.get.Recordings
 import com.example.transcribeapp.history.server.logicLayer.UserHistoryViewModel
+import com.example.transcribeapp.uiState.UiState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -86,7 +87,8 @@ fun Fragment.historyRcv(
 
         viewLifecycleOwner.lifecycleScope.launch {
             historyAdapter.loadStateFlow.collectLatest { state ->
-                binding.progress.isVisible = (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
+                binding.progress.isVisible =
+                    (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
 
                 val refreshState = state.source.refresh
                 if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
@@ -95,30 +97,30 @@ fun Fragment.historyRcv(
             }
         }
 
-       /* historyAdapter.addLoadStateListener { loadState ->
-            // binding.progress.isVisible = loadState.source.refresh is LoadState.Loading
-            val isRefreshing = loadState.source.refresh is LoadState.Loading
-            val isAppending = loadState.source.append is LoadState.Loading
-            val isPrepending = loadState.source.prepend is LoadState.Loading
+        /* historyAdapter.addLoadStateListener { loadState ->
+             // binding.progress.isVisible = loadState.source.refresh is LoadState.Loading
+             val isRefreshing = loadState.source.refresh is LoadState.Loading
+             val isAppending = loadState.source.append is LoadState.Loading
+             val isPrepending = loadState.source.prepend is LoadState.Loading
 
 
-            // Show progress bar when refreshing (initial load) or appending (loading more data)
-            binding.progress.isVisible = isRefreshing || isAppending || isPrepending
+             // Show progress bar when refreshing (initial load) or appending (loading more data)
+             binding.progress.isVisible = isRefreshing || isAppending || isPrepending
 
 
-            val refreshState = loadState.source.refresh
-            if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
-                scrollToPosition(0)
-            }
+             val refreshState = loadState.source.refresh
+             if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
+                 scrollToPosition(0)
+             }
 
-            // Handle errors: append or prepend state errors (when loading more items)
-            val errorState = loadState.source.append as? LoadState.Error
-                ?: loadState.source.prepend as? LoadState.Error
-            errorState?.let {
-                Log.e("Paging", "Error: ${it.error}")
-            }
+             // Handle errors: append or prepend state errors (when loading more items)
+             val errorState = loadState.source.append as? LoadState.Error
+                 ?: loadState.source.prepend as? LoadState.Error
+             errorState?.let {
+                 Log.e("Paging", "Error: ${it.error}")
+             }
 
-        }*/
+         }*/
 
     }
 
@@ -160,9 +162,8 @@ fun Fragment.calenderEventRcv(
     val calenderEventViewModel by inject<CalenderEventViewModel>()
 
 
-
-    val historyAdapter: GenericPagingAdapter<Event, ItemEventCalenderBinding> =
-        GenericPagingAdapter(
+    val historyAdapter: GenericRvAdapter<Event, ItemEventCalenderBinding> =
+        GenericRvAdapter(
             inflater = { layoutInflater, parent, attachToRoot ->
                 ItemEventCalenderBinding.inflate(layoutInflater, parent, attachToRoot)
             },
@@ -181,56 +182,68 @@ fun Fragment.calenderEventRcv(
                 eventTime.text = "$sTime - $eTime"
 
 
-
-        /*        date.text = convertToDateTime(item.timeStamp)
-                item.transcribeTxt.let {
-                    transcribeTxt.setFormattedTextWithDots(it)
-                }
-                daysWeekAgo.text = getRecordCategory(item.timeStamp)*/
+                /*        date.text = convertToDateTime(item.timeStamp)
+                        item.transcribeTxt.let {
+                            transcribeTxt.setFormattedTextWithDots(it)
+                        }
+                        daysWeekAgo.text = getRecordCategory(item.timeStamp)*/
             }
         )
 
-    historyAdapter.setOnItemClickListener { item, pos ->
+    historyAdapter.setonItemClickListener() { item, pos ->
         "$pos".log()
         "listSize: $item".log()
         onItemClick.invoke(item.title, item.id, 22554)
 
     }
 
-    binding.eventRcv.apply {
 
-        viewLifecycleOwner.lifecycleScope.launch {
+    viewLifecycleOwner.lifecycleScope.launch {
 
-            calenderEventViewModel.allCEvent.collect { uiState ->
+        calenderEventViewModel.allCEvent.collect { uiState ->
+            when (uiState) {
+                is UiState.Idle -> {
 
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                setAdapter(historyAdapter)
-                historyAdapter.submitData(uiState)
-                scrollToPosition(0)
-
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            historyAdapter.loadStateFlow.collectLatest { state ->
-                binding.progress.isVisible = (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
-
-                val refreshState = state.source.refresh
-                if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
-                    scrollToPosition(0)
                 }
+
+                is UiState.Loading -> {
+
+                }
+
+                is UiState.Error -> {
+
+                }
+
+                is UiState.Success -> {
+                    binding.eventRcv.apply {
+                        layoutManager=
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        setAdapter(historyAdapter)
+                        historyAdapter.submitList(uiState.data?.data?.events)
+                        scrollToPosition(0)
+                    }
+                }
+
             }
+
         }
-
-
     }
 
 
+    /*viewLifecycleOwner.lifecycleScope.launch {
+        historyAdapter.loadStateFlow.collectLatest { state ->
+            binding.progress.isVisible = (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
+
+            val refreshState = state.source.refresh
+            if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
+                scrollToPosition(0)
+            }
+        }
+    }
+*/
+
 
 }
-
-
 
 
 fun Fragment.questionsRcv(
@@ -273,18 +286,13 @@ fun Fragment.questionsRcv(
 }
 
 
-
-
-
-
-
 data class chatQuestion(val chatQuestion: String)
 
 
 private fun getDummyChat(): ArrayList<chatQuestion> {
     return arrayListOf(
-        chatQuestion("what is the purpose of Ai in It Industry breifly explain"),
-        chatQuestion("what is the purpose of Ai in It Industry breifly explain"),
-        chatQuestion("what is the purpose of Ai in It Industry breifly explain"),
+        chatQuestion("what is the purpose of Ai in It Industry brifely explain"),
+        chatQuestion("what is the purpose of Ai in It Industry brifely explain"),
+        chatQuestion("what is the purpose of Ai in It Industry brifely explain"),
     )
 }

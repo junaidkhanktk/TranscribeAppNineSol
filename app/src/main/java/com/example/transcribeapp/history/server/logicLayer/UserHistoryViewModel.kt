@@ -73,9 +73,9 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
 
     }
 
-    fun getEventDetails(eventId: String) = viewModelScope.launch {
+    fun getEventDetails(eventType:String, eventId: String) = viewModelScope.launch {
         _eventDetailResult.value = UiState.Loading
-        val result = repo.getEventDetails(eventId)
+        val result = repo.getEventDetails(eventType,eventId)
         if (result.isSuccess) {
             _eventDetailResult.value = UiState.Success(result.getOrNull())
         } else {

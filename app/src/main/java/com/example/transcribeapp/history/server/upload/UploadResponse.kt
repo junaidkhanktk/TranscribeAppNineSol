@@ -7,7 +7,6 @@ data class UploadResponse(
     val success: Boolean,
     @SerializedName("message")
     val message: String,
-
     val data: TranscribeData,
 )
 data class TranscribeData(

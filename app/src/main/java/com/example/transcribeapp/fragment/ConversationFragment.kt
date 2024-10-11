@@ -19,6 +19,7 @@ import com.example.transcribeapp.permission.PermissionUtils
 import com.example.transcribeapp.permission.micPermission
 import com.example.transcribeapp.recorder.AudioRecorderManager
 import com.example.transcribeapp.recorder.SpeechRecognitionManager
+import com.example.transcribeapp.utils.Constants.eventId
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,13 +39,17 @@ class ConversationFragment :
 
     private val logTagConversation = "ConversationScreen"
     private var fullText = ""
-    private var titleTxt=""
+    private var titleTxt = ""
     private var userTxt = ""
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUiState(STATE_READY)
 
+
+
+        "MyEventId---> $eventId".log()
 
         speechRecognitionManager = SpeechRecognitionManager(requireContext(), this)
 
@@ -93,7 +98,7 @@ class ConversationFragment :
                         titleTxt,
                         userTxt,
                         audioRecorderManger.audioFile,
-                        "",
+                        eventId,
                         ""
                     )
 

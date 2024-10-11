@@ -1,6 +1,7 @@
 package com.example.transcribeapp.bottomSheet
 
 import android.graphics.Typeface
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,10 @@ fun FragmentActivity.recordingBottomSheet(showFragment: Fragment) {
     dialog.setContentView(binding.root)
 
     fullHeightDialog(dialog)
+
+
+
+
 
     val fragments =
         listOf(SummaryFragment(), ConversationFragment.cancelDialog(dialog), AiChatFragmentInner())

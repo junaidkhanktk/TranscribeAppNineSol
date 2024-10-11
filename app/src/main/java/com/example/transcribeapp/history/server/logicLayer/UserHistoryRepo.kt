@@ -24,35 +24,35 @@ class UserHistoryRepo(
     private val uploadRService: UploadRecordApiService,
     private val getRService: GetRecordingApiService,
     private val getEventService: EventApiService,
-   // private val uploadCEventService: UploadCalenderEventService,
+    // private val uploadCEventService: UploadCalenderEventService,
     private val aiChatService: AiChatService,
 
     ) {
     private val audioMimeType = "audio/*".toMediaTypeOrNull()
 
 
-/*
-    suspend fun upLoadCalenderEvent(request: UploadCalanderEventReq) = withContext(Dispatchers.IO) {
-        try {
+    /*
+        suspend fun upLoadCalenderEvent(request: UploadCalanderEventReq) = withContext(Dispatchers.IO) {
+            try {
 
-            val result = uploadCEventService.uploadCEvent(request).execute()
+                val result = uploadCEventService.uploadCEvent(request).execute()
 
-            if (result.isSuccessful) {
-                val response =result.body()?.string()
-                "success:${response}".log(Log.DEBUG, "UploadModule")
-            }else{
-                "Error uploading :${result.errorBody()?.string()}".log(Log.DEBUG, "UploadModule")
-                "Error uploading code :${result.code()}".log(Log.DEBUG, "UploadModule")
+                if (result.isSuccessful) {
+                    val response =result.body()?.string()
+                    "success:${response}".log(Log.DEBUG, "UploadModule")
+                }else{
+                    "Error uploading :${result.errorBody()?.string()}".log(Log.DEBUG, "UploadModule")
+                    "Error uploading code :${result.code()}".log(Log.DEBUG, "UploadModule")
+                }
+
+            } catch (e: Exception) {
+                "Exception:${e.message}".log(Log.DEBUG, "UploadModule")
+            } catch (e: HttpException) {
+                "ExceptionHTTP:${e.message}".log(Log.DEBUG, "UploadModule")
             }
 
-        } catch (e: Exception) {
-            "Exception:${e.message}".log(Log.DEBUG, "UploadModule")
-        } catch (e: HttpException) {
-            "ExceptionHTTP:${e.message}".log(Log.DEBUG, "UploadModule")
         }
-
-    }
-*/
+    */
 
     suspend fun uploadRecordData(
         title: String,
@@ -107,9 +107,10 @@ class UserHistoryRepo(
         }
     }
 
-    suspend fun getRecordData(page: Int, limit: Int): Result<RecordingResponse> =
+    suspend fun getRecordData(/*url: String*/ page: Int, limit: Int): Result<RecordingResponse> =
         withContext(Dispatchers.IO) {
             try {
+
                 val response = getRService.getRecordingsWithoutEvent(page, limit)
 
                 if (response.isSuccessful) {
@@ -150,11 +151,23 @@ class UserHistoryRepo(
         }
 
 
-    suspend fun getEventDetails(eventType:String, eventId: String): Result<EventDetailsResponse> =
+    suspend fun getWithoutEventDetails(eventDetails: String, eventId: String): Result<EventDetailsResponse> =
         withContext(Dispatchers.IO) {
+
+        /*    val url = when {
+                eventDetails != null && id != null -> {
+                    "/api/recording/$eventDetails/$id"
+                }
+                id != null -> {
+                    "/api/events/$id/recording"
+                }
+                else -> throw IllegalArgumentException("Invalid parameters")
+            }*/
+
+
             try {
                 val response =
-                    getEventService.getEventDetails(eventType, eventId).execute()
+                    getEventService.getEventDetails(eventDetails,eventId).execute()
                 if (response.isSuccessful) {
                     val message = response.body()?.success
 
@@ -187,6 +200,7 @@ class UserHistoryRepo(
                 Result.failure(e)
             }
         }
+
     suspend fun aiChat(chatReq: AiChatRequestBody): Result<AiChatResponse> =
         withContext(Dispatchers.IO) {
             try {

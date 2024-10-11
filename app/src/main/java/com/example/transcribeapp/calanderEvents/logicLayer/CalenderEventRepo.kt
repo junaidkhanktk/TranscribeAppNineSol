@@ -8,37 +8,45 @@ import com.example.transcribeapp.calanderEvents.eventCalender.CalenderEventServi
 import com.example.transcribeapp.history.server.get.RecordingResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import retrofit2.HttpException
 
 class CalenderEventRepo(
     private val calenderEventService: CalenderEventService,
 ) {
 
-    suspend fun upLoadCalenderEvent(request: UploadCalenderEventReq) = withContext(Dispatchers.IO) {
-        try {
+    suspend fun upLoadCalenderEvent(request: UploadCalenderEventReq): Result<ResponseBody?> =
+        withContext(Dispatchers.IO) {
+            try {
+                val result = calenderEventService.uploadCEvent(request)
 
-            val result = calenderEventService.uploadCEvent(request).execute()
+                if (result.isSuccessful) {
+                    val response = result.body()?.string()
+                    "success:${response}".log(Log.DEBUG, "CalenderEventRepo")
+                    Result.success(result.body()!!)
+                } else {
+                    "Error uploading :${result.errorBody()?.string()}".log(
+                        Log.DEBUG,
+                        "CalenderEventRepo"
+                    )
+                    "Error uploading code :${result.code()}".log(Log.DEBUG, "CalenderEventRepo")
+                    Result.failure(Exception("Event result is null"))
+                }
 
-            if (result.isSuccessful) {
-                val response = result.body()?.string()
-                "success:${response}".log(Log.DEBUG, "CalenderEventRepo")
-            } else {
-                "Error uploading :${result.errorBody()?.string()}".log(Log.DEBUG, "CalenderEventRepo")
-                "Error uploading code :${result.code()}".log(Log.DEBUG, "CalenderEventRepo")
+            } catch (e: Exception) {
+                "Exception:${e.message}".log(Log.DEBUG, "CalenderEventRepo")
+                Result.failure(Exception("Event result is null"))
+            } catch (e: HttpException) {
+                "ExceptionHTTP:${e.message}".log(Log.DEBUG, "CalenderEventRepo")
+                Result.failure(Exception("Event result is null"))
             }
 
-        } catch (e: Exception) {
-            "Exception:${e.message}".log(Log.DEBUG, "CalenderEventRepo")
-        } catch (e: HttpException) {
-            "ExceptionHTTP:${e.message}".log(Log.DEBUG, "CalenderEventRepo")
         }
-
-    }
 
     suspend fun getAllCalenderEvent(): Result<AllEventResponse> =
         withContext(Dispatchers.IO) {
             try {
-                val response = calenderEventService.getAllEvent ()
+                val response = calenderEventService.getAllEvent()
 
                 if (response.isSuccessful) {
                     val message = response.body()?.success
@@ -73,6 +81,50 @@ class CalenderEventRepo(
                 Result.failure(e)
             } catch (e: HttpException) {
                 "HTTP Exception Get allEvent:${e.message}".log(Log.DEBUG, "CalenderEventRepo")
+                Result.failure(e)
+            }
+        }
+
+
+    suspend fun getAllRecordingWithEvent(page: Int, limit: Int): Result<RecordingResponse> =
+        withContext(Dispatchers.IO) {
+            try {
+
+                val response = calenderEventService.getAllRecordingWithEvents(page, limit)
+
+                if (response.isSuccessful) {
+                    val message = response.body()?.success
+
+                    if (message == true) {
+                        "onResponseBody: ${response.body()!!}".log(Log.DEBUG, "UploadModule")
+                        Result.success(response.body()!!)
+
+                    } else {
+                        "onErrorResponse : ${response.errorBody().toString()}".log(
+                            Log.DEBUG,
+                            "UploadModule"
+                        )
+                        Result.failure(Exception("recodingResult result is null"))
+                    }
+
+                } else {
+                    "onErrorResponse not success: ${response.errorBody().toString()}".log(
+                        Log.DEBUG,
+                        "UploadModule"
+                    )
+
+                    "onErrorResponse not success reason : ${response.errorBody()?.string()}".log(
+                        Log.DEBUG,
+                        "UploadModule"
+                    )
+
+                    Result.failure(Exception("Some thing went Wrong Please try again"))
+                }
+            } catch (e: Exception) {
+                "Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
+                Result.failure(e)
+            } catch (e: HttpException) {
+                "HTTP Exception Get Record:${e.message}".log(Log.DEBUG, "UploadModule")
                 Result.failure(e)
             }
         }

@@ -2,6 +2,9 @@ package com.example.transcribeapp.history.server.get
 
 import com.google.gson.annotations.SerializedName
 
+
+//This Response is use same for both Event i.e withEvent and Without Event
+
 data class RecordingResponse(
     @SerializedName("success")
     val success: Boolean,
@@ -16,6 +19,8 @@ data class RecordingData(
 data class Recordings(
     @SerializedName("_id")
     val id: String,
+    @SerializedName("eventId")
+    val eventId: String?,
     @SerializedName("title")
     val title: String,
     @SerializedName("dateOrTime")

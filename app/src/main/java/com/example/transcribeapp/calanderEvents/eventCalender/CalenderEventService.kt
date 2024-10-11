@@ -1,5 +1,6 @@
 package com.example.transcribeapp.calanderEvents.eventCalender
 
+import com.example.transcribeapp.history.server.get.RecordingResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -13,9 +14,15 @@ interface CalenderEventService {
     @POST("api/events/")
     suspend fun uploadCEvent(
         @Body uploadReq: UploadCalenderEventReq,
-    ): Call<ResponseBody>
+    ): Response<ResponseBody>
 
     @GET("api/events/")
     suspend fun getAllEvent(): Response<AllEventResponse>
+
+    @GET("api/events/recordingsData")
+    suspend fun getAllRecordingWithEvents(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<RecordingResponse>
 
 }

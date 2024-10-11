@@ -19,6 +19,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         super.onCreate(savedInstanceState)
 
         backPress {
+
             try {
                 val info = requireContext().packageManager.getPackageInfo(
                     "com.example.transcriber.App", // TODO Change the package name

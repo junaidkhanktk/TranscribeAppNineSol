@@ -1,28 +1,28 @@
 package com.example.transcribeapp.recyclerView
 
 import android.content.Context
-import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.annotation.RequiresApi
+import android.view.View
+import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.filter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.transcribeapp.adapter.GenericPagingAdapter
 import com.example.transcribeapp.adapter.GenericRvAdapter
 import com.example.transcribeapp.calanderEvents.eventCalender.Event
 import com.example.transcribeapp.calanderEvents.logicLayer.CalenderEventViewModel
 import com.example.transcribeapp.databinding.FragmentAiChatInnerBinding
 import com.example.transcribeapp.databinding.FragmentCalenderEventBinding
-import com.example.transcribeapp.databinding.FragmentHomeBinding
 import com.example.transcribeapp.databinding.HistoryItemLayoutBinding
-import com.example.transcribeapp.databinding.ItemEventBinding
 import com.example.transcribeapp.databinding.ItemEventCalenderBinding
 import com.example.transcribeapp.databinding.QuestionRcvItemBinding
+import com.example.transcribeapp.extension.beGone
+import com.example.transcribeapp.extension.beVisible
 import com.example.transcribeapp.extension.convertToDateTime
 import com.example.transcribeapp.extension.getRecordCategory
 import com.example.transcribeapp.extension.log
@@ -38,7 +38,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
+/*
 fun Fragment.historyRcv(
     context: Context,
     binding: FragmentHomeBinding,
@@ -97,7 +97,7 @@ fun Fragment.historyRcv(
             }
         }
 
-        /* historyAdapter.addLoadStateListener { loadState ->
+        *//* historyAdapter.addLoadStateListener { loadState ->
              // binding.progress.isVisible = loadState.source.refresh is LoadState.Loading
              val isRefreshing = loadState.source.refresh is LoadState.Loading
              val isAppending = loadState.source.append is LoadState.Loading
@@ -120,7 +120,7 @@ fun Fragment.historyRcv(
                  Log.e("Paging", "Error: ${it.error}")
              }
 
-         }*/
+         }*//*
 
     }
 
@@ -150,13 +150,182 @@ fun Fragment.historyRcv(
         override fun afterTextChanged(s: Editable?) {}
     })
 
+}*/
+
+
+fun Fragment.historyRcvWOE(
+    context: Context,
+    recyclerView: RecyclerView,
+    searchEditText: EditText? = null,
+    progress: View,
+    url: String,
+    onItemClick: (String, String, Long) -> Unit,
+) {
+ val userHistoryViewModel by inject<UserHistoryViewModel>()
+
+
+
+
+    // Initialize the history adapter
+    //userHistoryViewModel.setUrl(url)
+    val historyAdapter: GenericPagingAdapter<Recordings, HistoryItemLayoutBinding> =
+        GenericPagingAdapter(
+            inflater = { layoutInflater, parent, attachToRoot ->
+                HistoryItemLayoutBinding.inflate(layoutInflater, parent, attachToRoot)
+            },
+            viewHolderBinder = { item, _ ->
+                title.text = item.title
+                date.text = convertToDateTime(item.timeStamp)
+                item.transcribeTxt.let {
+                    transcribeTxt.setFormattedTextWithDots(it)
+                }
+                daysWeekAgo.text = getRecordCategory(item.timeStamp)
+            }
+        )
+
+    historyAdapter.setOnItemClickListener { item, pos ->
+        "$pos".log()
+        "listSize: $item".log()
+        onItemClick.invoke(item.title, item.id, item.timeStamp)
+    }
+
+    recyclerView.apply {
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = historyAdapter
+
+        // Collect paging data from ViewModel
+        viewLifecycleOwner.lifecycleScope.launch {
+            userHistoryViewModel.recordingsWithoutEvent.collect { uiState ->
+                historyAdapter.submitData(uiState)
+                scrollToPosition(0)
+            }
+        }
+
+        // Handle load state for progress bar visibility
+        viewLifecycleOwner.lifecycleScope.launch {
+            historyAdapter.loadStateFlow.collectLatest { state ->
+                // Assuming you have a progress bar that is accessible here
+                progress.isVisible =
+                    (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
+
+                val refreshState = state.source.refresh
+                if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
+                    scrollToPosition(0)
+                }
+            }
+        }
+    }
+
+    // Setup the search functionality
+    searchEditText?.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                userHistoryViewModel.recordingsWithoutEvent.collect { uiState ->
+                    val filteredList = uiState.filter {
+                        it.title.contains(s.toString(), ignoreCase = true)
+                    }
+                    historyAdapter.submitData(filteredList)
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
+    })
 }
+
+
+
+
+
+fun Fragment.historyRcvWE(
+    context: Context,
+    recyclerView: RecyclerView,
+    searchEditText: EditText? = null,
+    progress: View,
+    url: String,
+    onItemClick: (String, String, Long) -> Unit,
+) {
+    // val userHistoryViewModel by inject<UserHistoryViewModel>()
+    val calenderEventViewModel by inject<CalenderEventViewModel>()
+
+
+
+
+    //userHistoryViewModel.setUrl(url)
+    val historyAdapter: GenericPagingAdapter<Recordings, HistoryItemLayoutBinding> =
+        GenericPagingAdapter(
+            inflater = { layoutInflater, parent, attachToRoot ->
+                HistoryItemLayoutBinding.inflate(layoutInflater, parent, attachToRoot)
+            },
+            viewHolderBinder = { item, _ ->
+                title.text = item.title
+                date.text = convertToDateTime(item.timeStamp)
+                item.transcribeTxt.let {
+                    transcribeTxt.setFormattedTextWithDots(it)
+                }
+                daysWeekAgo.text = getRecordCategory(item.timeStamp)
+            }
+        )
+
+    historyAdapter.setOnItemClickListener { item, pos ->
+        "$pos".log()
+        "listSize: $item".log()
+        onItemClick.invoke(item.title, item.eventId!!, item.timeStamp)
+    }
+
+    recyclerView.apply {
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = historyAdapter
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            calenderEventViewModel.recordingWithEvent.collect { uiState ->
+                historyAdapter.submitData(uiState)
+                scrollToPosition(0)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            historyAdapter.loadStateFlow.collectLatest { state ->
+                progress.isVisible =
+                    (state.refresh is LoadState.Loading) || (state.append is LoadState.Loading)
+
+                val refreshState = state.source.refresh
+                if (refreshState is LoadState.NotLoading && refreshState.endOfPaginationReached.not()) {
+                    scrollToPosition(0)
+                }
+            }
+        }
+    }
+
+
+    searchEditText?.addTextChangedListener(object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                calenderEventViewModel.recordingWithEvent.collect { uiState ->
+                    val filteredList = uiState.filter {
+                        it.title.contains(s.toString(), ignoreCase = true)
+                    }
+                    historyAdapter.submitData(filteredList)
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {}
+    })
+}
+
+
 
 
 fun Fragment.calenderEventRcv(
     context: Context,
     binding: FragmentCalenderEventBinding,
-    onItemClick: (String, String, Long) -> Unit,
+    onItemClick: (eventId: String) -> Unit,
 ) {
 
     val calenderEventViewModel by inject<CalenderEventViewModel>()
@@ -193,7 +362,7 @@ fun Fragment.calenderEventRcv(
     historyAdapter.setonItemClickListener() { item, pos ->
         "$pos".log()
         "listSize: $item".log()
-        onItemClick.invoke(item.title, item.id, 22554)
+        onItemClick.invoke(item.id)
 
     }
 
@@ -203,21 +372,25 @@ fun Fragment.calenderEventRcv(
         calenderEventViewModel.allCEvent.collect { uiState ->
             when (uiState) {
                 is UiState.Idle -> {
-
+                    binding.progress.beVisible()
                 }
 
                 is UiState.Loading -> {
+                    binding.progress.beVisible()
 
                 }
 
                 is UiState.Error -> {
+                    binding.progress.beGone()
 
                 }
 
                 is UiState.Success -> {
+                    binding.progress.beGone()
+
                     binding.eventRcv.apply {
-                        layoutManager=
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         setAdapter(historyAdapter)
                         historyAdapter.submitList(uiState.data?.data?.events)
                         scrollToPosition(0)

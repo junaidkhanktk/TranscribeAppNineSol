@@ -4,7 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.transcribeapp.history.server.get.Recordings
 
-class RecordingsPagingSource(private val repo: UserHistoryRepo) : PagingSource<Int, Recordings>() {
+class RecordingsPagingSource(private val repo: UserHistoryRepo, /*private val url: String*/) :
+    PagingSource<Int, Recordings>() {
     override fun getRefreshKey(state: PagingState<Int, Recordings>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)

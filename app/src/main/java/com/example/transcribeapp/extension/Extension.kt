@@ -333,9 +333,6 @@ fun Fragment.listFragments() {
 
 
 fun Context.getSHA1Fingerprint(): String? {
-
-
-
     return try {
         val packageInfo: PackageInfo = this.packageManager.getPackageInfo(
             this.packageName,

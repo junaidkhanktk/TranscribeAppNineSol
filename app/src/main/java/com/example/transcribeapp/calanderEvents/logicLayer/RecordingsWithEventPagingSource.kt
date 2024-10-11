@@ -3,10 +3,11 @@ package com.example.transcribeapp.calanderEvents.logicLayer
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.transcribeapp.calanderEvents.eventCalender.Event
+import com.example.transcribeapp.history.server.get.Recordings
 
-class AllEventPagingSource(private val repo: CalenderEventRepo) :
-    PagingSource<Int, Event>() {
-    override fun getRefreshKey(state: PagingState<Int, Event>): Int? {
+class RecordingsWithEventPagingSource(private val repo: CalenderEventRepo) :
+    PagingSource<Int, Recordings>() {
+    override fun getRefreshKey(state: PagingState<Int, Recordings>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
@@ -14,13 +15,13 @@ class AllEventPagingSource(private val repo: CalenderEventRepo) :
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Event> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Recordings> {
         val page = params.key ?: 1
         return try {
-           // val result = repo.getAllCalenderEvent(page, params.loadSize)
-            val result = repo.getAllCalenderEvent()
+           val result = repo.getAllRecordingWithEvent(page, params.loadSize)
+           // val result = repo.getAllCalenderEvent()
             if (result.isSuccess) {
-                val allEvent = result.getOrNull()?.data?.events ?: emptyList()
+                val allEvent = result.getOrNull()?.data?.recordings ?: emptyList()
                 LoadResult.Page(
                     data = allEvent,
                     prevKey = if (page==1) null else page-1,

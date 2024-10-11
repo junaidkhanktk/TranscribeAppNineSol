@@ -3,8 +3,8 @@ package com.example.transcribeapp.history.server.event
 import com.google.gson.annotations.SerializedName
 
 data class EventDetailsResponse(
-    val success: Boolean,
-    val data: Data,
+    @SerializedName("success") val success: Boolean,
+    @SerializedName("data") val data: Data
 )
 
 data class Data(
@@ -14,6 +14,8 @@ data class Data(
     val recording: String?,
     @SerializedName("duration")
     val duration: String?,
+    @SerializedName("action_item")
+    val actionItem: String,
     @SerializedName("keywords")
     val keywords: String,
     @SerializedName("report")
@@ -25,7 +27,6 @@ data class Data(
     @SerializedName("aiChat")
     val aiChat: AiChat?=null,
 )
-
 data class AiChat(
     @SerializedName("_id")
     val id: String,
@@ -46,8 +47,6 @@ data class AiChat(
     @SerializedName("__v")
     val v: Int
 )
-
-
 data class Prompt(
     @SerializedName("_id")
     val id: String,

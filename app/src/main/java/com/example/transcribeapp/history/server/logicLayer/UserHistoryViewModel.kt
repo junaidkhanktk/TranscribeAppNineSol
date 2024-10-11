@@ -20,7 +20,14 @@ import java.io.File
 
 class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
 
-    private val _uploadResult = MutableStateFlow<UiState<UploadResponse?>>(UiState.Idle)
+    private val _currentUrl = MutableStateFlow("")
+
+    fun setUrl(url: String) {
+        _currentUrl.value = url
+    }
+
+    private
+    val _uploadResult = MutableStateFlow<UiState<UploadResponse?>>(UiState.Idle)
     val uploadResult = _uploadResult.asStateFlow()
 
     private val _recodingResult = MutableStateFlow<UiState<RecordingResponse?>>(UiState.Idle)
@@ -35,22 +42,36 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
     private var currentPagingSource: RecordingsPagingSource? = null
 
 
+   /* private fun getNewPagingSource(url: String): PagingSource<Int, Recordings> {
+        return RecordingsPagingSource(repo, url).also { currentPagingSource = it }
+    }*/
+
+
+
     private fun getNewPagingSource(): PagingSource<Int, Recordings> {
         return RecordingsPagingSource(repo).also { currentPagingSource = it }
     }
 
-    val recordingsFlow = Pager(PagingConfig(pageSize = 10)) {
+    val recordingsWithoutEvent = Pager(PagingConfig(pageSize = 10)) {
         getNewPagingSource()
     }.flow.cachedIn(viewModelScope)
+
+  /*  val recordingsFlow: Flow<PagingData<Recordings>> = _currentUrl
+        .filter { it.isNotEmpty() }
+        .flatMapLatest { url->
+            Pager(PagingConfig(pageSize = 10)){
+                getNewPagingSource(url)
+            }.flow.cachedIn(viewModelScope)
+        }*/
 
 
     private fun invalidatePagingSource() {
         currentPagingSource?.invalidate()
     }
 
-  /*  fun upLoadCalenderEvent(request: UploadCalanderEventReq) = viewModelScope.launch{
-        repo.upLoadCalenderEvent(request)
-    }*/
+    /*  fun upLoadCalenderEvent(request: UploadCalanderEventReq) = viewModelScope.launch{
+          repo.upLoadCalenderEvent(request)
+      }*/
 
     fun uploadRecordData(
         title: String,
@@ -73,9 +94,9 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
 
     }
 
-    fun getEventDetails(eventType:String, eventId: String) = viewModelScope.launch {
+    fun getWithoutEventDetails(eventDetails: String, id: String) = viewModelScope.launch {
         _eventDetailResult.value = UiState.Loading
-        val result = repo.getEventDetails(eventType,eventId)
+        val result = repo.getWithoutEventDetails(eventDetails, id)
         if (result.isSuccess) {
             _eventDetailResult.value = UiState.Success(result.getOrNull())
         } else {
@@ -96,8 +117,6 @@ class UserHistoryViewModel(private val repo: UserHistoryRepo) : ViewModel() {
 
         }
     }
-
-
 
 
 }

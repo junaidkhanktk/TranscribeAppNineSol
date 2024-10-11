@@ -19,6 +19,7 @@ import com.example.transcribeapp.R
 import com.example.transcribeapp.authorization.dataClasses.RegistrationRequest
 import com.example.transcribeapp.client.Keys
 import com.example.transcribeapp.databinding.FragmentSignUpBinding
+import com.example.transcribeapp.extension.getSHA1Fingerprint
 import com.example.transcribeapp.extension.log
 import com.example.transcribeapp.fragment.BaseFragment
 import com.example.transcribeapp.uiState.UiState
@@ -37,6 +38,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        "SHA---><${requireContext().getSHA1Fingerprint()}".log()
 
 
     }
